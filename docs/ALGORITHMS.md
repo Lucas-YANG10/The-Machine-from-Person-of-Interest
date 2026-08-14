@@ -20,7 +20,7 @@ $$
 \text{records}
 \rightarrow \text{evidence features}
 \rightarrow P(I_{ie}=1)
-\rightarrow \left\{P(R_{ie}\mid I_{ie}=1),P(C_e)\right\}
+\rightarrow \{ P(R_{ie}\mid I_{ie}=1),P(C_e) \}
 \rightarrow \text{area risk and interface}.
 $$
 
@@ -191,7 +191,7 @@ Each candidate event begins with a fictional prior $\pi_{ec}$. Evidence modifies
 $$
 \ell_{iec}=\log\pi_{ec}+\boldsymbol\gamma_c^\top\mathbf z_{ie},
 \qquad
-P(C_e=c\mid i)=\operatorname{softmax}(\boldsymbol\ell_{ie})_c.
+P(C_e=c\mid i)=\mathrm{softmax}(\boldsymbol\ell_{ie})_c.
 $$
 
 For example, `financial` and `capability` add support to fraud, while `threat` adds support to assault. Event-level type mix is an involvement-weighted average across people:
@@ -249,10 +249,10 @@ This is intentionally kept distinct from $p_{ie}$: the model can assign high inv
 The synthetic label file is evaluated over all $|\mathcal P||\mathcal E|$ person-event pairs. The pipeline reports precision, recall, F1, role accuracy, confusion counts, and the Brier score
 
 $$
-\operatorname{Brier}=\frac1N\sum_{i,e}(p_{ie}-y_{ie})^2.
+\mathrm{Brier}=\frac1N\sum_{i,e}(p_{ie}-y_{ie})^2.
 $$
 
-The scenario was authored so the baseline cleanly separates its cases. Therefore perfect precision/recall only proves that the JSON data, feature logic, scorer, output contract, and UI are joined correctly. It is not a research result.
+The scenario was authored so the baseline cleanly separates its cases. Therefore perfect precision/recall only proves that the generator, feature logic, scorer, output contract, and UI are joined correctly. It is not a research result.
 
 ## 13. How the algorithms are stitched together
 

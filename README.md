@@ -164,4 +164,4 @@ This is an independent fan-inspired educational project. It is not affiliated wi
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Apache License 2.0 — see [LICENSE](LICENSE).

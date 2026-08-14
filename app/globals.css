@@ -646,21 +646,26 @@ input:focus-visible {
   cursor: pointer;
 }
 
-.zone polygon {
+.zone .zone-shape {
   fill: var(--green);
   stroke: #5f6f5c;
   stroke-width: 0.8;
+  fill-rule: evenodd;
   transition: fill-opacity 170ms ease, stroke 170ms ease;
 }
 
-.zone:hover polygon,
-.zone.active polygon {
+.zone:hover .zone-shape {
   stroke: var(--green-bright);
-  stroke-width: 1.5;
+  stroke-width: 1.35;
 }
 
-.zone.active polygon {
-  filter: drop-shadow(0 0 6px rgba(142, 164, 134, 0.24));
+.zone-selection {
+  fill: none;
+  stroke: #f2f5ee;
+  stroke-width: 2.1;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55));
 }
 
 .zone-label {

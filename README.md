@@ -20,14 +20,14 @@ point.
 > [!IMPORTANT]
 > Every identity, message, purchase, trip, location, incident, label, and score in this repository is invented. This is an educational interface and ML-systems project—not a tool for monitoring, profiling, policing, or making decisions about real people.
 
-## What is in v0.2?
+## What is in v0.3?
 
-- A deterministic synthetic Manhattan scenario with 9 people, 4 candidate events, and 34 heterogeneous observations.
+- A deterministic synthetic Manhattan scenario with 30 fictional people, 10 candidate events, and 3,400 heterogeneous observations. Only 31 records carry model-bearing tags; the rest are ordinary background activity.
 - A Python inference engine using temporal decay, noisy-OR evidence fusion, one-hop graph propagation, logistic involvement scoring, role/type softmax models, and spatial kernel risk aggregation.
 - A cinematic but legible React/TypeScript interface with:
   - **Machine View** — only red-frames people above the involvement threshold; role is deliberately hidden.
   - **Analyst View** — exposes involvement probability, victim/perpetrator/ambiguous posterior, crime-type mix, confidence, uncertainty, and score contributions.
-  - **City Grid** — interactive fictional scenario risk across a stylized Manhattan map.
+  - **City Grid** — interactive fictional scenario risk across all 38 Manhattan [2020 Neighborhood Tabulation Areas](https://data.cityofnewyork.us/d/9nt8-h7nd), using simplified boundaries from NYC Department of City Planning release 26b.
   - **Evidence Graph** — shows how records, a person, and a candidate event connect.
   - **Model Core** — displays the exact equations used by the Python baseline.
 - An adjustable threshold so the precision/coverage tradeoff is visible rather than concealed.
@@ -59,11 +59,11 @@ Prerequisites:
 - Node.js 20.9+
 - npm
 
-Generate the deterministic data and model output:
+Generate the deterministic model output from the committed JSON data:
 
 ```bash
-python engine/generate_synthetic_data.py
 python engine/run_pipeline.py
+python tools/build_standalone.py
 ```
 
 Install the interface and run it locally:
@@ -120,7 +120,7 @@ app/                         React interface
   data/machine-output.json   Generated inference artifact imported by the UI
 data/synthetic/              Fixed fictional source records and labels
 docs/                        Algorithms, data contracts, ethics, and roadmap
-engine/                      Python data generator and inference pipeline
+engine/                      Python inference pipeline
 public/data/                 Browser-readable copy of generated output
 standalone/                   Offline single-file edition and readable template
 tests/                       Pipeline and offline-HTML invariants
@@ -145,9 +145,9 @@ Machine View hides this second output to recreate the original dramatic constrai
 
 ## Current limitations
 
-- The scenario is hand-authored and deliberately small; the perfect synthetic precision/recall is a pipeline sanity check, not evidence of real predictive validity.
+- The scenario is fictional and deliberately controlled; the perfect synthetic precision/recall is a pipeline sanity check, not evidence of real predictive validity.
 - Coefficients are transparent design parameters, not estimates learned from real crime data.
-- The Manhattan geometry is stylized rather than a GIS boundary file.
+- Manhattan boundaries are simplified screen-space projections of official 2020 NTA geometry; they are suitable for this interface, not GIS analysis or navigation.
 - The UI presents one fixed time slice; there is no live ingest or backend database yet.
 - Correlated records can still be over-counted despite noisy-OR saturation.
 - The role model is intentionally simple and should not be interpreted causally.
@@ -164,4 +164,4 @@ This is an independent fan-inspired educational project. It is not affiliated wi
 
 ## License
 
-Apache License 2.0 — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).

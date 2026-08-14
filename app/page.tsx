@@ -22,6 +22,7 @@ type Person = {
   event_id: string;
   event_title: string;
   zone: string;
+  map_zone: string;
   location: string;
   coordinates: [number, number];
   involvement: number;
@@ -59,8 +60,10 @@ type EventCandidate = {
 type Zone = {
   id: string;
   name: string;
+  label: string;
   centroid: [number, number];
-  polygon: Array<[number, number]>;
+  polygons: Array<Array<[number, number]>>;
+  label_priority: boolean;
   risk: number;
   trend: string;
   contributors: string[];
@@ -155,7 +158,7 @@ function ManhattanMap({
         className="manhattan-map"
         viewBox="0 0 420 760"
         role="img"
-        aria-label="Stylized Manhattan risk map built from fictional data"
+        aria-label="Synthetic risk map using official Manhattan NTA boundaries"
       >
         <defs>
           <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -171,14 +174,13 @@ function ManhattanMap({
         </defs>
         <rect width="420" height="760" fill="url(#smallGrid)" />
 
-        <g className="water-lines" aria-hidden="true">
-          <path d="M92 20 C122 142 106 273 84 389 C64 502 97 647 132 741" />
-          <path d="M314 14 C327 153 339 285 328 404 C319 518 298 643 249 745" />
-        </g>
-
         <g className="zones">
           {zones.map((zone) => {
             const active = zone.id === selectedZone;
+            const path = zone.polygons
+              .map((ring) => `M ${ring.map((point) => point.join(" ")).join(" L ")} Z`)
+              .join(" ");
+            const showLabel = active || zone.label_priority || zone.contributors.length > 0;
             return (
               <g
                 key={zone.id}
@@ -191,14 +193,18 @@ function ManhattanMap({
                   if (event.key === "Enter" || event.key === " ") onZone(zone.id);
                 }}
               >
-                <polygon
-                  points={zone.polygon.map((point) => point.join(",")).join(" ")}
+                <path
+                  className="zone-shape"
+                  d={path}
                   style={{ fillOpacity: 0.12 + zone.risk * 0.42 }}
                 />
-                <text x={zone.centroid[0]} y={zone.centroid[1]} className="zone-label">
-                  {zone.name.toUpperCase()}
-                </text>
-                {mode === "analyst" && (
+                {active && <path className="zone-selection" d={path} />}
+                {showLabel && (
+                  <text x={zone.centroid[0]} y={zone.centroid[1]} className="zone-label">
+                    {zone.label}
+                  </text>
+                )}
+                {active && mode === "analyst" && (
                   <text x={zone.centroid[0]} y={zone.centroid[1] + 13} className="zone-risk-label">
                     RISK {percent(zone.risk)}
                   </text>
@@ -541,7 +547,7 @@ export default function Home() {
   const [threshold, setThreshold] = useState(data.meta.threshold);
   const [selectedPersonId, setSelectedPersonId] = useState(data.people[0].id);
   const [selectedZoneId, setSelectedZoneId] = useState(
-    data.zones.find((zone) => zone.name === data.people[0].zone)?.id ?? data.zones[0].id,
+    data.zones.find((zone) => zone.name === (data.people[0].map_zone || data.people[0].zone))?.id ?? data.zones[0].id,
   );
 
   const selectedPerson = data.people.find((person) => person.id === selectedPersonId) ?? data.people[0];
@@ -556,7 +562,7 @@ export default function Home() {
     const person = data.people.find((candidate) => candidate.id === id);
     if (!person) return;
     setSelectedPersonId(id);
-    const zone = data.zones.find((candidate) => candidate.name === person.zone);
+    const zone = data.zones.find((candidate) => candidate.name === (person.map_zone || person.zone));
     if (zone) setSelectedZoneId(zone.id);
   }
 

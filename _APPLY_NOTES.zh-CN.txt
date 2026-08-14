@@ -1,0 +1,14 @@
+THE MACHINE: MANHATTAN v0.3 — 应用说明
+
+1. 本压缩包只包含相对 v0.2 发生变化的文件。
+2. 将其中各文件按原目录结构覆盖到项目根目录。
+3. 删除旧文件：engine/generate_synthetic_data.py
+   JSON 现在是唯一原始数据源；package.json 和 CI 已不再调用该生成器。
+4. 重新生成时运行：
+   python engine/run_pipeline.py
+   python tools/build_standalone.py
+5. 直接体验时双击：
+   standalone/the-machine-manhattan.html
+
+数据规模：30 人、10 个候选事件、38 个曼哈顿 NTA、3,400 条观察记录。
+地理边界：NYC DCP 2020 Neighborhood Tabulation Areas，release 26b。

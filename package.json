@@ -1,6 +1,6 @@
 {
   "name": "the-machine-manhattan",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "engines": {
     "node": ">=20.9.0"
@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "eslint .",
     "test:python": "python -m unittest discover -s tests -p \"test_*.py\"",
-    "generate": "python engine/generate_synthetic_data.py && python engine/run_pipeline.py && python tools/build_standalone.py",
+    "generate": "python engine/run_pipeline.py && python tools/build_standalone.py",
     "standalone": "python tools/build_standalone.py"
   },
   "dependencies": {

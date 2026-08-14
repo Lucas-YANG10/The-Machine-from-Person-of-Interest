@@ -26,6 +26,11 @@ class StandaloneHtmlTests(unittest.TestCase):
         self.assertIn("const MACHINE_DATA = {", self.html)
         self.assertIn('"synthetic":true', self.html)
 
+    def test_map_and_slider_interactions_are_embedded(self) -> None:
+        self.assertIn('class="zone-selection"', self.html)
+        self.assertIn("renderThresholdDependents(event.target)", self.html)
+        self.assertIn('"scheme":"2020 Neighborhood Tabulation Areas"', self.html)
+
     def test_needs_no_network_or_module_loader(self) -> None:
         forbidden = (
             "fetch(",

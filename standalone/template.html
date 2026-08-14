@@ -39,7 +39,7 @@
         var(--bg);
       color: var(--text);
       font-family: Consolas, "SFMono-Regular", "Liberation Mono", Menlo, monospace;
-      font-size: 12px;
+      font-size: 14px;
       letter-spacing: .025em;
     }
     body::after {
@@ -198,10 +198,18 @@
     .map-grid { fill: none; stroke: #273027; stroke-width: .45; }
     .water { fill: none; stroke: #202820; stroke-width: .8; stroke-dasharray: 4 6; }
     .zone { cursor: pointer; }
-    .zone polygon { fill: var(--green); stroke: #60705d; stroke-width: .8; }
-    .zone:hover polygon, .zone.active polygon { stroke: var(--green-bright); stroke-width: 1.5; }
-    .zone-label { fill: #879582; font-size: 6px; text-anchor: middle; pointer-events: none; }
-    .zone-risk { fill: #b4c0ad; font-size: 5px; text-anchor: middle; pointer-events: none; }
+    .zone .zone-shape { fill: var(--green); stroke: #60705d; stroke-width: .8; fill-rule: evenodd; }
+    .zone:hover .zone-shape { stroke: var(--green-bright); stroke-width: 1.35; }
+    .zone-selection {
+      fill: none;
+      stroke: #f2f5ee;
+      stroke-width: 2.1;
+      vector-effect: non-scaling-stroke;
+      pointer-events: none;
+      filter: drop-shadow(0 0 3px rgba(255,255,255,.55));
+    }
+    .zone-label { fill: #c0cab9; font-size: 7px; text-anchor: middle; pointer-events: none; paint-order: stroke; stroke: #071008; stroke-width: 2px; }
+    .zone-risk { fill: #d3dccd; font-size: 6px; text-anchor: middle; pointer-events: none; paint-order: stroke; stroke: #071008; stroke-width: 2px; }
     .event-link { stroke: rgba(209,173,104,.45); stroke-width: .7; stroke-dasharray: 3 4; }
     .event-point circle, .event-point path { fill: none; stroke: var(--amber); stroke-width: .8; }
     .event-point circle:first-child { fill: var(--amber); }
@@ -305,12 +313,66 @@
     .footer { min-height: 25px; padding: 6px 14px; display: flex; justify-content: space-between; align-items: center; color: #465045; font-size: 6px; background: #050706; }
     .footer b { color: var(--amber); font-weight: 400; }
 
+    /* ----- 可读性放大层：字号增加，同时给每行更多呼吸空间 ----- */
+    .topbar { min-height: 88px; padding-inline: 26px; }
+    .brand h1 { font-size: 24px; }
+    .brand p, .online { font-size: 10px; }
+    .clock span, .clock em { font-size: 9px; }
+    .clock strong { font-size: 23px; }
+    .modebar { min-height: 50px; grid-template-columns: 320px 1fr 230px; }
+    .modebar button { font-size: 10px; }
+    .offline-badge { font-size: 9px; }
+    .workspace { min-height: calc(100vh - 163px); grid-template-columns: minmax(280px,.82fr) minmax(680px,1.9fr) minmax(330px,.94fr); }
+    .queue, .dossier { max-height: calc(100vh - 163px); }
+    .queue-head { height: 82px; padding: 16px 18px; }
+    .queue-head span { font-size: 10px; }
+    .queue-head em { font-size: 8px; }
+    .threshold { padding: 15px 18px; }
+    .threshold label, .threshold small { font-size: 9px; }
+    .threshold input { height: 32px; cursor: ew-resize; touch-action: none; user-select: none; }
+    .threshold input::-webkit-slider-runnable-track { height: 4px; background: linear-gradient(90deg, var(--red) 0 var(--threshold-progress), var(--line-strong) var(--threshold-progress) 100%); }
+    .threshold input::-webkit-slider-thumb { width: 16px; height: 22px; margin-top: -9px; }
+    .threshold input::-moz-range-track { height: 4px; background: var(--line-strong); }
+    .threshold input::-moz-range-progress { height: 4px; background: var(--red); }
+    .threshold input::-moz-range-thumb { width: 16px; height: 22px; border-radius: 0; border: 1px solid var(--green-bright); background: var(--bg); }
+    .subject-button { min-height: 68px; padding-inline: 15px; grid-template-columns: 32px 1fr auto; }
+    .subject-button .number { font-size: 9px; }
+    .subject-button .identity b { font-size: 11px; }
+    .subject-button em { font-size: 8px; }
+    .subject-button .score b { font-size: 17px; }
+    .section { padding: 17px; }
+    .section-title, .event-button > span { font-size: 9px; }
+    .event-button { min-height: 58px; padding-block: 11px; }
+    .event-button b, .event-button strong { font-size: 10px; }
+    .event-button em { font-size: 8px; }
+    .panel-head { height: 82px; padding-inline: 20px; }
+    .kicker { font-size: 9px; }
+    .panel-head h2 { font-size: 19px; }
+    .model-readout { font-size: 8px; }
+    .ticker > span, .ticker p { font-size: 8px; }
+    .zone-panel h3 { font-size: 16px; line-height: 1.35; }
+    .stats dt, .note, .ranking span { font-size: 8px; }
+    .stats dd, .ranking b, .ranking em { font-size: 9px; }
+    .view-title h2 { font-size: 20px; }
+    .view-title p, .column-label, .node p, .node small, .role-row { font-size: 9px; }
+    .node > span, .record-node b { font-size: 8px; }
+    .node h3 { font-size: 13px; }
+    .formula h3, .pipeline b, .formula p, .metrics p { font-size: 9px; }
+    .pipeline span, .metrics dt { font-size: 8px; }
+    .formula code { font-size: 16px; }
+    .dossier-head span, .dossier-head p, .stamp, .score-block dt, .score-block dd, .withheld { font-size: 8px; }
+    .dossier-head h2 { font-size: 19px; }
+    .score-ring span { font-size: 7px; }
+    .bar-row, .evidence p { font-size: 9px; }
+    .evidence div, .evidence small { font-size: 8px; }
+    .footer { min-height: 30px; font-size: 8px; }
+
     @keyframes pulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
     @keyframes scan { from { top:-80px; } to { top:100%; } }
 
     /* ----- 小屏幕：三栏自动改为纵向 ----- */
     @media (max-width: 1020px) {
-      .workspace { grid-template-columns: 220px minmax(560px,1fr); }
+      .workspace { grid-template-columns: 280px minmax(620px,1fr); }
       .dossier { grid-column: 1/-1; max-height: none; border-left: 0; border-top: 1px solid var(--line-strong); }
       .queue { max-height: none; }
     }
@@ -430,15 +492,14 @@
       return MACHINE_DATA.zones.find(item => item.id === state.zoneId) || MACHINE_DATA.zones[0];
     }
     function syncZoneToPerson() {
-      const matched = MACHINE_DATA.zones.find(item => item.name === person().zone);
+      const matched = MACHINE_DATA.zones.find(item => item.name === (person().map_zone || person().zone));
       if (matched) state.zoneId = matched.id;
     }
     syncZoneToPerson();
 
     // 左栏：人物队列、阈值滑杆和事件列表。
-    function renderQueue() {
-      const relevant = MACHINE_DATA.people.filter(item => item.involvement >= state.threshold);
-      const peopleHtml = MACHINE_DATA.people.map((item, index) => {
+    function peopleMarkup() {
+      return MACHINE_DATA.people.map((item, index) => {
         const visible = item.involvement >= state.threshold;
         if (!visible && state.mode === "machine") return "";
         const role = topEntry(item.roles)[0];
@@ -449,7 +510,10 @@
             <span class="score"><b>${pct(item.involvement)}</b><em>${state.mode === "analyst" ? role.toUpperCase() : "RELEVANT"}</em></span>
           </button>`;
       }).join("");
+    }
 
+    function renderQueue() {
+      const relevant = MACHINE_DATA.people.filter(item => item.involvement >= state.threshold);
       const eventsHtml = MACHINE_DATA.events.map(item => `
         <button class="event-button" data-event="${esc(item.id)}">
           <span>${esc(item.id)}</span>
@@ -458,13 +522,13 @@
         </button>`).join("");
 
       document.getElementById("queue").innerHTML = `
-        <div class="queue-head"><div><span>RELEVANT LIST</span><strong>${String(relevant.length).padStart(2, "0")}</strong></div><em>STATIC 21:40</em></div>
+        <div class="queue-head"><div><span>RELEVANT LIST</span><strong id="relevant-count">${String(relevant.length).padStart(2, "0")}</strong></div><em>STATIC 21:40</em></div>
         <div class="threshold">
-          <label for="threshold">FRAME THRESHOLD <b>${state.threshold.toFixed(2)}</b></label>
-          <input id="threshold" type="range" min="0.35" max="0.90" step="0.01" value="${state.threshold}">
+          <label for="threshold">FRAME THRESHOLD <b id="threshold-value">${state.threshold.toFixed(2)}</b></label>
+          <input id="threshold" type="range" min="0.35" max="0.90" step="0.01" value="${state.threshold}" style="--threshold-progress:${((state.threshold - .35) / .55) * 100}%">
           <small><span>MORE SIGNALS</span><span>HIGH CERTAINTY</span></small>
         </div>
-        <div class="subject-list">${peopleHtml}</div>
+        <div id="subject-list" class="subject-list">${peopleMarkup()}</div>
         <div class="section"><div class="section-title"><span>EVENT CANDIDATES</span><em>${MACHINE_DATA.events.length}</em></div>${eventsHtml}</div>`;
     }
 
@@ -480,16 +544,24 @@
         <div class="model-readout">MODEL<b>${esc(MACHINE_DATA.meta.model_version)}</b>STATIC OFFLINE FRAME</div>`;
     }
 
-    // City Grid：数据中的 polygon 和 coordinates 直接变成 SVG。
+    // City Grid：官方 NTA 边界的 polygons 和事件 coordinates 直接变成 SVG。
     function renderMap() {
       const selected = person();
       const activeZone = zone();
-      const zonesSvg = MACHINE_DATA.zones.map(item => `
-        <g class="zone ${item.id === state.zoneId ? "active" : ""}" data-zone="${esc(item.id)}" role="button" tabindex="0">
-          <polygon points="${item.polygon.map(point => point.join(",")).join(" ")}" style="fill-opacity:${0.12 + item.risk * 0.42}"></polygon>
-          <text x="${item.centroid[0]}" y="${item.centroid[1]}" class="zone-label">${esc(item.name.toUpperCase())}</text>
-          ${state.mode === "analyst" ? `<text x="${item.centroid[0]}" y="${item.centroid[1] + 13}" class="zone-risk">RISK ${pct(item.risk)}</text>` : ""}
-        </g>`).join("");
+      const zonesSvg = MACHINE_DATA.zones.map(item => {
+        const rings = item.polygons || [item.polygon];
+        const path = rings.map(ring => `M ${ring.map(point => point.join(" ")).join(" L ")} Z`).join(" ");
+        const active = item.id === state.zoneId;
+        const showLabel = active || item.label_priority || item.contributors.length > 0;
+        return `
+          <g class="zone ${active ? "active" : ""}" data-zone="${esc(item.id)}" role="button" tabindex="0">
+            <title>${esc(item.name)} · ${pct(item.risk)} scenario risk</title>
+            <path class="zone-shape" d="${path}" style="fill-opacity:${0.10 + item.risk * 0.48}"></path>
+            ${active ? `<path class="zone-selection" d="${path}"></path>` : ""}
+            ${showLabel ? `<text x="${item.centroid[0]}" y="${item.centroid[1]}" class="zone-label">${esc(item.label || item.name.toUpperCase())}</text>` : ""}
+            ${active && state.mode === "analyst" ? `<text x="${item.centroid[0]}" y="${item.centroid[1] + 13}" class="zone-risk">RISK ${pct(item.risk)}</text>` : ""}
+          </g>`;
+      }).join("");
 
       const linksSvg = MACHINE_DATA.people.filter(item => item.involvement >= state.threshold).map(item => {
         const linked = MACHINE_DATA.events.find(candidate => candidate.id === item.event_id);
@@ -520,11 +592,9 @@
       return `
         <div class="city-view">
           <div class="map-wrap"><div class="scan"></div>
-            <svg class="map" viewBox="0 0 420 760" role="img" aria-label="虚构曼哈顿风险地图">
+            <svg class="map" viewBox="0 0 420 760" role="img" aria-label="基于纽约市官方 NTA 边界的虚构曼哈顿风险地图">
               <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="map-grid"></path></pattern></defs>
               <rect width="420" height="760" fill="url(#grid)"></rect>
-              <path class="water" d="M92 20C122 142 106 273 84 389C64 502 97 647 132 741"></path>
-              <path class="water" d="M314 14C327 153 339 285 328 404C319 518 298 643 249 745"></path>
               ${zonesSvg}${linksSvg}${eventsSvg}${peopleSvg}
             </svg>
             <div class="legend"><span><i></i>RELEVANT SUBJECT</span><span>＋ CANDIDATE EVENT</span><span>▰ SCENARIO RISK</span></div>
@@ -533,7 +603,7 @@
             <div class="kicker">AREA AGGREGATE</div><h3>${esc(activeZone.name)}</h3>
             <div class="big-risk">${pct(activeZone.risk)}</div>${bar(activeZone.risk, activeZone.risk > .55)}
             <dl class="stats"><div><dt>STATE</dt><dd>${esc(activeZone.trend.toUpperCase())}</dd></div><div><dt>EVENT LINKS</dt><dd>${activeZone.contributors.length}</dd></div><div><dt>MODEL</dt><dd>KDE / 92U</dd></div></dl>
-            <p class="note">Synthetic scenario-risk index—not a real Manhattan crime rate.</p>
+            <p class="note">Boundary: NYC DCP 2020 NTA (26b). Risk values remain entirely synthetic.</p>
             <div class="ranking">${ranking}</div>
           </aside>
         </div>`;
@@ -543,13 +613,16 @@
     function renderNetwork() {
       const selected = person();
       const linked = eventFor(selected);
-      const records = selected.evidence.map(item => `
-        <article class="node record-node"><span>${esc(item.source.toUpperCase())}</span><b>${esc(item.id)}</b><p>${esc(item.summary)}</p><small>q=${item.reliability.toFixed(2)}</small></article>`).join("");
+      const visibleRecords = selected.evidence.slice(0, 6);
+      const records = visibleRecords.length
+        ? visibleRecords.map(item => `
+            <article class="node record-node"><span>${esc(item.source.toUpperCase())}</span><b>${esc(item.id)}</b><p>${esc(item.summary)}</p><small>q=${item.reliability.toFixed(2)}</small></article>`).join("")
+        : `<article class="node"><span>NO MODEL-BEARING SIGNALS</span><p>Routine records remain in the raw JSON but are intentionally omitted here.</p></article>`;
       const roles = Object.entries(selected.roles).map(([role,value]) => `<div class="role-row"><span>${esc(titleCase(role))}</span><em>${pct(value)}</em></div>`).join("");
       const initials = selected.name.split(" ").map(part => part[0]).join("");
       return `
         <div class="network">
-          <div class="view-title"><div><span class="kicker">TEMPORAL HETEROGENEOUS GRAPH</span><h2>${esc(selected.code)} / ${esc(linked.id)}</h2></div><p>${selected.evidence.length} records · one person · one candidate event<br>Edges show computation, not causation.</p></div>
+          <div class="view-title"><div><span class="kicker">TEMPORAL HETEROGENEOUS GRAPH</span><h2>${esc(selected.code)} / ${esc(linked.id)}</h2></div><p>${selected.evidence.length} model-bearing records · showing up to 6<br>Routine observations stay in the raw dataset.</p></div>
           <div class="network-flow">
             <section><div class="column-label">RAW RECORDS</div><div class="records">${records}</div></section>
             <div class="arrow">→</div>
@@ -574,7 +647,7 @@
       const m = MACHINE_DATA.metrics;
       return `
         <div class="model">
-          <div class="view-title"><div><span class="kicker">AUDITABLE BASELINE / v0.1</span><h2>From records to a red frame</h2></div><p>Every score is embedded in this HTML and reproducible from the Python engine.</p></div>
+          <div class="view-title"><div><span class="kicker">AUDITABLE BASELINE / v0.3</span><h2>From records to a red frame</h2></div><p>Every score is embedded in this HTML and reproducible from the Python engine.</p></div>
           <div class="pipeline">${["RECORDS","FEATURES","GRAPH","INVOLVEMENT","ROLE + TYPE","MAP + UI"].map((item,index) => `<div><span>0${index+1}</span><b>${item}</b></div>`).join("")}</div>
           <div class="formula-grid">${cards}</div>
           <section class="metrics"><div><span class="kicker" style="color:var(--amber)">SYNTHETIC SANITY CHECK</span><p>Verifies pipeline wiring only; this is not a real-world benchmark.</p></div><dl><div><dt>PRECISION</dt><dd>${pct(m.precision)}</dd></div><div><dt>RECALL</dt><dd>${pct(m.recall)}</dd></div><div><dt>F1</dt><dd>${pct(m.f1)}</dd></div><div><dt>BRIER ↓</dt><dd>${m.brier.toFixed(3)}</dd></div><div><dt>PAIRS</dt><dd>${m.evaluated_pairs}</dd></div></dl></section>
@@ -616,6 +689,17 @@
       renderDossier();
     }
 
+    // 滑杆拖动时只局部刷新。不要重建 <input>，否则浏览器会丢失鼠标拖拽状态。
+    function renderThresholdDependents(slider) {
+      const relevantCount = MACHINE_DATA.people.filter(item => item.involvement >= state.threshold).length;
+      slider.style.setProperty("--threshold-progress", `${((state.threshold - .35) / .55) * 100}%`);
+      document.getElementById("threshold-value").textContent = state.threshold.toFixed(2);
+      document.getElementById("relevant-count").textContent = String(relevantCount).padStart(2, "0");
+      document.getElementById("subject-list").innerHTML = peopleMarkup();
+      if (state.surface === "city") document.getElementById("surface").innerHTML = renderMap();
+      renderDossier();
+    }
+
     /* ================================================================
        PART 6 / 用户交互事件
        只监听一次整个 document，再根据 data-* 属性判断用户点了什么。
@@ -643,7 +727,7 @@
     document.addEventListener("input", (event) => {
       if (event.target.id !== "threshold") return;
       state.threshold = Number(event.target.value);
-      renderAll();
+      renderThresholdDependents(event.target);
     });
 
     document.addEventListener("keydown", (event) => {

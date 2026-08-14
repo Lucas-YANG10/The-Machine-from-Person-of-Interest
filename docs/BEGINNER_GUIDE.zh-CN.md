@@ -28,10 +28,8 @@ the-machine-manhattan.html
 ### 1. 文件之间是什么关系？
 
 ```text
-engine/generate_synthetic_data.py
-        ↓ 生成虚拟原始数据
 data/synthetic/*.json
-        ↓ 被推断引擎读取
+        ↓ 直接作为虚拟原始数据，被推断引擎读取
 engine/run_pipeline.py
         ↓ 生成模型结果
 app/data/machine-output.json
@@ -43,16 +41,20 @@ standalone/the-machine-manhattan.html
 
 ### 2. 修改虚拟人物和记录
 
-先编辑：
+直接编辑：
 
 ```text
-engine/generate_synthetic_data.py
+data/synthetic/people.json
+data/synthetic/observations.json
+data/synthetic/events.json
+data/synthetic/zones.json
+data/synthetic/ground_truth.json
+data/synthetic/scenario.json
 ```
 
-然后在项目根目录依次运行：
+这些 JSON 是数据源，不会再被 Python 生成器覆盖。编辑后在项目根目录依次运行：
 
 ```bash
-python engine/generate_synthetic_data.py
 python engine/run_pipeline.py
 python tools/build_standalone.py
 ```
@@ -89,5 +91,8 @@ python tools/build_standalone.py
 3. 搜索 `renderDossier`，理解右侧人物档案如何生成。
 4. 搜索 `renderMap`，理解 JSON 坐标如何变成 SVG 地图。
 5. 最后阅读 `engine/run_pipeline.py` 和 `docs/ALGORITHMS.md`，理解概率从哪里来。
+
+目前数据包含 30 个虚构人物、10 个候选事件、38 个曼哈顿 NTA
+区域和 3,400 条记录。绝大多数记录是不会影响模型分数的日常背景活动。
 
 不要一开始试图读完整个文件。先找到一个能在网页上看见的元素，再沿着它追到对应代码。

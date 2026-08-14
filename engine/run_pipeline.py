@@ -98,17 +98,6 @@ FEATURE_LABELS = {
 }
 
 CRIME_TYPES = ("robbery", "assault", "abduction", "fraud")
-OFFSETS = {
-    "P-017": [-15, -7],
-    "P-024": [19, 10],
-    "P-031": [-17, -5],
-    "P-044": [20, 8],
-    "P-052": [-16, -7],
-    "P-063": [18, 9],
-    "P-078": [20, 12],
-    "P-086": [-18, -9],
-    "P-099": [0, 0],
-}
 
 
 def load_json(name: str) -> Any:
@@ -140,6 +129,17 @@ def temporal_weight(observation: dict[str, Any], scenario_time: datetime) -> flo
     return observation["reliability"] * decay
 
 
+def is_model_signal(observation: dict[str, Any]) -> bool:
+    """Return True only when at least one tag affects a model feature.
+
+    The expanded dataset intentionally contains thousands of ordinary records.
+    They remain available in the raw JSON, but should not inflate confidence or
+    appear as incriminating evidence merely because the system observed them.
+    """
+
+    return any(tag in TAG_EFFECTS for tag in observation["tags"])
+
+
 def aggregate_features(
     observations: list[dict[str, Any]], scenario_time: datetime
 ) -> tuple[dict[str, float], dict[str, list[str]], float]:
@@ -149,7 +149,6 @@ def aggregate_features(
 
     for observation in observations:
         weight = temporal_weight(observation, scenario_time)
-        evidence_mass += weight
         strongest: dict[str, float] = defaultdict(float)
         for tag in observation["tags"]:
             for feature, strength in TAG_EFFECTS.get(tag, {}).items():
@@ -157,6 +156,8 @@ def aggregate_features(
         for feature, strength in strongest.items():
             complements[feature] *= 1.0 - min(0.98, weight * strength)
             provenance[feature].append(observation["id"])
+        if strongest:
+            evidence_mass += weight
 
     features = {feature: 1.0 - complement for feature, complement in complements.items()}
     return features, dict(provenance), evidence_mass
@@ -334,6 +335,7 @@ def build_output() -> dict[str, Any]:
     scored = score_all_pairs(people, events, observations, scenario_time)
     threshold = ground_truth["threshold"]
     events_by_id = {event["id"]: event for event in events}
+    zones_by_name = {zone["name"]: zone for zone in zones}
     observations_by_pair: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
     for observation in observations:
         observations_by_pair[(observation["person_id"], observation["event_id"])].append(observation)
@@ -347,7 +349,11 @@ def build_output() -> dict[str, Any]:
         best = scored[(person["id"], best_event_id)]
         event = events_by_id[best_event_id]
         evidence = sorted(
-            observations_by_pair[(person["id"], best_event_id)],
+            (
+                item
+                for item in observations_by_pair[(person["id"], best_event_id)]
+                if is_model_signal(item)
+            ),
             key=lambda item: item["timestamp"],
             reverse=True,
         )
@@ -365,7 +371,11 @@ def build_output() -> dict[str, Any]:
         role_uncertainty = entropy(best["roles"])
         evidence_confidence = 1.0 - math.exp(-best["mass"] / 2.6)
         confidence = 0.72 * evidence_confidence + 0.28 * (1.0 - role_uncertainty)
-        offset = OFFSETS[person["id"]]
+        offset = person.get("display_offset", [0, 0])
+        is_relevant = best["score"] >= threshold
+        home_zone = zones_by_name.get(person.get("home_zone", ""))
+        anchor = event["coordinates"] if is_relevant or home_zone is None else home_zone["centroid"]
+        map_zone = event["zone"] if is_relevant or home_zone is None else home_zone["name"]
         person_outputs.append(
             {
                 **person,
@@ -373,9 +383,10 @@ def build_output() -> dict[str, Any]:
                 "event_title": event["title"],
                 "zone": event["zone"],
                 "location": event["location"],
-                "coordinates": [event["coordinates"][0] + offset[0], event["coordinates"][1] + offset[1]],
+                "map_zone": map_zone,
+                "coordinates": [anchor[0] + offset[0], anchor[1] + offset[1]],
                 "involvement": best["score"],
-                "status": "relevant" if best["score"] >= threshold else "background",
+                "status": "relevant" if is_relevant else "background",
                 "roles": best["roles"],
                 "crime_types": best["crime_types"],
                 "confidence": confidence,
@@ -405,7 +416,11 @@ def build_output() -> dict[str, Any]:
         relevant = [person_id for person_id, bundle in pair_scores if bundle["score"] >= threshold]
         combined_risk = 1.0
         for _, bundle in pair_scores:
-            combined_risk *= 1.0 - bundle["score"] ** 2
+            # A no-evidence person still has a small logistic prior. Subtracting
+            # that floor prevents event risk from rising merely because the
+            # synthetic population grew from 9 to 30 people.
+            evidence_adjusted = max(0.0, bundle["score"] - 0.24) / 0.76
+            combined_risk *= 1.0 - evidence_adjusted**2
         crime_mix = {
             crime: sum(bundle["crime_types"][crime] * bundle["score"] for _, bundle in pair_scores)
             for crime in CRIME_TYPES
@@ -420,7 +435,11 @@ def build_output() -> dict[str, Any]:
                     (datetime.fromisoformat(event["starts_at"]) - scenario_time).total_seconds() / 60
                 ),
                 "participants": relevant,
-                "signal_count": sum(len(observations_by_pair[(person["id"], event["id"])]) for person in people),
+                "signal_count": sum(
+                    is_model_signal(observation)
+                    for person in people
+                    for observation in observations_by_pair[(person["id"], event["id"])]
+                ),
                 "crime_types": {crime: value / crime_total for crime, value in crime_mix.items()},
             }
         )
@@ -462,10 +481,12 @@ def build_output() -> dict[str, Any]:
     output = {
         "meta": {
             "title": "The Machine: Manhattan",
-            "model_version": "transparent-baseline-v0.1",
+            "model_version": "transparent-baseline-v0.3",
             "scenario_time": scenario["scenario_time"],
             "threshold": threshold,
             "synthetic": True,
+            "counts": scenario.get("counts", {}),
+            "geography": scenario.get("geography", {}),
             "disclaimer": "All identities, records, incidents, and scores are fictional. Educational simulation only.",
         },
         "people": sorted(person_outputs, key=lambda item: item["involvement"], reverse=True),

@@ -2,11 +2,12 @@
   {
     "id": "EV-042",
     "title": "23rd Street handoff",
-    "zone": "Chelsea",
+    "zone_id": "mn0401",
+    "zone": "Chelsea-Hudson Yards",
     "location": "W 23rd St / 10th Ave",
     "coordinates": [
-      166,
-      458
+      150.2,
+      492.9
     ],
     "starts_at": "2026-08-13T22:25:00-04:00",
     "type_prior": {
@@ -19,11 +20,12 @@
   {
     "id": "EV-113",
     "title": "Canal service corridor",
-    "zone": "SoHo",
+    "zone_id": "mn0201",
+    "zone": "SoHo-Little Italy-Hudson Square",
     "location": "Canal St / Greene St",
     "coordinates": [
-      196,
-      579
+      148.6,
+      585.3
     ],
     "starts_at": "2026-08-13T23:10:00-04:00",
     "type_prior": {
@@ -36,11 +38,12 @@
   {
     "id": "EV-208",
     "title": "Ledger extraction",
-    "zone": "Financial District",
+    "zone_id": "mn0101",
+    "zone": "Financial District-Battery Park City",
     "location": "Nassau St / Cedar St",
     "coordinates": [
-      194,
-      682
+      123.9,
+      638.9
     ],
     "starts_at": "2026-08-14T00:05:00-04:00",
     "type_prior": {
@@ -53,11 +56,12 @@
   {
     "id": "EV-305",
     "title": "Columbus Circle intercept",
-    "zone": "Midtown",
-    "location": "W 59th St / 8th Ave",
+    "zone_id": "mn0502",
+    "zone": "Midtown-Times Square",
+    "location": "Broadway / W 59th St",
     "coordinates": [
-      178,
-      318
+      203.1,
+      462.8
     ],
     "starts_at": "2026-08-14T01:20:00-04:00",
     "type_prior": {
@@ -65,6 +69,114 @@
       "assault": 0.43,
       "abduction": 0.15,
       "fraud": 0.09
+    }
+  },
+  {
+    "id": "EV-412",
+    "title": "Delancey routing anomaly",
+    "zone_id": "mn0302",
+    "zone": "Lower East Side",
+    "location": "Delancey St / Essex St",
+    "coordinates": [
+      197.0,
+      608.9
+    ],
+    "starts_at": "2026-08-14T02:40:00-04:00",
+    "type_prior": {
+      "robbery": 0.3,
+      "assault": 0.32,
+      "abduction": 0.18,
+      "fraud": 0.2
+    }
+  },
+  {
+    "id": "EV-519",
+    "title": "Turtle Bay access pattern",
+    "zone_id": "mn0604",
+    "zone": "East Midtown-Turtle Bay",
+    "location": "E 45th St / 2nd Ave",
+    "coordinates": [
+      238.6,
+      468.8
+    ],
+    "starts_at": "2026-08-14T04:15:00-04:00",
+    "type_prior": {
+      "robbery": 0.18,
+      "assault": 0.24,
+      "abduction": 0.12,
+      "fraud": 0.46
+    }
+  },
+  {
+    "id": "EV-627",
+    "title": "Amsterdam Avenue convergence",
+    "zone_id": "mn0702",
+    "zone": "Upper West Side (Central)",
+    "location": "Amsterdam Ave / W 86th St",
+    "coordinates": [
+      218.6,
+      355.8
+    ],
+    "starts_at": "2026-08-14T06:00:00-04:00",
+    "type_prior": {
+      "robbery": 0.38,
+      "assault": 0.34,
+      "abduction": 0.16,
+      "fraud": 0.12
+    }
+  },
+  {
+    "id": "EV-734",
+    "title": "Yorkville schedule collision",
+    "zone_id": "mn0803",
+    "zone": "Upper East Side-Yorkville",
+    "location": "E 86th St / 1st Ave",
+    "coordinates": [
+      292.1,
+      393.0
+    ],
+    "starts_at": "2026-08-14T07:30:00-04:00",
+    "type_prior": {
+      "robbery": 0.28,
+      "assault": 0.39,
+      "abduction": 0.18,
+      "fraud": 0.15
+    }
+  },
+  {
+    "id": "EV-841",
+    "title": "Lenox Avenue signal cluster",
+    "zone_id": "mn1002",
+    "zone": "Harlem (North)",
+    "location": "Lenox Ave / W 135th St",
+    "coordinates": [
+      313.3,
+      244.2
+    ],
+    "starts_at": "2026-08-14T09:00:00-04:00",
+    "type_prior": {
+      "robbery": 0.35,
+      "assault": 0.37,
+      "abduction": 0.17,
+      "fraud": 0.11
+    }
+  },
+  {
+    "id": "EV-956",
+    "title": "Dyckman transfer window",
+    "zone_id": "mn1203",
+    "zone": "Inwood",
+    "location": "Dyckman St / Broadway",
+    "coordinates": [
+      372.0,
+      75.4
+    ],
+    "starts_at": "2026-08-14T11:30:00-04:00",
+    "type_prior": {
+      "robbery": 0.31,
+      "assault": 0.28,
+      "abduction": 0.2,
+      "fraud": 0.21
     }
   }
 ]

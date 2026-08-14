@@ -16,10 +16,11 @@ class PipelineTests(unittest.TestCase):
 
     def test_expected_scenario_shape(self) -> None:
         self.assertTrue(self.output["meta"]["synthetic"])
-        self.assertEqual(len(self.output["people"]), 9)
-        self.assertEqual(len(self.output["events"]), 4)
-        self.assertEqual(len(self.output["zones"]), 10)
-        self.assertEqual(self.output["metrics"]["evaluated_pairs"], 36)
+        self.assertEqual(len(self.output["people"]), 30)
+        self.assertEqual(len(self.output["events"]), 10)
+        self.assertEqual(len(self.output["zones"]), 38)
+        self.assertEqual(self.output["metrics"]["evaluated_pairs"], 300)
+        self.assertEqual(self.output["meta"]["counts"]["observations"], 3400)
 
     def test_probability_distributions_are_valid(self) -> None:
         for person in self.output["people"]:
@@ -39,6 +40,21 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(len(relevant), 7)
         self.assertIn("victim", winning_roles)
         self.assertIn("perpetrator", winning_roles)
+
+    def test_raw_json_references_and_display_offsets(self) -> None:
+        people = run_pipeline.load_json("people.json")
+        events = run_pipeline.load_json("events.json")
+        zones = run_pipeline.load_json("zones.json")
+        observations = run_pipeline.load_json("observations.json")
+        person_ids = {person["id"] for person in people}
+        event_ids = {event["id"] for event in events}
+        zone_names = {zone["name"] for zone in zones}
+        self.assertEqual(len(observations), 3400)
+        self.assertTrue(all(len(person["display_offset"]) == 2 for person in people))
+        self.assertTrue(all(person["home_zone"] in zone_names for person in people))
+        self.assertTrue(all(observation["person_id"] in person_ids for observation in observations))
+        self.assertTrue(all(observation["event_id"] in event_ids for observation in observations))
+        self.assertTrue(all(zone["polygons"] for zone in zones))
 
     def test_output_is_deterministic_and_json_serializable(self) -> None:
         second = run_pipeline.build_output()

@@ -1,6 +1,6 @@
 # Algorithm design
 
-This document specifies the v0.1 baseline from raw synthetic records to interactive output. The design goal is not maximum predictive power. It is an auditable end-to-end system in which every visual element can be traced back to a formula and a source record.
+This document specifies the v0.3 baseline from raw synthetic records to interactive output. The design goal is not maximum predictive power. It is an auditable end-to-end system in which every visual element can be traced back to a formula and a source record.
 
 ## 1. Problem definition
 
@@ -20,7 +20,7 @@ $$
 \text{records}
 \rightarrow \text{evidence features}
 \rightarrow P(I_{ie}=1)
-\rightarrow \{ P(R_{ie}\mid I_{ie}=1),P(C_e) \}
+\rightarrow \left\{P(R_{ie}\mid I_{ie}=1),P(C_e)\right\}
 \rightarrow \text{area risk and interface}.
 $$
 
@@ -49,7 +49,7 @@ $$
 \mathcal K=\{\text{intent, capability, proximity, coordination, vulnerability, threat, financial, mobility, anomaly}\}.
 $$
 
-In v0.1 this semantic extraction is deterministic and explicit in `TAG_EFFECTS`. A learned text encoder or classifier can replace it later without changing downstream contracts.
+In v0.3 this semantic extraction is deterministic and explicit in `TAG_EFFECTS`. A learned text encoder or classifier can replace it later without changing downstream contracts. Records with no recognized model-bearing tag remain in the raw dataset as ordinary background activity, but contribute neither feature strength nor evidence confidence.
 
 ## 3. Temporal reliability
 
@@ -94,7 +94,7 @@ with person, candidate-event, and observation nodes. Edges include:
 - person $\leftrightarrow$ person when a record explicitly connects them;
 - candidate event $\rightarrow$ Manhattan zone.
 
-For interpretability, v0.1 uses only one person-person propagation hop. Let $a_{ij}$ be the temporally weighted strength of an observed link and
+For interpretability, v0.3 uses only one person-person propagation hop. Let $a_{ij}$ be the temporally weighted strength of an observed link and
 
 $$
 m_{je}=\max\{z_{je,\text{intent}},z_{je,\text{coordination}},z_{je,\text{vulnerability}}\}.
@@ -191,7 +191,7 @@ Each candidate event begins with a fictional prior $\pi_{ec}$. Evidence modifies
 $$
 \ell_{iec}=\log\pi_{ec}+\boldsymbol\gamma_c^\top\mathbf z_{ie},
 \qquad
-P(C_e=c\mid i)=\mathrm{softmax}(\boldsymbol\ell_{ie})_c.
+P(C_e=c\mid i)=\operatorname{softmax}(\boldsymbol\ell_{ie})_c.
 $$
 
 For example, `financial` and `capability` add support to fraud, while `threat` adds support to assault. Event-level type mix is an involvement-weighted average across people:
@@ -202,13 +202,15 @@ $$
 
 ## 10. Candidate-event and area risk
 
-The demo aggregates pair scores into an event risk:
+With a larger population, even the logistic no-evidence prior would accumulate if every pair score were multiplied directly. The demo therefore removes a fixed baseline floor before aggregating:
 
 $$
-p_e=1-\prod_i(1-p_{ie}^2).
+u_{ie}=\frac{\max(0,p_{ie}-0.24)}{0.76},
+\qquad
+p_e=1-\prod_i(1-u_{ie}^2).
 $$
 
-Squaring reduces the influence of many low pair scores. It is a scenario-ranking heuristic, not a calibrated real-world probability.
+The floor prevents event risk from rising merely because the synthetic population grows; squaring further reduces weak-pair influence. It is a scenario-ranking heuristic, not a calibrated real-world probability.
 
 Let $a$ be a Manhattan zone with centroid $x_a$, background term $b_a$, and event coordinate $x_e$. A Gaussian spatial kernel is
 
@@ -247,10 +249,10 @@ This is intentionally kept distinct from $p_{ie}$: the model can assign high inv
 The synthetic label file is evaluated over all $|\mathcal P||\mathcal E|$ person-event pairs. The pipeline reports precision, recall, F1, role accuracy, confusion counts, and the Brier score
 
 $$
-\mathrm{Brier}=\frac1N\sum_{i,e}(p_{ie}-y_{ie})^2.
+\operatorname{Brier}=\frac1N\sum_{i,e}(p_{ie}-y_{ie})^2.
 $$
 
-The scenario was authored so the baseline cleanly separates its cases. Therefore perfect precision/recall only proves that the generator, feature logic, scorer, output contract, and UI are joined correctly. It is not a research result.
+The scenario was authored so the baseline cleanly separates its cases. Therefore perfect precision/recall only proves that the JSON data, feature logic, scorer, output contract, and UI are joined correctly. It is not a research result.
 
 ## 13. How the algorithms are stitched together
 
@@ -259,13 +261,13 @@ For a single person-event pair, the complete composition is:
 $$
 \boxed{
 \mathcal O_{ie}
-\xrightarrow{\text{tag map}+w_o \qquad}
+\xrightarrow{\text{tag map}+w_o}
 \mathbf z_{ie}
-\xrightarrow{G_{t_0} \qquad}
+\xrightarrow{G_{t_0}}
 g_{ie}
-\xrightarrow{\sigma \qquad}
+\xrightarrow{\sigma}
 p_{ie}
-\xrightarrow{\text{conditional softmax} \qquad}
+\xrightarrow{\text{conditional softmax}}
 (\mathbf r_{ie},\mathbf c_{ie})
 }
 $$
@@ -274,9 +276,8 @@ Across pairs, a second aggregation produces event and map outputs:
 
 $$
 \{p_{ie},\mathbf c_{ie}\}_i
-\xrightarrow{\text{aggregate} \qquad}
-p_e,P(C_e)
-\xrightarrow{K_h,\tau_e \qquad}
+\rightarrow p_e,P(C_e)
+\xrightarrow{K_h,\tau_e}
 R(a,t_0).
 $$
 

@@ -4,8 +4,12 @@
     "name": "Lena Ortiz",
     "code": "ORTIZ, L.",
     "occupation": "Night pharmacist",
-    "home_zone": "Chelsea",
-    "baseline_mobility": 0.34
+    "home_zone": "Chelsea-Hudson Yards",
+    "baseline_mobility": 0.34,
+    "display_offset": [
+      -18,
+      -12
+    ]
   },
   {
     "id": "P-024",
@@ -13,23 +17,35 @@
     "code": "COLE, D.",
     "occupation": "Independent courier",
     "home_zone": "Lower East Side",
-    "baseline_mobility": 0.71
+    "baseline_mobility": 0.71,
+    "display_offset": [
+      18,
+      10
+    ]
   },
   {
     "id": "P-031",
     "name": "Evelyn Park",
     "code": "PARK, E.",
     "occupation": "Archive researcher",
-    "home_zone": "Upper West Side",
-    "baseline_mobility": 0.29
+    "home_zone": "Upper West Side (Central)",
+    "baseline_mobility": 0.29,
+    "display_offset": [
+      -15,
+      8
+    ]
   },
   {
     "id": "P-044",
     "name": "Noah Vale",
     "code": "VALE, N.",
     "occupation": "Building technician",
-    "home_zone": "Harlem",
-    "baseline_mobility": 0.58
+    "home_zone": "Harlem (North)",
+    "baseline_mobility": 0.58,
+    "display_offset": [
+      16,
+      -9
+    ]
   },
   {
     "id": "P-052",
@@ -37,31 +53,47 @@
     "code": "ROWE, M.",
     "occupation": "Nonprofit bookkeeper",
     "home_zone": "Greenwich Village",
-    "baseline_mobility": 0.22
+    "baseline_mobility": 0.22,
+    "display_offset": [
+      -9,
+      -18
+    ]
   },
   {
     "id": "P-063",
     "name": "Julian Sayer",
     "code": "SAYER, J.",
     "occupation": "Financial analyst",
-    "home_zone": "Midtown",
-    "baseline_mobility": 0.48
+    "home_zone": "Midtown-Times Square",
+    "baseline_mobility": 0.48,
+    "display_offset": [
+      10,
+      18
+    ]
   },
   {
     "id": "P-078",
     "name": "Tasha Bell",
     "code": "BELL, T.",
     "occupation": "Restaurant manager",
-    "home_zone": "SoHo",
-    "baseline_mobility": 0.55
+    "home_zone": "SoHo-Little Italy-Hudson Square",
+    "baseline_mobility": 0.55,
+    "display_offset": [
+      -23,
+      2
+    ]
   },
   {
     "id": "P-086",
     "name": "Isaac Reed",
     "code": "REED, I.",
     "occupation": "Paramedic",
-    "home_zone": "Upper East Side",
-    "baseline_mobility": 0.76
+    "home_zone": "Upper East Side-Carnegie Hill",
+    "baseline_mobility": 0.76,
+    "display_offset": [
+      23,
+      -2
+    ]
   },
   {
     "id": "P-099",
@@ -69,6 +101,262 @@
     "code": "NORTH, E.",
     "occupation": "Graduate student",
     "home_zone": "Inwood",
-    "baseline_mobility": 0.41
+    "baseline_mobility": 0.41,
+    "display_offset": [
+      -7,
+      14
+    ]
+  },
+  {
+    "id": "P-104",
+    "name": "Aria Monroe",
+    "code": "MONROE, A.",
+    "occupation": "Museum registrar",
+    "home_zone": "Greenwich Village",
+    "baseline_mobility": 0.18,
+    "display_offset": [
+      8,
+      -15
+    ]
+  },
+  {
+    "id": "P-112",
+    "name": "Malcolm Finch",
+    "code": "FINCH, M.",
+    "occupation": "Subway conductor",
+    "home_zone": "Midtown South-Flatiron-Union Square",
+    "baseline_mobility": 0.35,
+    "display_offset": [
+      -28,
+      -8
+    ]
+  },
+  {
+    "id": "P-125",
+    "name": "Priya Nair",
+    "code": "NAIR, P.",
+    "occupation": "Clinical researcher",
+    "home_zone": "Upper West Side (Central)",
+    "baseline_mobility": 0.52,
+    "display_offset": [
+      28,
+      8
+    ]
+  },
+  {
+    "id": "P-137",
+    "name": "Owen Mercer",
+    "code": "MERCER, O.",
+    "occupation": "Lighting designer",
+    "home_zone": "Hamilton Heights-Sugar Hill",
+    "baseline_mobility": 0.69,
+    "display_offset": [
+      -13,
+      -25
+    ]
+  },
+  {
+    "id": "P-149",
+    "name": "Sofia Kim",
+    "code": "KIM, S.",
+    "occupation": "Public-school teacher",
+    "home_zone": "Inwood",
+    "baseline_mobility": 0.19,
+    "display_offset": [
+      14,
+      25
+    ]
+  },
+  {
+    "id": "P-158",
+    "name": "Gabriel Stone",
+    "code": "STONE, G.",
+    "occupation": "Hotel concierge",
+    "home_zone": "Lower East Side",
+    "baseline_mobility": 0.36,
+    "display_offset": [
+      -32,
+      5
+    ]
+  },
+  {
+    "id": "P-166",
+    "name": "Nadia Brooks",
+    "code": "BROOKS, N.",
+    "occupation": "Civil engineer",
+    "home_zone": "Gramercy",
+    "baseline_mobility": 0.53,
+    "display_offset": [
+      32,
+      -5
+    ]
+  },
+  {
+    "id": "P-174",
+    "name": "Theo Grant",
+    "code": "GRANT, T.",
+    "occupation": "Bookshop manager",
+    "home_zone": "Upper East Side-Carnegie Hill",
+    "baseline_mobility": 0.7,
+    "display_offset": [
+      -20,
+      20
+    ]
+  },
+  {
+    "id": "P-183",
+    "name": "Maya Chen",
+    "code": "CHEN, M.",
+    "occupation": "Product illustrator",
+    "home_zone": "East Harlem (South)",
+    "baseline_mobility": 0.2,
+    "display_offset": [
+      20,
+      -20
+    ]
+  },
+  {
+    "id": "P-195",
+    "name": "Victor Hale",
+    "code": "HALE, V.",
+    "occupation": "Freight dispatcher",
+    "home_zone": "SoHo-Little Italy-Hudson Square",
+    "baseline_mobility": 0.37,
+    "display_offset": [
+      -37,
+      -13
+    ]
+  },
+  {
+    "id": "P-207",
+    "name": "Leila Hassan",
+    "code": "HASSAN, L.",
+    "occupation": "Community organizer",
+    "home_zone": "Hell's Kitchen",
+    "baseline_mobility": 0.54,
+    "display_offset": [
+      37,
+      13
+    ]
+  },
+  {
+    "id": "P-218",
+    "name": "Connor Blake",
+    "code": "BLAKE, C.",
+    "occupation": "Restaurant supplier",
+    "home_zone": "Upper West Side-Lincoln Square",
+    "baseline_mobility": 0.71,
+    "display_offset": [
+      -5,
+      30
+    ]
+  },
+  {
+    "id": "P-226",
+    "name": "Iris Wu",
+    "code": "WU, I.",
+    "occupation": "Graduate librarian",
+    "home_zone": "Manhattanville-West Harlem",
+    "baseline_mobility": 0.21,
+    "display_offset": [
+      6,
+      -30
+    ]
+  },
+  {
+    "id": "P-239",
+    "name": "Marcus Dean",
+    "code": "DEAN, M.",
+    "occupation": "Elevator mechanic",
+    "home_zone": "Washington Heights (North)",
+    "baseline_mobility": 0.38,
+    "display_offset": [
+      -42,
+      0
+    ]
+  },
+  {
+    "id": "P-247",
+    "name": "Elena Rossi",
+    "code": "ROSSI, E.",
+    "occupation": "Theater accountant",
+    "home_zone": "Chinatown-Two Bridges",
+    "baseline_mobility": 0.55,
+    "display_offset": [
+      42,
+      0
+    ]
+  },
+  {
+    "id": "P-258",
+    "name": "Samuel Price",
+    "code": "PRICE, S.",
+    "occupation": "Audio technician",
+    "home_zone": "Stuyvesant Town-Peter Cooper Village",
+    "baseline_mobility": 0.72,
+    "display_offset": [
+      -25,
+      -30
+    ]
+  },
+  {
+    "id": "P-269",
+    "name": "Zoe Bennett",
+    "code": "BENNETT, Z.",
+    "occupation": "Urban planner",
+    "home_zone": "Upper East Side-Lenox Hill-Roosevelt Island",
+    "baseline_mobility": 0.22,
+    "display_offset": [
+      25,
+      30
+    ]
+  },
+  {
+    "id": "P-277",
+    "name": "Adrian Lowe",
+    "code": "LOWE, A.",
+    "occupation": "Insurance adjuster",
+    "home_zone": "Harlem (North)",
+    "baseline_mobility": 0.39,
+    "display_offset": [
+      -34,
+      24
+    ]
+  },
+  {
+    "id": "P-288",
+    "name": "Naomi Fields",
+    "code": "FIELDS, N.",
+    "occupation": "Physical therapist",
+    "home_zone": "Tribeca-Civic Center",
+    "baseline_mobility": 0.56,
+    "display_offset": [
+      34,
+      -24
+    ]
+  },
+  {
+    "id": "P-294",
+    "name": "Rafael Torres",
+    "code": "TORRES, R.",
+    "occupation": "Bakery owner",
+    "home_zone": "Chelsea-Hudson Yards",
+    "baseline_mobility": 0.73,
+    "display_offset": [
+      -48,
+      16
+    ]
+  },
+  {
+    "id": "P-306",
+    "name": "June Adler",
+    "code": "ADLER, J.",
+    "occupation": "Documentary editor",
+    "home_zone": "East Midtown-Turtle Bay",
+    "baseline_mobility": 0.23,
+    "display_offset": [
+      48,
+      -16
+    ]
   }
 ]

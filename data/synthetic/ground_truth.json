@@ -38,14 +38,146 @@
       "role": "perpetrator"
     },
     {
+      "person_id": "P-078",
+      "event_id": "EV-627",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
       "person_id": "P-086",
       "event_id": "EV-305",
       "involved": true,
       "role": "victim"
     },
     {
-      "person_id": "P-078",
+      "person_id": "P-099",
+      "event_id": "EV-841",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-104",
+      "event_id": "EV-956",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-112",
+      "event_id": "EV-042",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-125",
+      "event_id": "EV-113",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-137",
+      "event_id": "EV-208",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-149",
       "event_id": "EV-305",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-158",
+      "event_id": "EV-412",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-166",
+      "event_id": "EV-519",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-174",
+      "event_id": "EV-627",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-183",
+      "event_id": "EV-734",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-195",
+      "event_id": "EV-841",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-207",
+      "event_id": "EV-956",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-218",
+      "event_id": "EV-042",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-226",
+      "event_id": "EV-113",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-239",
+      "event_id": "EV-208",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-247",
+      "event_id": "EV-305",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-258",
+      "event_id": "EV-412",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-269",
+      "event_id": "EV-519",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-277",
+      "event_id": "EV-627",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-288",
+      "event_id": "EV-734",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-294",
+      "event_id": "EV-841",
+      "involved": false,
+      "role": "bystander"
+    },
+    {
+      "person_id": "P-306",
+      "event_id": "EV-956",
       "involved": false,
       "role": "bystander"
     }

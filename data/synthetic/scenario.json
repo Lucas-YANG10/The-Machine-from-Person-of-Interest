@@ -1,5 +1,19 @@
 {
   "scenario_time": "2026-08-13T21:40:00-04:00",
   "synthetic": true,
-  "seed": 1100101
+  "seed": 1100101,
+  "data_version": "expanded-static-v0.3",
+  "geography": {
+    "scheme": "2020 Neighborhood Tabulation Areas",
+    "borough": "Manhattan",
+    "release": "26b",
+    "source": "https://data.cityofnewyork.us/d/9nt8-h7nd"
+  },
+  "counts": {
+    "people": 30,
+    "events": 10,
+    "zones": 38,
+    "observations": 3400,
+    "model_bearing_observations": 31
+  }
 }

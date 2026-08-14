@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="zh-CN">
+<!-- UI_REVISION: 0.3.3-DISTRICT-CLICK-DAY-CONTRAST -->
+<html lang="zh-CN" data-theme="night">
 <head>
   <!-- ================================================================
        PART 1 / 页面基础设置
@@ -7,7 +8,7 @@
        ================================================================ -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark">
+  <meta name="color-scheme" content="dark light">
   <title>The Machine: Manhattan — Offline</title>
 
   <style>
@@ -27,6 +28,21 @@
       --green-bright: #c4d5bb;
       --red: #d95049;
       --amber: #d1ad68;
+      --focus: #f2f5ee;
+    }
+
+    html[data-theme="day"] {
+      --bg: #f6f7f3;
+      --panel: #ffffff;
+      --panel-2: #edf0ea;
+      --line: #c8cec4;
+      --line-strong: #8c9688;
+      --text: #111411;
+      --muted: #525b50;
+      --green: #74866e;
+      --green-bright: #9daa96;
+      --amber: #a78a53;
+      --focus: #111411;
     }
 
     * { box-sizing: border-box; }
@@ -95,8 +111,18 @@
     .mark i:nth-child(1) { top: 5px; left: 5px; }
     .mark i:nth-child(2) { top: 5px; right: 5px; }
     .mark i:nth-child(3) { right: 5px; bottom: 5px; }
-    .online { padding: 0 28px; align-self: stretch; display: flex; align-items: center; gap: 9px; border-inline: 1px solid var(--line); color: var(--green); font-size: 9px; letter-spacing: .12em; }
+    .system-center { align-self: stretch; padding: 8px 28px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border-inline: 1px solid var(--line); }
+    .online { display: flex; align-items: center; gap: 9px; color: var(--green); font-size: 9px; letter-spacing: .12em; }
     .online i { width: 6px; height: 6px; border-radius: 50%; background: var(--green-bright); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+    .theme-switch { display: flex; align-items: center; }
+    .theme-switch button {
+      width: 32px; height: 32px; padding: 0; display: grid; place-items: center;
+      border: 1px solid var(--line-strong); background: var(--panel); color: var(--muted);
+      cursor: pointer; font-size: 17px; line-height: 1;
+    }
+    .theme-switch button + button { margin-left: -1px; }
+    .theme-switch button:hover { color: var(--text); background: var(--panel-2); }
+    .theme-switch button.active { position: relative; z-index: 1; color: var(--text); border-color: var(--focus); box-shadow: inset 0 0 0 1px var(--focus); }
     .clock { justify-self: end; text-align: right; }
     .clock span, .clock em { display: block; color: var(--muted); font-size: 7px; font-style: normal; }
     .clock strong { display: block; color: var(--green-bright); font-size: 21px; font-weight: 400; letter-spacing: .08em; }
@@ -193,16 +219,30 @@
 
     /* ----- 曼哈顿 SVG 地图 ----- */
     .city-view { min-height: 610px; display: grid; grid-template-columns: minmax(430px,1fr) 200px; }
-    .map-wrap { position: relative; min-height: 610px; overflow: hidden; border-right: 1px solid var(--line); background: #070a08; }
-    .map { position: absolute; inset: 0; width: 100%; height: 100%; padding: 6px 3%; }
+    .map-wrap { position: relative; min-height: 610px; overflow: hidden; border-right: 1px solid var(--line); background: #070a08; user-select: none; cursor: zoom-in; }
+    .map-wrap:focus { outline: none; }
+    .map-wrap:focus-visible { box-shadow: inset 0 0 0 2px var(--green-bright); }
+    .map-wrap.zoom-active { cursor: grab; touch-action: none; box-shadow: inset 0 0 0 2px var(--green); }
+    .map-wrap.zoom-active.dragging { cursor: grabbing; }
+    .map { position: absolute; inset: 0; width: 100%; height: 100%; padding: 6px 3%; transform-origin: 0 0; will-change: transform; }
     .map-grid { fill: none; stroke: #273027; stroke-width: .45; }
     .water { fill: none; stroke: #202820; stroke-width: .8; stroke-dasharray: 4 6; }
     .zone { cursor: pointer; }
+    .zone, .zone:focus, .zone:focus-visible, .zone:active {
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent;
+    }
     .zone .zone-shape { fill: var(--green); stroke: #60705d; stroke-width: .8; fill-rule: evenodd; }
     .zone:hover .zone-shape { stroke: var(--green-bright); stroke-width: 1.35; }
+    .zone:active .zone-shape, .zone:focus-visible .zone-shape {
+      stroke: var(--focus);
+      stroke-width: 2.1;
+      vector-effect: non-scaling-stroke;
+      filter: drop-shadow(0 0 3px rgba(255,255,255,.55));
+    }
     .zone-selection {
       fill: none;
-      stroke: #f2f5ee;
+      stroke: var(--focus);
       stroke-width: 2.1;
       vector-effect: non-scaling-stroke;
       pointer-events: none;
@@ -223,6 +263,12 @@
     .person .person-score { fill: var(--red); font-size: 5.3px; }
     .person.background text { fill: #667363; }
     .scan { position: absolute; z-index: 2; left: 0; right: 0; height: 70px; pointer-events: none; background: linear-gradient(transparent, rgba(153,178,144,.05), transparent); animation: scan 7s linear infinite; }
+    .map-control-status {
+      position: absolute; z-index: 4; top: 10px; left: 10px; padding: 7px 9px;
+      border: 1px solid var(--line); background: rgba(5,8,6,.86); color: var(--muted);
+      pointer-events: none; font-size: 8px; letter-spacing: .08em;
+    }
+    .map-wrap.zoom-active .map-control-status { border-color: var(--green); color: var(--green-bright); }
     .legend { position: absolute; z-index: 3; right: 10px; bottom: 8px; left: 10px; padding: 7px; display: flex; justify-content: center; gap: 20px; border-top: 1px solid #222b22; background: rgba(5,8,6,.84); color: #5a6559; font-size: 6px; }
     .legend i { display: inline-block; width: 9px; height: 9px; margin-right: 5px; border: 1px solid var(--red); vertical-align: middle; }
     .zone-panel { padding: 19px 13px; background: linear-gradient(180deg, rgba(17,23,17,.9), rgba(6,9,7,.85)); }
@@ -367,22 +413,130 @@
     .evidence div, .evidence small { font-size: 8px; }
     .footer { min-height: 30px; font-size: 8px; }
 
+    /* ----- 第二次可读性放大：针对高分辨率桌面再增加一档 ----- */
+    body { font-size: 16px; }
+    .topbar { min-height: 96px; padding-inline: 30px; }
+    .brand h1 { font-size: 28px; }
+    .brand p, .online { font-size: 12px; }
+    .clock span, .clock em { font-size: 11px; }
+    .clock strong { font-size: 27px; }
+    .modebar { min-height: 58px; grid-template-columns: 340px 1fr 250px; }
+    .modebar button { font-size: 12px; }
+    .offline-badge { font-size: 11px; }
+    .workspace { min-height: calc(100vh - 190px); grid-template-columns: minmax(300px,.84fr) minmax(700px,1.9fr) minmax(350px,.96fr); }
+    .queue, .dossier { max-height: calc(100vh - 190px); }
+    .queue-head { height: 90px; padding: 18px 20px; }
+    .queue-head span { font-size: 12px; }
+    .queue-head strong { font-size: 38px; }
+    .queue-head em { font-size: 10px; }
+    .threshold { padding: 18px 20px; }
+    .threshold label, .threshold small { font-size: 11px; }
+    .subject-button { min-height: 76px; padding-inline: 17px; grid-template-columns: 36px 1fr auto; }
+    .subject-button .number { font-size: 11px; }
+    .subject-button .identity b { font-size: 13px; }
+    .subject-button em { font-size: 10px; }
+    .subject-button .score b { font-size: 19px; }
+    .section { padding: 20px; }
+    .section-title, .event-button > span { font-size: 11px; }
+    .event-button { min-height: 64px; padding-block: 13px; }
+    .event-button b, .event-button strong { font-size: 12px; }
+    .event-button em { font-size: 10px; }
+    .panel-head { height: 90px; padding-inline: 23px; }
+    .kicker { font-size: 11px; }
+    .panel-head h2 { font-size: 22px; }
+    .model-readout { font-size: 10px; }
+    .ticker { min-height: 52px; grid-template-columns: 70px 1fr; }
+    .ticker > span, .ticker p { font-size: 10px; }
+    .zone-label { font-size: 8.5px; }
+    .zone-risk { font-size: 7.5px; }
+    .zone-panel { padding: 22px 16px; }
+    .zone-panel h3 { font-size: 18px; }
+    .stats dt, .note, .ranking span { font-size: 10px; }
+    .stats dd, .ranking b, .ranking em { font-size: 11px; }
+    .view-title h2 { font-size: 23px; }
+    .view-title p, .column-label, .node p, .node small, .role-row { font-size: 11px; }
+    .node { padding: 13px; }
+    .node > span, .record-node b { font-size: 10px; }
+    .node h3 { font-size: 15px; }
+    .entity-node strong, .event-node strong { font-size: 11px; }
+    .formula h3, .pipeline b, .formula p, .metrics p { font-size: 11px; }
+    .pipeline span, .metrics dt { font-size: 10px; }
+    .formula code { font-size: 18px; }
+    .metrics dd { font-size: 16px; }
+    .dossier-head { min-height: 108px; padding: 18px; }
+    .dossier-head span, .dossier-head p, .stamp, .score-block dt, .score-block dd, .withheld { font-size: 10px; }
+    .dossier-head h2 { font-size: 22px; }
+    .score-block { padding: 18px 16px; }
+    .score-ring strong { font-size: 25px; }
+    .score-ring span { font-size: 9px; }
+    .bar-row { min-height: 31px; grid-template-columns: 102px 1fr 38px; gap: 9px; }
+    .bar-row label, .bar-row b { font-size: 10px; }
+    .evidence { padding-block: 11px; }
+    .evidence p { font-size: 11px; }
+    .evidence div, .evidence small { font-size: 10px; }
+    .footer { min-height: 36px; padding: 8px 18px; font-size: 10px; }
+
+    /* ----- 白天模式：只翻转黑白与灰阶，红、黄、绿等信号色保持原值 ----- */
+    html[data-theme="day"] { color-scheme: light; }
+    html[data-theme="day"] body {
+      background: radial-gradient(circle at 60% 20%, rgba(124,151,115,.08), transparent 34rem), var(--bg);
+    }
+    html[data-theme="day"] body::after {
+      background: repeating-linear-gradient(to bottom, rgba(0,0,0,.018) 0, rgba(0,0,0,.018) 1px, transparent 1px, transparent 4px);
+    }
+    html[data-theme="day"] .app {
+      background-image: linear-gradient(rgba(70,82,67,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(70,82,67,.035) 1px, transparent 1px);
+    }
+    html[data-theme="day"] .topbar { background: rgba(255,255,255,.96); }
+    html[data-theme="day"] .modebar { background: #f1f3ef; }
+    html[data-theme="day"] .queue,
+    html[data-theme="day"] .dossier { background: rgba(250,251,248,.96); }
+    html[data-theme="day"] .main-panel { background: radial-gradient(circle at 50% 45%, rgba(77,102,73,.08), transparent 35rem), #fafbf8; }
+    html[data-theme="day"] .ticker,
+    html[data-theme="day"] .map-wrap { background: #f8f9f6; }
+    html[data-theme="day"] .legend,
+    html[data-theme="day"] .map-control-status { background: rgba(255,255,255,.88); }
+    html[data-theme="day"] .zone-panel { background: linear-gradient(180deg, rgba(244,247,242,.95), rgba(255,255,255,.9)); }
+    html[data-theme="day"] .node { background: rgba(255,255,255,.96); }
+    html[data-theme="day"] .footer { background: #ecefe9; }
+    html[data-theme="day"] ::-webkit-scrollbar-track { background: #eef0ec; }
+    html[data-theme="day"] ::-webkit-scrollbar-thumb { background: #a9b0a6; }
+    html[data-theme="day"] .map-grid { stroke: #d7dcd4; }
+    html[data-theme="day"] .water { stroke: #dfe3dc; }
+    html[data-theme="day"] .zone-label,
+    html[data-theme="day"] .zone-risk { stroke: #ffffff; }
+    html[data-theme="day"] .person text { fill: var(--text); }
+    html[data-theme="day"] .person.background text { fill: #667363; }
+    html[data-theme="day"] .node h3,
+    html[data-theme="day"] .dossier-head h2,
+    html[data-theme="day"] .score-ring strong { color: var(--text); }
+    html[data-theme="day"] .score-ring { background: conic-gradient(var(--red) var(--score), #d9ddd6 0); }
+    html[data-theme="day"] .risk-track { background: #d9ddd6; }
+    html[data-theme="day"] .legend { border-top-color: #ccd1c9; }
+    html[data-theme="day"] .subject-button { border-bottom-color: #d9ddd6; }
+    html[data-theme="day"] .event-button,
+    html[data-theme="day"] .stats div,
+    html[data-theme="day"] .ranking button,
+    html[data-theme="day"] .role-row,
+    html[data-theme="day"] .score-block dl div,
+    html[data-theme="day"] .evidence { border-bottom-color: #c9cec6; }
+
     @keyframes pulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
     @keyframes scan { from { top:-80px; } to { top:100%; } }
 
     /* ----- 小屏幕：三栏自动改为纵向 ----- */
     @media (max-width: 1020px) {
-      .workspace { grid-template-columns: 280px minmax(620px,1fr); }
+      .workspace { grid-template-columns: 300px minmax(650px,1fr); }
       .dossier { grid-column: 1/-1; max-height: none; border-left: 0; border-top: 1px solid var(--line-strong); }
       .queue { max-height: none; }
     }
     @media (max-width: 800px) {
       .topbar { grid-template-columns: 1fr auto; padding: 0 13px; }
-      .online { display: none; }
-      .brand h1 { font-size: 15px; }
+      .system-center { display: none; }
+      .brand h1 { font-size: 21px; }
       .clock span, .clock em { display: none; }
       .modebar { display: block; padding: 0; }
-      .mode-buttons, .surface-buttons { height: 38px; border-bottom: 1px solid var(--line); }
+      .mode-buttons, .surface-buttons { height: 46px; border-bottom: 1px solid var(--line); }
       .offline-badge { display: none; }
       .workspace { display: block; }
       .subject-list { display: grid; grid-template-columns: repeat(2,1fr); }
@@ -414,7 +568,13 @@
         <div class="mark" aria-hidden="true"><i></i><i></i><i></i></div>
         <div><h1>THE MACHINE</h1><p>MANHATTAN // OFFLINE SIMULATION</p></div>
       </div>
-      <div class="online"><i></i> SYSTEM ONLINE · LOCAL FILE</div>
+      <div class="system-center">
+        <div class="online"><i></i> SYSTEM ONLINE · LOCAL FILE</div>
+        <div class="theme-switch" role="group" aria-label="显示模式">
+          <button type="button" data-theme-choice="day" aria-label="切换到白天模式" aria-pressed="false" title="DAY MODE">☀</button>
+          <button type="button" data-theme-choice="night" aria-label="切换到夜间模式" aria-pressed="true" title="NIGHT MODE">☾</button>
+        </div>
+      </div>
       <div class="clock"><span>SIMULATION TIME</span><strong>21:40:00</strong><em>13 AUG 2026 / NYC</em></div>
     </header>
 
@@ -464,7 +624,10 @@
       surface: "city",
       threshold: MACHINE_DATA.meta.threshold,
       personId: MACHINE_DATA.people[0].id,
-      zoneId: null
+      zoneId: null,
+      theme: "night",
+      mapZoomActive: false,
+      mapTransform: { scale: 1, x: 0, y: 0 }
     };
 
     // 小工具：格式化百分数、时间和标题，并转义可能进入 HTML 的文字。
@@ -588,15 +751,20 @@
 
       const ranking = MACHINE_DATA.zones.slice().sort((a,b) => b.risk - a.risk).slice(0,5).map((item,index) => `
         <button data-zone="${esc(item.id)}"><span>0${index + 1}</span><b>${esc(item.name)}</b><em>${pct(item.risk)}</em></button>`).join("");
+      const mapScale = state.mapTransform.scale.toFixed(2);
+      const mapStatus = state.mapZoomActive
+        ? `MAP CONTROL ON · ${mapScale}× · WHEEL / DRAG`
+        : `CLICK MAP TO ENABLE · ${mapScale}×`;
 
       return `
         <div class="city-view">
-          <div class="map-wrap"><div class="scan"></div>
-            <svg class="map" viewBox="0 0 420 760" role="img" aria-label="基于纽约市官方 NTA 边界的虚构曼哈顿风险地图">
+          <div class="map-wrap ${state.mapZoomActive ? "zoom-active" : ""}" data-map-viewport tabindex="0" aria-label="地图控制区域：点击启用滚轮缩放与拖拽"><div class="scan"></div>
+            <svg class="map" data-map-canvas style="transform:translate3d(${state.mapTransform.x}px,${state.mapTransform.y}px,0) scale(${state.mapTransform.scale})" viewBox="0 0 420 760" role="img" aria-label="基于纽约市官方 NTA 边界的虚构曼哈顿风险地图">
               <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="map-grid"></path></pattern></defs>
               <rect width="420" height="760" fill="url(#grid)"></rect>
               ${zonesSvg}${linksSvg}${eventsSvg}${peopleSvg}
             </svg>
+            <div class="map-control-status" data-map-status>${mapStatus}</div>
             <div class="legend"><span><i></i>RELEVANT SUBJECT</span><span>＋ CANDIDATE EVENT</span><span>▰ SCENARIO RISK</span></div>
           </div>
           <aside class="zone-panel">
@@ -678,8 +846,18 @@
       document.getElementById("ticker").innerHTML = `<span>INGEST</span><div class="ticker-list">${MACHINE_DATA.timeline.slice(0,4).map(item => `<p><time>${timeOnly(item.timestamp)}</time><b>${esc(item.id)}</b>${esc(item.summary)}</p>`).join("")}</div>`;
     }
 
+    function applyTheme() {
+      document.documentElement.dataset.theme = state.theme;
+      document.querySelectorAll("[data-theme-choice]").forEach(button => {
+        const active = button.dataset.themeChoice === state.theme;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+    }
+
     // 总开关：任何状态变化后，调用一次就能让页面保持一致。
     function renderAll() {
+      applyTheme();
       document.querySelectorAll("[data-mode]").forEach(button => button.classList.toggle("active", button.dataset.mode === state.mode));
       document.querySelectorAll("[data-surface]").forEach(button => button.classList.toggle("active", button.dataset.surface === state.surface));
       renderQueue();
@@ -705,13 +883,139 @@
        只监听一次整个 document，再根据 data-* 属性判断用户点了什么。
        这叫 event delegation（事件委托），比给每个按钮单独绑定更简单。
        ================================================================ */
+    const MAP_SCALE_MIN = 1;
+    const MAP_SCALE_MAX = 6;
+    let mapDrag = null;
+    let mapAnimationFrame = 0;
+    let suppressMapClick = false;
+
+    const clamp = (value, minimum, maximum) => Math.min(maximum, Math.max(minimum, value));
+
+    function constrainMapTransform(viewport) {
+      if (!viewport) return;
+      const bounds = viewport.getBoundingClientRect();
+      const scale = state.mapTransform.scale;
+      state.mapTransform.x = clamp(state.mapTransform.x, bounds.width * (1 - scale), 0);
+      state.mapTransform.y = clamp(state.mapTransform.y, bounds.height * (1 - scale), 0);
+    }
+
+    function updateMapVisual(viewport = document.querySelector("[data-map-viewport]")) {
+      if (!viewport) return;
+      constrainMapTransform(viewport);
+      if (mapAnimationFrame) cancelAnimationFrame(mapAnimationFrame);
+      mapAnimationFrame = requestAnimationFrame(() => {
+        if (!viewport.isConnected) return;
+        const canvas = viewport.querySelector("[data-map-canvas]");
+        const status = viewport.querySelector("[data-map-status]");
+        const scale = state.mapTransform.scale.toFixed(2);
+        if (canvas) canvas.style.transform = `translate3d(${state.mapTransform.x}px,${state.mapTransform.y}px,0) scale(${state.mapTransform.scale})`;
+        viewport.classList.toggle("zoom-active", state.mapZoomActive);
+        viewport.classList.toggle("dragging", Boolean(mapDrag));
+        if (status) status.textContent = state.mapZoomActive
+          ? `MAP CONTROL ON · ${scale}× · WHEEL / DRAG`
+          : `CLICK MAP TO ENABLE · ${scale}×`;
+      });
+    }
+
+    // 点击地图进入控制模式；点击框外退出，但保留已经得到的缩放与位移。
+    document.addEventListener("pointerdown", (event) => {
+      const viewport = event.target.closest("[data-map-viewport]");
+      if (!viewport) {
+        if (state.mapZoomActive) {
+          state.mapZoomActive = false;
+          mapDrag = null;
+          updateMapVisual();
+        }
+        return;
+      }
+      if (event.button !== 0) return;
+
+      state.mapZoomActive = true;
+      mapDrag = {
+        pointerId: event.pointerId,
+        viewport,
+        startX: event.clientX,
+        startY: event.clientY,
+        originX: state.mapTransform.x,
+        originY: state.mapTransform.y,
+        moved: false,
+        captured: false
+      };
+      updateMapVisual(viewport);
+    });
+
+    document.addEventListener("pointermove", (event) => {
+      if (!mapDrag || event.pointerId !== mapDrag.pointerId) return;
+      const dx = event.clientX - mapDrag.startX;
+      const dy = event.clientY - mapDrag.startY;
+      if (!mapDrag.moved && Math.hypot(dx, dy) > 3) {
+        mapDrag.moved = true;
+        mapDrag.viewport.setPointerCapture?.(event.pointerId);
+        mapDrag.captured = true;
+      }
+      if (!mapDrag.moved) return;
+
+      state.mapTransform.x = mapDrag.originX + dx;
+      state.mapTransform.y = mapDrag.originY + dy;
+      updateMapVisual(mapDrag.viewport);
+      event.preventDefault();
+    });
+
+    function finishMapDrag(event) {
+      if (!mapDrag || event.pointerId !== mapDrag.pointerId) return;
+      suppressMapClick = mapDrag.moved && event.type === "pointerup";
+      if (mapDrag.captured && mapDrag.viewport.hasPointerCapture?.(event.pointerId)) {
+        mapDrag.viewport.releasePointerCapture(event.pointerId);
+      }
+      const viewport = mapDrag.viewport;
+      mapDrag = null;
+      updateMapVisual(viewport);
+    }
+    document.addEventListener("pointerup", finishMapDrag);
+    document.addEventListener("pointercancel", finishMapDrag);
+
+    // 只有地图处于控制模式时才拦截滚轮；否则浏览器照常滚动页面。
+    document.addEventListener("wheel", (event) => {
+      const viewport = event.target.closest("[data-map-viewport]");
+      if (!viewport || !state.mapZoomActive) return;
+      event.preventDefault();
+
+      const bounds = viewport.getBoundingClientRect();
+      const pointerX = event.clientX - bounds.left;
+      const pointerY = event.clientY - bounds.top;
+      const oldScale = state.mapTransform.scale;
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? bounds.height : 1;
+      const nextScale = clamp(oldScale * Math.exp(-event.deltaY * unit * .0015), MAP_SCALE_MIN, MAP_SCALE_MAX);
+      if (nextScale === oldScale) return;
+
+      const ratio = nextScale / oldScale;
+      state.mapTransform.x = pointerX - (pointerX - state.mapTransform.x) * ratio;
+      state.mapTransform.y = pointerY - (pointerY - state.mapTransform.y) * ratio;
+      state.mapTransform.scale = nextScale;
+      updateMapVisual(viewport);
+    }, { passive: false });
+
+    // 拖拽结束后不把它误判为一次人物或区域点击。
     document.addEventListener("click", (event) => {
+      if (!suppressMapClick || !event.target.closest("[data-map-viewport]")) return;
+      suppressMapClick = false;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, true);
+
+    document.addEventListener("click", (event) => {
+      const themeButton = event.target.closest("[data-theme-choice]");
       const modeButton = event.target.closest("[data-mode]");
       const surfaceButton = event.target.closest("[data-surface]");
       const personButton = event.target.closest("[data-person]");
       const zoneButton = event.target.closest("[data-zone]");
       const eventButton = event.target.closest("[data-event]");
 
+      if (themeButton) {
+        state.theme = themeButton.dataset.themeChoice;
+        applyTheme();
+        return;
+      }
       if (modeButton) state.mode = modeButton.dataset.mode;
       else if (surfaceButton) state.surface = surfaceButton.dataset.surface;
       else if (personButton) { state.personId = personButton.dataset.person; syncZoneToPerson(); }
@@ -731,11 +1035,19 @@
     });
 
     document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && state.mapZoomActive) {
+        state.mapZoomActive = false;
+        mapDrag = null;
+        updateMapVisual();
+        return;
+      }
       if ((event.key === "Enter" || event.key === " ") && event.target.matches('[role="button"]')) {
         event.preventDefault();
         event.target.click();
       }
     });
+
+    window.addEventListener("resize", () => updateMapVisual());
 
     // 第一次打开文件时，画出完整页面。
     renderAll();

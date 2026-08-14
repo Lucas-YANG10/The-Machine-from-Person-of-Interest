@@ -20,7 +20,7 @@ $$
 \text{records}
 \rightarrow \text{evidence features}
 \rightarrow P(I_{ie}=1)
-\rightarrow \left\{P(R_{ie}\mid I_{ie}=1),P(C_e)\right\}
+\rightarrow \{ P(R_{ie}\mid I_{ie}=1),P(C_e) \}
 \rightarrow \text{area risk and interface}.
 $$
 

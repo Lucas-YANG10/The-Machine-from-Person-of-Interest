@@ -1,0 +1,74 @@
+[
+  {
+    "id": "P-017",
+    "name": "Lena Ortiz",
+    "code": "ORTIZ, L.",
+    "occupation": "Night pharmacist",
+    "home_zone": "Chelsea",
+    "baseline_mobility": 0.34
+  },
+  {
+    "id": "P-024",
+    "name": "Darius Cole",
+    "code": "COLE, D.",
+    "occupation": "Independent courier",
+    "home_zone": "Lower East Side",
+    "baseline_mobility": 0.71
+  },
+  {
+    "id": "P-031",
+    "name": "Evelyn Park",
+    "code": "PARK, E.",
+    "occupation": "Archive researcher",
+    "home_zone": "Upper West Side",
+    "baseline_mobility": 0.29
+  },
+  {
+    "id": "P-044",
+    "name": "Noah Vale",
+    "code": "VALE, N.",
+    "occupation": "Building technician",
+    "home_zone": "Harlem",
+    "baseline_mobility": 0.58
+  },
+  {
+    "id": "P-052",
+    "name": "Mika Rowe",
+    "code": "ROWE, M.",
+    "occupation": "Nonprofit bookkeeper",
+    "home_zone": "Greenwich Village",
+    "baseline_mobility": 0.22
+  },
+  {
+    "id": "P-063",
+    "name": "Julian Sayer",
+    "code": "SAYER, J.",
+    "occupation": "Financial analyst",
+    "home_zone": "Midtown",
+    "baseline_mobility": 0.48
+  },
+  {
+    "id": "P-078",
+    "name": "Tasha Bell",
+    "code": "BELL, T.",
+    "occupation": "Restaurant manager",
+    "home_zone": "SoHo",
+    "baseline_mobility": 0.55
+  },
+  {
+    "id": "P-086",
+    "name": "Isaac Reed",
+    "code": "REED, I.",
+    "occupation": "Paramedic",
+    "home_zone": "Upper East Side",
+    "baseline_mobility": 0.76
+  },
+  {
+    "id": "P-099",
+    "name": "Elias North",
+    "code": "NORTH, E.",
+    "occupation": "Graduate student",
+    "home_zone": "Inwood",
+    "baseline_mobility": 0.41
+  }
+]

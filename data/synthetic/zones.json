@@ -1,0 +1,280 @@
+[
+  {
+    "id": "inwood",
+    "name": "Inwood",
+    "centroid": [
+      214,
+      66
+    ],
+    "polygon": [
+      [
+        184,
+        34
+      ],
+      [
+        252,
+        48
+      ],
+      [
+        254,
+        95
+      ],
+      [
+        178,
+        103
+      ]
+    ],
+    "background": 0.08
+  },
+  {
+    "id": "harlem",
+    "name": "Harlem",
+    "centroid": [
+      211,
+      137
+    ],
+    "polygon": [
+      [
+        178,
+        103
+      ],
+      [
+        254,
+        95
+      ],
+      [
+        271,
+        166
+      ],
+      [
+        162,
+        174
+      ]
+    ],
+    "background": 0.11
+  },
+  {
+    "id": "upper-west",
+    "name": "Upper West Side",
+    "centroid": [
+      181,
+      231
+    ],
+    "polygon": [
+      [
+        162,
+        174
+      ],
+      [
+        214,
+        170
+      ],
+      [
+        218,
+        293
+      ],
+      [
+        145,
+        303
+      ]
+    ],
+    "background": 0.07
+  },
+  {
+    "id": "upper-east",
+    "name": "Upper East Side",
+    "centroid": [
+      246,
+      229
+    ],
+    "polygon": [
+      [
+        214,
+        170
+      ],
+      [
+        271,
+        166
+      ],
+      [
+        286,
+        282
+      ],
+      [
+        218,
+        293
+      ]
+    ],
+    "background": 0.06
+  },
+  {
+    "id": "midtown",
+    "name": "Midtown",
+    "centroid": [
+      215,
+      344
+    ],
+    "polygon": [
+      [
+        145,
+        303
+      ],
+      [
+        286,
+        282
+      ],
+      [
+        277,
+        399
+      ],
+      [
+        151,
+        411
+      ]
+    ],
+    "background": 0.13
+  },
+  {
+    "id": "chelsea",
+    "name": "Chelsea",
+    "centroid": [
+      174,
+      451
+    ],
+    "polygon": [
+      [
+        151,
+        411
+      ],
+      [
+        215,
+        405
+      ],
+      [
+        214,
+        493
+      ],
+      [
+        137,
+        502
+      ]
+    ],
+    "background": 0.1
+  },
+  {
+    "id": "greenwich",
+    "name": "Greenwich Village",
+    "centroid": [
+      210,
+      522
+    ],
+    "polygon": [
+      [
+        214,
+        493
+      ],
+      [
+        268,
+        488
+      ],
+      [
+        274,
+        548
+      ],
+      [
+        160,
+        558
+      ],
+      [
+        137,
+        502
+      ]
+    ],
+    "background": 0.09
+  },
+  {
+    "id": "soho",
+    "name": "SoHo",
+    "centroid": [
+      200,
+      580
+    ],
+    "polygon": [
+      [
+        160,
+        558
+      ],
+      [
+        274,
+        548
+      ],
+      [
+        262,
+        606
+      ],
+      [
+        151,
+        615
+      ]
+    ],
+    "background": 0.12
+  },
+  {
+    "id": "lower-east",
+    "name": "Lower East Side",
+    "centroid": [
+      246,
+      625
+    ],
+    "polygon": [
+      [
+        210,
+        609
+      ],
+      [
+        262,
+        606
+      ],
+      [
+        273,
+        659
+      ],
+      [
+        218,
+        665
+      ]
+    ],
+    "background": 0.14
+  },
+  {
+    "id": "financial",
+    "name": "Financial District",
+    "centroid": [
+      195,
+      680
+    ],
+    "polygon": [
+      [
+        151,
+        615
+      ],
+      [
+        210,
+        609
+      ],
+      [
+        218,
+        665
+      ],
+      [
+        202,
+        724
+      ],
+      [
+        158,
+        694
+      ]
+    ],
+    "background": 0.09
+  }
+]

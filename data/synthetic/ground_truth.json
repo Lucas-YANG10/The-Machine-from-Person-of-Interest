@@ -1,0 +1,53 @@
+{
+  "threshold": 0.62,
+  "labels": [
+    {
+      "person_id": "P-017",
+      "event_id": "EV-042",
+      "involved": true,
+      "role": "victim"
+    },
+    {
+      "person_id": "P-024",
+      "event_id": "EV-042",
+      "involved": true,
+      "role": "perpetrator"
+    },
+    {
+      "person_id": "P-031",
+      "event_id": "EV-113",
+      "involved": true,
+      "role": "victim"
+    },
+    {
+      "person_id": "P-044",
+      "event_id": "EV-113",
+      "involved": true,
+      "role": "perpetrator"
+    },
+    {
+      "person_id": "P-052",
+      "event_id": "EV-208",
+      "involved": true,
+      "role": "victim"
+    },
+    {
+      "person_id": "P-063",
+      "event_id": "EV-208",
+      "involved": true,
+      "role": "perpetrator"
+    },
+    {
+      "person_id": "P-086",
+      "event_id": "EV-305",
+      "involved": true,
+      "role": "victim"
+    },
+    {
+      "person_id": "P-078",
+      "event_id": "EV-305",
+      "involved": false,
+      "role": "bystander"
+    }
+  ]
+}

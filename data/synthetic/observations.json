@@ -1,0 +1,530 @@
+[
+  {
+    "id": "MSG-104",
+    "person_id": "P-017",
+    "event_id": "EV-042",
+    "timestamp": "2026-08-13T19:18:00-04:00",
+    "source": "message",
+    "summary": "Unrecognized sender asks whether she closes alone",
+    "detail": "Message: \"Still closing by yourself tonight?\"",
+    "tags": [
+      "targeted",
+      "vulnerability",
+      "threat_language"
+    ],
+    "reliability": 0.84,
+    "related_person_id": null
+  },
+  {
+    "id": "TRN-221",
+    "person_id": "P-017",
+    "event_id": "EV-042",
+    "timestamp": "2026-08-13T20:55:00-04:00",
+    "source": "transit",
+    "summary": "Usual train replaced by a late westbound bus",
+    "detail": "Route diverges 2.8 km from twelve-week baseline",
+    "tags": [
+      "route_change",
+      "proximity",
+      "anomaly"
+    ],
+    "reliability": 0.96,
+    "related_person_id": null
+  },
+  {
+    "id": "CAM-881",
+    "person_id": "P-017",
+    "event_id": "EV-042",
+    "timestamp": "2026-08-13T21:31:00-04:00",
+    "source": "camera",
+    "summary": "Subject enters the projected event radius",
+    "detail": "Synthetic camera hit at W 22nd Street",
+    "tags": [
+      "proximity",
+      "vulnerability"
+    ],
+    "reliability": 0.72,
+    "related_person_id": null
+  },
+  {
+    "id": "CAL-310",
+    "person_id": "P-017",
+    "event_id": "EV-042",
+    "timestamp": "2026-08-13T17:04:00-04:00",
+    "source": "calendar",
+    "summary": "Closing shift extended by forty minutes",
+    "detail": "Staffing schedule edit places subject near event window",
+    "tags": [
+      "schedule_match",
+      "proximity"
+    ],
+    "reliability": 0.91,
+    "related_person_id": null
+  },
+  {
+    "id": "PUR-401",
+    "person_id": "P-024",
+    "event_id": "EV-042",
+    "timestamp": "2026-08-13T15:42:00-04:00",
+    "source": "purchase",
+    "summary": "Cash purchase of a prepaid handset",
+    "detail": "Corner electronics receipt; device activated 16:03",
+    "tags": [
+      "burner_device",
+      "capability",
+      "anomaly"
+    ],
+    "reliability": 0.81,
+    "related_person_id": null
+  },
+  {
+    "id": "MSG-119",
+    "person_id": "P-024",
+    "event_id": "EV-042",
+    "timestamp": "2026-08-13T20:07:00-04:00",
+    "source": "message",
+    "summary": "Coordinates and exit timing exchanged",
+    "detail": "Message: \"West door. 22:25. Two minutes, then gone.\"",
+    "tags": [
+      "coordination",
+      "timing",
+      "intent",
+      "proximity"
+    ],
+    "reliability": 0.89,
+    "related_person_id": "P-044"
+  },
+  {
+    "id": "LOC-902",
+    "person_id": "P-024",
+    "event_id": "EV-042",
+    "timestamp": "2026-08-13T21:26:00-04:00",
+    "source": "location",
+    "summary": "Three short stops around the same block",
+    "detail": "Synthetic device pings form a surveillance loop",
+    "tags": [
+      "casing",
+      "proximity",
+      "mobility_anomaly"
+    ],
+    "reliability": 0.77,
+    "related_person_id": null
+  },
+  {
+    "id": "FIN-507",
+    "person_id": "P-024",
+    "event_id": "EV-042",
+    "timestamp": "2026-08-12T23:16:00-04:00",
+    "source": "finance",
+    "summary": "Courier account receives an unusual cash-equivalent transfer",
+    "detail": "$640 equivalent from a dormant sender",
+    "tags": [
+      "financial_motive",
+      "anomaly",
+      "coordination"
+    ],
+    "reliability": 0.86,
+    "related_person_id": "P-044"
+  },
+  {
+    "id": "MSG-133",
+    "person_id": "P-031",
+    "event_id": "EV-113",
+    "timestamp": "2026-08-13T18:03:00-04:00",
+    "source": "message",
+    "summary": "Anonymous warning references a private archive visit",
+    "detail": "Message: \"The Canal files were never yours to read.\"",
+    "tags": [
+      "targeted",
+      "vulnerability",
+      "threat_language"
+    ],
+    "reliability": 0.83,
+    "related_person_id": null
+  },
+  {
+    "id": "TRN-240",
+    "person_id": "P-031",
+    "event_id": "EV-113",
+    "timestamp": "2026-08-13T20:48:00-04:00",
+    "source": "transit",
+    "summary": "Ride-share destination changed to Canal Street",
+    "detail": "Destination entered after a cancelled subway trip",
+    "tags": [
+      "route_change",
+      "proximity",
+      "anomaly"
+    ],
+    "reliability": 0.93,
+    "related_person_id": null
+  },
+  {
+    "id": "CAL-328",
+    "person_id": "P-031",
+    "event_id": "EV-113",
+    "timestamp": "2026-08-13T14:11:00-04:00",
+    "source": "calendar",
+    "summary": "Meeting added by an unknown external address",
+    "detail": "Invitation title: ARCHIVE RETURN / 23:00",
+    "tags": [
+      "schedule_match",
+      "targeted",
+      "proximity"
+    ],
+    "reliability": 0.74,
+    "related_person_id": null
+  },
+  {
+    "id": "CAM-894",
+    "person_id": "P-031",
+    "event_id": "EV-113",
+    "timestamp": "2026-08-13T21:34:00-04:00",
+    "source": "camera",
+    "summary": "Same dark vehicle appears in two nonadjacent locations",
+    "detail": "Synthetic plate token repeats behind subject",
+    "tags": [
+      "followed",
+      "vulnerability",
+      "threat_language"
+    ],
+    "reliability": 0.68,
+    "related_person_id": null
+  },
+  {
+    "id": "ACS-601",
+    "person_id": "P-044",
+    "event_id": "EV-113",
+    "timestamp": "2026-08-13T16:52:00-04:00",
+    "source": "access",
+    "summary": "Service-corridor badge cloned outside shift",
+    "detail": "Two denied entries followed by a successful entry",
+    "tags": [
+      "capability",
+      "casing",
+      "anomaly"
+    ],
+    "reliability": 0.92,
+    "related_person_id": null
+  },
+  {
+    "id": "PUR-417",
+    "person_id": "P-044",
+    "event_id": "EV-113",
+    "timestamp": "2026-08-13T12:37:00-04:00",
+    "source": "purchase",
+    "summary": "Work order includes cable ties and opaque sheeting",
+    "detail": "Items inconsistent with assigned maintenance call",
+    "tags": [
+      "restraint_access",
+      "capability",
+      "anomaly"
+    ],
+    "reliability": 0.78,
+    "related_person_id": null
+  },
+  {
+    "id": "MSG-148",
+    "person_id": "P-044",
+    "event_id": "EV-113",
+    "timestamp": "2026-08-13T20:21:00-04:00",
+    "source": "message",
+    "summary": "Instructions reference lower loading entrance",
+    "detail": "Message: \"Keep the corridor clear. Van takes the lower ramp.\"",
+    "tags": [
+      "coordination",
+      "intent",
+      "timing",
+      "proximity"
+    ],
+    "reliability": 0.87,
+    "related_person_id": "P-024"
+  },
+  {
+    "id": "LOC-919",
+    "person_id": "P-044",
+    "event_id": "EV-113",
+    "timestamp": "2026-08-13T21:17:00-04:00",
+    "source": "location",
+    "summary": "Vehicle idles near the service ramp",
+    "detail": "Fourteen-minute dwell with engine running",
+    "tags": [
+      "proximity",
+      "casing",
+      "mobility_anomaly"
+    ],
+    "reliability": 0.79,
+    "related_person_id": null
+  },
+  {
+    "id": "EML-710",
+    "person_id": "P-052",
+    "event_id": "EV-208",
+    "timestamp": "2026-08-13T16:09:00-04:00",
+    "source": "email",
+    "summary": "Reports a ledger discrepancy to a private address",
+    "detail": "Attachment hash matches the altered grant ledger",
+    "tags": [
+      "financial_target",
+      "vulnerability",
+      "targeted"
+    ],
+    "reliability": 0.88,
+    "related_person_id": null
+  },
+  {
+    "id": "ACS-622",
+    "person_id": "P-052",
+    "event_id": "EV-208",
+    "timestamp": "2026-08-13T19:44:00-04:00",
+    "source": "access",
+    "summary": "Credentials rejected after an unrequested password reset",
+    "detail": "Synthetic audit log: five failed sign-ins",
+    "tags": [
+      "account_takeover",
+      "vulnerability",
+      "anomaly"
+    ],
+    "reliability": 0.94,
+    "related_person_id": null
+  },
+  {
+    "id": "TRN-256",
+    "person_id": "P-052",
+    "event_id": "EV-208",
+    "timestamp": "2026-08-13T21:02:00-04:00",
+    "source": "transit",
+    "summary": "Heads downtown after being summoned by a supervisor alias",
+    "detail": "Tap-in aligns with Nassau Street arrival window",
+    "tags": [
+      "route_change",
+      "proximity",
+      "targeted"
+    ],
+    "reliability": 0.91,
+    "related_person_id": null
+  },
+  {
+    "id": "MSG-159",
+    "person_id": "P-052",
+    "event_id": "EV-208",
+    "timestamp": "2026-08-13T21:11:00-04:00",
+    "source": "message",
+    "summary": "Sender pressures subject to bring the only local copy",
+    "detail": "Message: \"Bring the drive. Do not upload it.\"",
+    "tags": [
+      "financial_target",
+      "threat_language",
+      "vulnerability"
+    ],
+    "reliability": 0.82,
+    "related_person_id": null
+  },
+  {
+    "id": "NET-802",
+    "person_id": "P-063",
+    "event_id": "EV-208",
+    "timestamp": "2026-08-13T13:26:00-04:00",
+    "source": "network",
+    "summary": "Encrypted archive staged for timed transfer",
+    "detail": "Outbound bundle contains synthetic ledger fragments",
+    "tags": [
+      "account_takeover",
+      "capability",
+      "intent",
+      "financial_motive"
+    ],
+    "reliability": 0.95,
+    "related_person_id": null
+  },
+  {
+    "id": "FIN-529",
+    "person_id": "P-063",
+    "event_id": "EV-208",
+    "timestamp": "2026-08-13T17:38:00-04:00",
+    "source": "finance",
+    "summary": "New shell account receives test deposits",
+    "detail": "Three transfers below internal review threshold",
+    "tags": [
+      "financial_motive",
+      "coordination",
+      "anomaly"
+    ],
+    "reliability": 0.9,
+    "related_person_id": null
+  },
+  {
+    "id": "MSG-171",
+    "person_id": "P-063",
+    "event_id": "EV-208",
+    "timestamp": "2026-08-13T20:46:00-04:00",
+    "source": "message",
+    "summary": "Requests physical drive and confirms deadline",
+    "detail": "Message: \"Midnight. Local copy first, then the account clears.\"",
+    "tags": [
+      "coordination",
+      "timing",
+      "intent",
+      "financial_target"
+    ],
+    "reliability": 0.91,
+    "related_person_id": "P-052"
+  },
+  {
+    "id": "LOC-934",
+    "person_id": "P-063",
+    "event_id": "EV-208",
+    "timestamp": "2026-08-13T21:24:00-04:00",
+    "source": "location",
+    "summary": "Office device appears downtown outside normal hours",
+    "detail": "Twenty-four week baseline has no comparable visit",
+    "tags": [
+      "proximity",
+      "mobility_anomaly",
+      "anomaly"
+    ],
+    "reliability": 0.76,
+    "related_person_id": null
+  },
+  {
+    "id": "RES-901",
+    "person_id": "P-078",
+    "event_id": "EV-305",
+    "timestamp": "2026-08-13T18:54:00-04:00",
+    "source": "reservation",
+    "summary": "Last-minute table cancellation near Columbus Circle",
+    "detail": "Manager handles a routine cancellation",
+    "tags": [
+      "schedule_match"
+    ],
+    "reliability": 0.73,
+    "related_person_id": null
+  },
+  {
+    "id": "TRN-271",
+    "person_id": "P-078",
+    "event_id": "EV-305",
+    "timestamp": "2026-08-13T20:38:00-04:00",
+    "source": "transit",
+    "summary": "Bus route passes event radius",
+    "detail": "Route is common for this subject",
+    "tags": [
+      "proximity"
+    ],
+    "reliability": 0.92,
+    "related_person_id": null
+  },
+  {
+    "id": "MSG-182",
+    "person_id": "P-078",
+    "event_id": "EV-305",
+    "timestamp": "2026-08-13T21:07:00-04:00",
+    "source": "message",
+    "summary": "Asks coworker to cover the closing shift",
+    "detail": "Message: \"Running late—can you lock up?\"",
+    "tags": [
+      "route_change"
+    ],
+    "reliability": 0.77,
+    "related_person_id": null
+  },
+  {
+    "id": "DSP-010",
+    "person_id": "P-086",
+    "event_id": "EV-305",
+    "timestamp": "2026-08-13T21:14:00-04:00",
+    "source": "dispatch",
+    "summary": "Anonymous medical call redirects ambulance unit",
+    "detail": "Caller disconnects before triage completes",
+    "tags": [
+      "targeted",
+      "schedule_match",
+      "proximity",
+      "anomaly"
+    ],
+    "reliability": 0.89,
+    "related_person_id": null
+  },
+  {
+    "id": "MSG-196",
+    "person_id": "P-086",
+    "event_id": "EV-305",
+    "timestamp": "2026-08-13T20:58:00-04:00",
+    "source": "message",
+    "summary": "Unknown sender claims to know the unit route",
+    "detail": "Message: \"Unit 14 will reach the circle first.\"",
+    "tags": [
+      "targeted",
+      "threat_language",
+      "vulnerability"
+    ],
+    "reliability": 0.79,
+    "related_person_id": null
+  },
+  {
+    "id": "LOC-949",
+    "person_id": "P-086",
+    "event_id": "EV-305",
+    "timestamp": "2026-08-13T21:29:00-04:00",
+    "source": "location",
+    "summary": "Dispatch route converges on projected event point",
+    "detail": "Synthetic AVL coordinate within 340 m",
+    "tags": [
+      "proximity",
+      "mobility_anomaly"
+    ],
+    "reliability": 0.97,
+    "related_person_id": null
+  },
+  {
+    "id": "CAL-344",
+    "person_id": "P-086",
+    "event_id": "EV-305",
+    "timestamp": "2026-08-13T18:22:00-04:00",
+    "source": "calendar",
+    "summary": "Shift swap places subject in Unit 14",
+    "detail": "Change approved by a newly created account",
+    "tags": [
+      "targeted",
+      "vulnerability",
+      "anomaly"
+    ],
+    "reliability": 0.85,
+    "related_person_id": null
+  },
+  {
+    "id": "LIB-011",
+    "person_id": "P-099",
+    "event_id": "EV-113",
+    "timestamp": "2026-08-13T17:16:00-04:00",
+    "source": "library",
+    "summary": "Returns an urban history book near closing",
+    "detail": "Ordinary account activity",
+    "tags": [],
+    "reliability": 0.98,
+    "related_person_id": null
+  },
+  {
+    "id": "TRN-289",
+    "person_id": "P-099",
+    "event_id": "EV-113",
+    "timestamp": "2026-08-13T20:14:00-04:00",
+    "source": "transit",
+    "summary": "Normal commute remains in Upper Manhattan",
+    "detail": "No spatial overlap with event radius",
+    "tags": [],
+    "reliability": 0.95,
+    "related_person_id": null
+  },
+  {
+    "id": "FIN-544",
+    "person_id": "P-099",
+    "event_id": "EV-208",
+    "timestamp": "2026-08-13T18:31:00-04:00",
+    "source": "finance",
+    "summary": "Routine grocery purchase",
+    "detail": "$31.42 at a regular merchant",
+    "tags": [],
+    "reliability": 0.91,
+    "related_person_id": null
+  }
+]

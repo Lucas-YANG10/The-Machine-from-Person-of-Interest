@@ -1,0 +1,70 @@
+[
+  {
+    "id": "EV-042",
+    "title": "23rd Street handoff",
+    "zone": "Chelsea",
+    "location": "W 23rd St / 10th Ave",
+    "coordinates": [
+      166,
+      458
+    ],
+    "starts_at": "2026-08-13T22:25:00-04:00",
+    "type_prior": {
+      "robbery": 0.48,
+      "assault": 0.29,
+      "abduction": 0.13,
+      "fraud": 0.1
+    }
+  },
+  {
+    "id": "EV-113",
+    "title": "Canal service corridor",
+    "zone": "SoHo",
+    "location": "Canal St / Greene St",
+    "coordinates": [
+      196,
+      579
+    ],
+    "starts_at": "2026-08-13T23:10:00-04:00",
+    "type_prior": {
+      "robbery": 0.16,
+      "assault": 0.24,
+      "abduction": 0.52,
+      "fraud": 0.08
+    }
+  },
+  {
+    "id": "EV-208",
+    "title": "Ledger extraction",
+    "zone": "Financial District",
+    "location": "Nassau St / Cedar St",
+    "coordinates": [
+      194,
+      682
+    ],
+    "starts_at": "2026-08-14T00:05:00-04:00",
+    "type_prior": {
+      "robbery": 0.11,
+      "assault": 0.08,
+      "abduction": 0.04,
+      "fraud": 0.77
+    }
+  },
+  {
+    "id": "EV-305",
+    "title": "Columbus Circle intercept",
+    "zone": "Midtown",
+    "location": "W 59th St / 8th Ave",
+    "coordinates": [
+      178,
+      318
+    ],
+    "starts_at": "2026-08-14T01:20:00-04:00",
+    "type_prior": {
+      "robbery": 0.33,
+      "assault": 0.43,
+      "abduction": 0.15,
+      "fraud": 0.09
+    }
+  }
+]

@@ -1,0 +1,1673 @@
+{
+  "meta": {
+    "title": "The Machine: Manhattan",
+    "model_version": "transparent-baseline-v0.1",
+    "scenario_time": "2026-08-13T21:40:00-04:00",
+    "threshold": 0.62,
+    "synthetic": true,
+    "disclaimer": "All identities, records, incidents, and scores are fictional. Educational simulation only."
+  },
+  "people": [
+    {
+      "id": "P-063",
+      "name": "Julian Sayer",
+      "code": "SAYER, J.",
+      "occupation": "Financial analyst",
+      "home_zone": "Midtown",
+      "baseline_mobility": 0.48,
+      "event_id": "EV-208",
+      "event_title": "Ledger extraction",
+      "zone": "Financial District",
+      "location": "Nassau St / Cedar St",
+      "coordinates": [
+        212,
+        691
+      ],
+      "involvement": 0.9794,
+      "status": "relevant",
+      "roles": {
+        "perpetrator": 0.7468,
+        "victim": 0.1045,
+        "ambiguous": 0.1486
+      },
+      "crime_types": {
+        "robbery": 0.0913,
+        "assault": 0.0352,
+        "abduction": 0.0273,
+        "fraud": 0.8462
+      },
+      "confidence": 0.5825,
+      "role_uncertainty": 0.6712,
+      "imminence_minutes": 145,
+      "features": {
+        "intent": 0.9073,
+        "capability": 0.4724,
+        "proximity": 0.6096,
+        "coordination": 0.8974,
+        "vulnerability": 0.4446,
+        "threat": 0.0,
+        "financial": 0.9291,
+        "mobility": 0.5225,
+        "anomaly": 0.8671
+      },
+      "explanations": [
+        {
+          "feature": "intent",
+          "label": "Intent signal",
+          "value": 0.191,
+          "record_ids": [
+            "NET-802",
+            "FIN-529",
+            "MSG-171"
+          ]
+        },
+        {
+          "feature": "coordination",
+          "label": "Coordination pattern",
+          "value": 0.14,
+          "record_ids": [
+            "FIN-529",
+            "MSG-171"
+          ]
+        },
+        {
+          "feature": "imminence",
+          "label": "Event imminence",
+          "value": 0.1147,
+          "record_ids": []
+        },
+        {
+          "feature": "proximity",
+          "label": "Spatiotemporal overlap",
+          "value": 0.1141,
+          "record_ids": [
+            "LOC-934"
+          ]
+        },
+        {
+          "feature": "anomaly",
+          "label": "Baseline anomaly",
+          "value": 0.0879,
+          "record_ids": [
+            "NET-802",
+            "FIN-529",
+            "LOC-934"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "LOC-934",
+          "source": "location",
+          "timestamp": "2026-08-13T21:24:00-04:00",
+          "summary": "Office device appears downtown outside normal hours",
+          "detail": "Twenty-four week baseline has no comparable visit",
+          "reliability": 0.76
+        },
+        {
+          "id": "MSG-171",
+          "source": "message",
+          "timestamp": "2026-08-13T20:46:00-04:00",
+          "summary": "Requests physical drive and confirms deadline",
+          "detail": "Message: \"Midnight. Local copy first, then the account clears.\"",
+          "reliability": 0.91
+        },
+        {
+          "id": "FIN-529",
+          "source": "finance",
+          "timestamp": "2026-08-13T17:38:00-04:00",
+          "summary": "New shell account receives test deposits",
+          "detail": "Three transfers below internal review threshold",
+          "reliability": 0.9
+        },
+        {
+          "id": "NET-802",
+          "source": "network",
+          "timestamp": "2026-08-13T13:26:00-04:00",
+          "summary": "Encrypted archive staged for timed transfer",
+          "detail": "Outbound bundle contains synthetic ledger fragments",
+          "reliability": 0.95
+        }
+      ]
+    },
+    {
+      "id": "P-044",
+      "name": "Noah Vale",
+      "code": "VALE, N.",
+      "occupation": "Building technician",
+      "home_zone": "Harlem",
+      "baseline_mobility": 0.58,
+      "event_id": "EV-113",
+      "event_title": "Canal service corridor",
+      "zone": "SoHo",
+      "location": "Canal St / Greene St",
+      "coordinates": [
+        216,
+        587
+      ],
+      "involvement": 0.9632,
+      "status": "relevant",
+      "roles": {
+        "perpetrator": 0.8443,
+        "victim": 0.0441,
+        "ambiguous": 0.1117
+      },
+      "crime_types": {
+        "robbery": 0.1103,
+        "assault": 0.2143,
+        "abduction": 0.6107,
+        "fraud": 0.0647
+      },
+      "confidence": 0.6268,
+      "role_uncertainty": 0.4782,
+      "imminence_minutes": 90,
+      "features": {
+        "intent": 0.8812,
+        "capability": 0.7985,
+        "proximity": 0.916,
+        "coordination": 0.6512,
+        "vulnerability": 0.0,
+        "threat": 0.3038,
+        "financial": 0.0,
+        "mobility": 0.5322,
+        "anomaly": 0.8612
+      },
+      "explanations": [
+        {
+          "feature": "intent",
+          "label": "Intent signal",
+          "value": 0.2046,
+          "record_ids": [
+            "ACS-601",
+            "MSG-148",
+            "LOC-919"
+          ]
+        },
+        {
+          "feature": "proximity",
+          "label": "Spatiotemporal overlap",
+          "value": 0.1891,
+          "record_ids": [
+            "ACS-601",
+            "MSG-148",
+            "LOC-919"
+          ]
+        },
+        {
+          "feature": "capability",
+          "label": "Capability access",
+          "value": 0.1579,
+          "record_ids": [
+            "ACS-601",
+            "PUR-417"
+          ]
+        },
+        {
+          "feature": "imminence",
+          "label": "Event imminence",
+          "value": 0.1473,
+          "record_ids": []
+        },
+        {
+          "feature": "coordination",
+          "label": "Coordination pattern",
+          "value": 0.112,
+          "record_ids": [
+            "MSG-148"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "LOC-919",
+          "source": "location",
+          "timestamp": "2026-08-13T21:17:00-04:00",
+          "summary": "Vehicle idles near the service ramp",
+          "detail": "Fourteen-minute dwell with engine running",
+          "reliability": 0.79
+        },
+        {
+          "id": "MSG-148",
+          "source": "message",
+          "timestamp": "2026-08-13T20:21:00-04:00",
+          "summary": "Instructions reference lower loading entrance",
+          "detail": "Message: \"Keep the corridor clear. Van takes the lower ramp.\"",
+          "reliability": 0.87
+        },
+        {
+          "id": "ACS-601",
+          "source": "access",
+          "timestamp": "2026-08-13T16:52:00-04:00",
+          "summary": "Service-corridor badge cloned outside shift",
+          "detail": "Two denied entries followed by a successful entry",
+          "reliability": 0.92
+        },
+        {
+          "id": "PUR-417",
+          "source": "purchase",
+          "timestamp": "2026-08-13T12:37:00-04:00",
+          "summary": "Work order includes cable ties and opaque sheeting",
+          "detail": "Items inconsistent with assigned maintenance call",
+          "reliability": 0.78
+        }
+      ]
+    },
+    {
+      "id": "P-052",
+      "name": "Mika Rowe",
+      "code": "ROWE, M.",
+      "occupation": "Nonprofit bookkeeper",
+      "home_zone": "Greenwich Village",
+      "baseline_mobility": 0.22,
+      "event_id": "EV-208",
+      "event_title": "Ledger extraction",
+      "zone": "Financial District",
+      "location": "Nassau St / Cedar St",
+      "coordinates": [
+        178,
+        675
+      ],
+      "involvement": 0.9576,
+      "status": "relevant",
+      "roles": {
+        "perpetrator": 0.1129,
+        "victim": 0.7228,
+        "ambiguous": 0.1643
+      },
+      "crime_types": {
+        "robbery": 0.0898,
+        "assault": 0.0449,
+        "abduction": 0.0186,
+        "fraud": 0.8467
+      },
+      "confidence": 0.5915,
+      "role_uncertainty": 0.7078,
+      "imminence_minutes": 145,
+      "features": {
+        "intent": 0.0,
+        "capability": 0.5717,
+        "proximity": 0.7179,
+        "coordination": 0.0,
+        "vulnerability": 0.9787,
+        "threat": 0.6185,
+        "financial": 0.9157,
+        "mobility": 0.4786,
+        "anomaly": 0.8169
+      },
+      "explanations": [
+        {
+          "feature": "vulnerability",
+          "label": "Target vulnerability",
+          "value": 0.2158,
+          "record_ids": [
+            "EML-710",
+            "ACS-622",
+            "TRN-256",
+            "MSG-159"
+          ]
+        },
+        {
+          "feature": "proximity",
+          "label": "Spatiotemporal overlap",
+          "value": 0.152,
+          "record_ids": [
+            "TRN-256"
+          ]
+        },
+        {
+          "feature": "imminence",
+          "label": "Event imminence",
+          "value": 0.1297,
+          "record_ids": []
+        },
+        {
+          "feature": "capability",
+          "label": "Capability access",
+          "value": 0.116,
+          "record_ids": [
+            "ACS-622"
+          ]
+        },
+        {
+          "feature": "threat",
+          "label": "Threat language",
+          "value": 0.0982,
+          "record_ids": [
+            "MSG-159"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "MSG-159",
+          "source": "message",
+          "timestamp": "2026-08-13T21:11:00-04:00",
+          "summary": "Sender pressures subject to bring the only local copy",
+          "detail": "Message: \"Bring the drive. Do not upload it.\"",
+          "reliability": 0.82
+        },
+        {
+          "id": "TRN-256",
+          "source": "transit",
+          "timestamp": "2026-08-13T21:02:00-04:00",
+          "summary": "Heads downtown after being summoned by a supervisor alias",
+          "detail": "Tap-in aligns with Nassau Street arrival window",
+          "reliability": 0.91
+        },
+        {
+          "id": "ACS-622",
+          "source": "access",
+          "timestamp": "2026-08-13T19:44:00-04:00",
+          "summary": "Credentials rejected after an unrequested password reset",
+          "detail": "Synthetic audit log: five failed sign-ins",
+          "reliability": 0.94
+        },
+        {
+          "id": "EML-710",
+          "source": "email",
+          "timestamp": "2026-08-13T16:09:00-04:00",
+          "summary": "Reports a ledger discrepancy to a private address",
+          "detail": "Attachment hash matches the altered grant ledger",
+          "reliability": 0.88
+        }
+      ]
+    },
+    {
+      "id": "P-024",
+      "name": "Darius Cole",
+      "code": "COLE, D.",
+      "occupation": "Independent courier",
+      "home_zone": "Lower East Side",
+      "baseline_mobility": 0.71,
+      "event_id": "EV-042",
+      "event_title": "23rd Street handoff",
+      "zone": "Chelsea",
+      "location": "W 23rd St / 10th Ave",
+      "coordinates": [
+        185,
+        468
+      ],
+      "involvement": 0.9566,
+      "status": "relevant",
+      "roles": {
+        "perpetrator": 0.8043,
+        "victim": 0.0538,
+        "ambiguous": 0.1419
+      },
+      "crime_types": {
+        "robbery": 0.4796,
+        "assault": 0.2312,
+        "abduction": 0.1692,
+        "fraud": 0.12
+      },
+      "confidence": 0.5893,
+      "role_uncertainty": 0.5547,
+      "imminence_minutes": 45,
+      "features": {
+        "intent": 0.8427,
+        "capability": 0.5646,
+        "proximity": 0.8755,
+        "coordination": 0.8364,
+        "vulnerability": 0.0,
+        "threat": 0.0,
+        "financial": 0.3513,
+        "mobility": 0.5324,
+        "anomaly": 0.8298
+      },
+      "explanations": [
+        {
+          "feature": "intent",
+          "label": "Intent signal",
+          "value": 0.2016,
+          "record_ids": [
+            "MSG-119",
+            "LOC-902",
+            "FIN-507"
+          ]
+        },
+        {
+          "feature": "proximity",
+          "label": "Spatiotemporal overlap",
+          "value": 0.1862,
+          "record_ids": [
+            "MSG-119",
+            "LOC-902"
+          ]
+        },
+        {
+          "feature": "imminence",
+          "label": "Event imminence",
+          "value": 0.172,
+          "record_ids": []
+        },
+        {
+          "feature": "coordination",
+          "label": "Coordination pattern",
+          "value": 0.1482,
+          "record_ids": [
+            "PUR-401",
+            "MSG-119",
+            "FIN-507"
+          ]
+        },
+        {
+          "feature": "capability",
+          "label": "Capability access",
+          "value": 0.115,
+          "record_ids": [
+            "PUR-401"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "LOC-902",
+          "source": "location",
+          "timestamp": "2026-08-13T21:26:00-04:00",
+          "summary": "Three short stops around the same block",
+          "detail": "Synthetic device pings form a surveillance loop",
+          "reliability": 0.77
+        },
+        {
+          "id": "MSG-119",
+          "source": "message",
+          "timestamp": "2026-08-13T20:07:00-04:00",
+          "summary": "Coordinates and exit timing exchanged",
+          "detail": "Message: \"West door. 22:25. Two minutes, then gone.\"",
+          "reliability": 0.89
+        },
+        {
+          "id": "PUR-401",
+          "source": "purchase",
+          "timestamp": "2026-08-13T15:42:00-04:00",
+          "summary": "Cash purchase of a prepaid handset",
+          "detail": "Corner electronics receipt; device activated 16:03",
+          "reliability": 0.81
+        },
+        {
+          "id": "FIN-507",
+          "source": "finance",
+          "timestamp": "2026-08-12T23:16:00-04:00",
+          "summary": "Courier account receives an unusual cash-equivalent transfer",
+          "detail": "$640 equivalent from a dormant sender",
+          "reliability": 0.86
+        }
+      ]
+    },
+    {
+      "id": "P-017",
+      "name": "Lena Ortiz",
+      "code": "ORTIZ, L.",
+      "occupation": "Night pharmacist",
+      "home_zone": "Chelsea",
+      "baseline_mobility": 0.34,
+      "event_id": "EV-042",
+      "event_title": "23rd Street handoff",
+      "zone": "Chelsea",
+      "location": "W 23rd St / 10th Ave",
+      "coordinates": [
+        151,
+        451
+      ],
+      "involvement": 0.8635,
+      "status": "relevant",
+      "roles": {
+        "perpetrator": 0.0452,
+        "victim": 0.7866,
+        "ambiguous": 0.1682
+      },
+      "crime_types": {
+        "robbery": 0.4039,
+        "assault": 0.4025,
+        "abduction": 0.1094,
+        "fraud": 0.0842
+      },
+      "confidence": 0.6181,
+      "role_uncertainty": 0.5721,
+      "imminence_minutes": 45,
+      "features": {
+        "intent": 0.0,
+        "capability": 0.0,
+        "proximity": 0.9624,
+        "coordination": 0.0,
+        "vulnerability": 0.8215,
+        "threat": 0.5561,
+        "financial": 0.0,
+        "mobility": 0.4991,
+        "anomaly": 0.757
+      },
+      "explanations": [
+        {
+          "feature": "proximity",
+          "label": "Spatiotemporal overlap",
+          "value": 0.2628,
+          "record_ids": [
+            "TRN-221",
+            "CAM-881",
+            "CAL-310"
+          ]
+        },
+        {
+          "feature": "vulnerability",
+          "label": "Target vulnerability",
+          "value": 0.2337,
+          "record_ids": [
+            "MSG-104",
+            "CAM-881"
+          ]
+        },
+        {
+          "feature": "imminence",
+          "label": "Event imminence",
+          "value": 0.2209,
+          "record_ids": []
+        },
+        {
+          "feature": "threat",
+          "label": "Threat language",
+          "value": 0.1139,
+          "record_ids": [
+            "MSG-104"
+          ]
+        },
+        {
+          "feature": "anomaly",
+          "label": "Baseline anomaly",
+          "value": 0.112,
+          "record_ids": [
+            "MSG-104",
+            "TRN-221",
+            "CAL-310"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "CAM-881",
+          "source": "camera",
+          "timestamp": "2026-08-13T21:31:00-04:00",
+          "summary": "Subject enters the projected event radius",
+          "detail": "Synthetic camera hit at W 22nd Street",
+          "reliability": 0.72
+        },
+        {
+          "id": "TRN-221",
+          "source": "transit",
+          "timestamp": "2026-08-13T20:55:00-04:00",
+          "summary": "Usual train replaced by a late westbound bus",
+          "detail": "Route diverges 2.8 km from twelve-week baseline",
+          "reliability": 0.96
+        },
+        {
+          "id": "MSG-104",
+          "source": "message",
+          "timestamp": "2026-08-13T19:18:00-04:00",
+          "summary": "Unrecognized sender asks whether she closes alone",
+          "detail": "Message: \"Still closing by yourself tonight?\"",
+          "reliability": 0.84
+        },
+        {
+          "id": "CAL-310",
+          "source": "calendar",
+          "timestamp": "2026-08-13T17:04:00-04:00",
+          "summary": "Closing shift extended by forty minutes",
+          "detail": "Staffing schedule edit places subject near event window",
+          "reliability": 0.91
+        }
+      ]
+    },
+    {
+      "id": "P-086",
+      "name": "Isaac Reed",
+      "code": "REED, I.",
+      "occupation": "Paramedic",
+      "home_zone": "Upper East Side",
+      "baseline_mobility": 0.76,
+      "event_id": "EV-305",
+      "event_title": "Columbus Circle intercept",
+      "zone": "Midtown",
+      "location": "W 59th St / 8th Ave",
+      "coordinates": [
+        160,
+        309
+      ],
+      "involvement": 0.86,
+      "status": "relevant",
+      "roles": {
+        "perpetrator": 0.0362,
+        "victim": 0.8103,
+        "ambiguous": 0.1535
+      },
+      "crime_types": {
+        "robbery": 0.254,
+        "assault": 0.5613,
+        "abduction": 0.1154,
+        "fraud": 0.0693
+      },
+      "confidence": 0.6486,
+      "role_uncertainty": 0.5264,
+      "imminence_minutes": 220,
+      "features": {
+        "intent": 0.0,
+        "capability": 0.0,
+        "proximity": 0.9376,
+        "coordination": 0.0,
+        "vulnerability": 0.929,
+        "threat": 0.587,
+        "financial": 0.0,
+        "mobility": 0.6766,
+        "anomaly": 0.9462
+      },
+      "explanations": [
+        {
+          "feature": "vulnerability",
+          "label": "Target vulnerability",
+          "value": 0.266,
+          "record_ids": [
+            "DSP-010",
+            "MSG-196",
+            "CAL-344"
+          ]
+        },
+        {
+          "feature": "proximity",
+          "label": "Spatiotemporal overlap",
+          "value": 0.2578,
+          "record_ids": [
+            "DSP-010",
+            "LOC-949"
+          ]
+        },
+        {
+          "feature": "anomaly",
+          "label": "Baseline anomaly",
+          "value": 0.1409,
+          "record_ids": [
+            "DSP-010",
+            "MSG-196",
+            "LOC-949",
+            "CAL-344"
+          ]
+        },
+        {
+          "feature": "imminence",
+          "label": "Event imminence",
+          "value": 0.1368,
+          "record_ids": []
+        },
+        {
+          "feature": "threat",
+          "label": "Threat language",
+          "value": 0.121,
+          "record_ids": [
+            "MSG-196"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "LOC-949",
+          "source": "location",
+          "timestamp": "2026-08-13T21:29:00-04:00",
+          "summary": "Dispatch route converges on projected event point",
+          "detail": "Synthetic AVL coordinate within 340 m",
+          "reliability": 0.97
+        },
+        {
+          "id": "DSP-010",
+          "source": "dispatch",
+          "timestamp": "2026-08-13T21:14:00-04:00",
+          "summary": "Anonymous medical call redirects ambulance unit",
+          "detail": "Caller disconnects before triage completes",
+          "reliability": 0.89
+        },
+        {
+          "id": "MSG-196",
+          "source": "message",
+          "timestamp": "2026-08-13T20:58:00-04:00",
+          "summary": "Unknown sender claims to know the unit route",
+          "detail": "Message: \"Unit 14 will reach the circle first.\"",
+          "reliability": 0.79
+        },
+        {
+          "id": "CAL-344",
+          "source": "calendar",
+          "timestamp": "2026-08-13T18:22:00-04:00",
+          "summary": "Shift swap places subject in Unit 14",
+          "detail": "Change approved by a newly created account",
+          "reliability": 0.85
+        }
+      ]
+    },
+    {
+      "id": "P-031",
+      "name": "Evelyn Park",
+      "code": "PARK, E.",
+      "occupation": "Archive researcher",
+      "home_zone": "Upper West Side",
+      "baseline_mobility": 0.29,
+      "event_id": "EV-113",
+      "event_title": "Canal service corridor",
+      "zone": "SoHo",
+      "location": "Canal St / Greene St",
+      "coordinates": [
+        179,
+        574
+      ],
+      "involvement": 0.8588,
+      "status": "relevant",
+      "roles": {
+        "perpetrator": 0.0471,
+        "victim": 0.8012,
+        "ambiguous": 0.1517
+      },
+      "crime_types": {
+        "robbery": 0.1294,
+        "assault": 0.3851,
+        "abduction": 0.4207,
+        "fraud": 0.0647
+      },
+      "confidence": 0.5921,
+      "role_uncertainty": 0.553,
+      "imminence_minutes": 90,
+      "features": {
+        "intent": 0.0,
+        "capability": 0.0,
+        "proximity": 0.8488,
+        "coordination": 0.0,
+        "vulnerability": 0.8596,
+        "threat": 0.761,
+        "financial": 0.0,
+        "mobility": 0.478,
+        "anomaly": 0.7409
+      },
+      "explanations": [
+        {
+          "feature": "vulnerability",
+          "label": "Target vulnerability",
+          "value": 0.2467,
+          "record_ids": [
+            "MSG-133",
+            "CAL-328",
+            "CAM-894"
+          ]
+        },
+        {
+          "feature": "proximity",
+          "label": "Spatiotemporal overlap",
+          "value": 0.2339,
+          "record_ids": [
+            "TRN-240",
+            "CAL-328"
+          ]
+        },
+        {
+          "feature": "imminence",
+          "label": "Event imminence",
+          "value": 0.1967,
+          "record_ids": []
+        },
+        {
+          "feature": "threat",
+          "label": "Threat language",
+          "value": 0.1573,
+          "record_ids": [
+            "MSG-133",
+            "CAM-894"
+          ]
+        },
+        {
+          "feature": "anomaly",
+          "label": "Baseline anomaly",
+          "value": 0.1106,
+          "record_ids": [
+            "MSG-133",
+            "TRN-240",
+            "CAL-328"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "CAM-894",
+          "source": "camera",
+          "timestamp": "2026-08-13T21:34:00-04:00",
+          "summary": "Same dark vehicle appears in two nonadjacent locations",
+          "detail": "Synthetic plate token repeats behind subject",
+          "reliability": 0.68
+        },
+        {
+          "id": "TRN-240",
+          "source": "transit",
+          "timestamp": "2026-08-13T20:48:00-04:00",
+          "summary": "Ride-share destination changed to Canal Street",
+          "detail": "Destination entered after a cancelled subway trip",
+          "reliability": 0.93
+        },
+        {
+          "id": "MSG-133",
+          "source": "message",
+          "timestamp": "2026-08-13T18:03:00-04:00",
+          "summary": "Anonymous warning references a private archive visit",
+          "detail": "Message: \"The Canal files were never yours to read.\"",
+          "reliability": 0.83
+        },
+        {
+          "id": "CAL-328",
+          "source": "calendar",
+          "timestamp": "2026-08-13T14:11:00-04:00",
+          "summary": "Meeting added by an unknown external address",
+          "detail": "Invitation title: ARCHIVE RETURN / 23:00",
+          "reliability": 0.74
+        }
+      ]
+    },
+    {
+      "id": "P-078",
+      "name": "Tasha Bell",
+      "code": "BELL, T.",
+      "occupation": "Restaurant manager",
+      "home_zone": "SoHo",
+      "baseline_mobility": 0.55,
+      "event_id": "EV-305",
+      "event_title": "Columbus Circle intercept",
+      "zone": "Midtown",
+      "location": "W 59th St / 8th Ave",
+      "coordinates": [
+        198,
+        330
+      ],
+      "involvement": 0.3777,
+      "status": "background",
+      "roles": {
+        "perpetrator": 0.1821,
+        "victim": 0.3912,
+        "ambiguous": 0.4267
+      },
+      "crime_types": {
+        "robbery": 0.33,
+        "assault": 0.43,
+        "abduction": 0.15,
+        "fraud": 0.09
+      },
+      "confidence": 0.4251,
+      "role_uncertainty": 0.9473,
+      "imminence_minutes": 220,
+      "features": {
+        "intent": 0.0,
+        "capability": 0.0,
+        "proximity": 0.8067,
+        "coordination": 0.0,
+        "vulnerability": 0.0,
+        "threat": 0.0,
+        "financial": 0.0,
+        "mobility": 0.4151,
+        "anomaly": 0.4279
+      },
+      "explanations": [
+        {
+          "feature": "proximity",
+          "label": "Spatiotemporal overlap",
+          "value": 0.4721,
+          "record_ids": [
+            "RES-901",
+            "TRN-271"
+          ]
+        },
+        {
+          "feature": "imminence",
+          "label": "Event imminence",
+          "value": 0.2911,
+          "record_ids": []
+        },
+        {
+          "feature": "anomaly",
+          "label": "Baseline anomaly",
+          "value": 0.1356,
+          "record_ids": [
+            "RES-901",
+            "MSG-182"
+          ]
+        },
+        {
+          "feature": "mobility",
+          "label": "Mobility deviation",
+          "value": 0.1012,
+          "record_ids": [
+            "MSG-182"
+          ]
+        },
+        {
+          "feature": "intent",
+          "label": "Intent signal",
+          "value": 0.0,
+          "record_ids": []
+        }
+      ],
+      "evidence": [
+        {
+          "id": "MSG-182",
+          "source": "message",
+          "timestamp": "2026-08-13T21:07:00-04:00",
+          "summary": "Asks coworker to cover the closing shift",
+          "detail": "Message: \"Running late—can you lock up?\"",
+          "reliability": 0.77
+        },
+        {
+          "id": "TRN-271",
+          "source": "transit",
+          "timestamp": "2026-08-13T20:38:00-04:00",
+          "summary": "Bus route passes event radius",
+          "detail": "Route is common for this subject",
+          "reliability": 0.92
+        },
+        {
+          "id": "RES-901",
+          "source": "reservation",
+          "timestamp": "2026-08-13T18:54:00-04:00",
+          "summary": "Last-minute table cancellation near Columbus Circle",
+          "detail": "Manager handles a routine cancellation",
+          "reliability": 0.73
+        }
+      ]
+    },
+    {
+      "id": "P-099",
+      "name": "Elias North",
+      "code": "NORTH, E.",
+      "occupation": "Graduate student",
+      "home_zone": "Inwood",
+      "baseline_mobility": 0.41,
+      "event_id": "EV-042",
+      "event_title": "23rd Street handoff",
+      "zone": "Chelsea",
+      "location": "W 23rd St / 10th Ave",
+      "coordinates": [
+        166,
+        458
+      ],
+      "involvement": 0.1709,
+      "status": "background",
+      "roles": {
+        "perpetrator": 0.2584,
+        "victim": 0.3156,
+        "ambiguous": 0.426
+      },
+      "crime_types": {
+        "robbery": 0.48,
+        "assault": 0.29,
+        "abduction": 0.13,
+        "fraud": 0.1
+      },
+      "confidence": 0.0055,
+      "role_uncertainty": 0.9805,
+      "imminence_minutes": 45,
+      "features": {
+        "intent": 0.0,
+        "capability": 0.0,
+        "proximity": 0.0,
+        "coordination": 0.0,
+        "vulnerability": 0.0,
+        "threat": 0.0,
+        "financial": 0.0,
+        "mobility": 0.0,
+        "anomaly": 0.0
+      },
+      "explanations": [
+        {
+          "feature": "imminence",
+          "label": "Event imminence",
+          "value": 1.0,
+          "record_ids": []
+        },
+        {
+          "feature": "intent",
+          "label": "Intent signal",
+          "value": 0.0,
+          "record_ids": []
+        },
+        {
+          "feature": "capability",
+          "label": "Capability access",
+          "value": 0.0,
+          "record_ids": []
+        },
+        {
+          "feature": "proximity",
+          "label": "Spatiotemporal overlap",
+          "value": 0.0,
+          "record_ids": []
+        },
+        {
+          "feature": "coordination",
+          "label": "Coordination pattern",
+          "value": 0.0,
+          "record_ids": []
+        }
+      ],
+      "evidence": []
+    }
+  ],
+  "events": [
+    {
+      "id": "EV-208",
+      "title": "Ledger extraction",
+      "zone": "Financial District",
+      "location": "Nassau St / Cedar St",
+      "coordinates": [
+        194,
+        682
+      ],
+      "starts_at": "2026-08-14T00:05:00-04:00",
+      "type_prior": {
+        "robbery": 0.11,
+        "assault": 0.08,
+        "abduction": 0.04,
+        "fraud": 0.77
+      },
+      "risk": 0.9971,
+      "imminence": 0.6685,
+      "imminence_minutes": 145,
+      "participants": [
+        "P-052",
+        "P-063"
+      ],
+      "signal_count": 9,
+      "crime_types": {
+        "robbery": 0.0971,
+        "assault": 0.0534,
+        "abduction": 0.0287,
+        "fraud": 0.8208
+      }
+    },
+    {
+      "id": "EV-113",
+      "title": "Canal service corridor",
+      "zone": "SoHo",
+      "location": "Canal St / Greene St",
+      "coordinates": [
+        196,
+        579
+      ],
+      "starts_at": "2026-08-13T23:10:00-04:00",
+      "type_prior": {
+        "robbery": 0.16,
+        "assault": 0.24,
+        "abduction": 0.52,
+        "fraud": 0.08
+      },
+      "risk": 0.9843,
+      "imminence": 0.7788,
+      "imminence_minutes": 90,
+      "participants": [
+        "P-031",
+        "P-044"
+      ],
+      "signal_count": 10,
+      "crime_types": {
+        "robbery": 0.1349,
+        "assault": 0.2738,
+        "abduction": 0.5207,
+        "fraud": 0.0706
+      }
+    },
+    {
+      "id": "EV-042",
+      "title": "23rd Street handoff",
+      "zone": "Chelsea",
+      "location": "W 23rd St / 10th Ave",
+      "coordinates": [
+        166,
+        458
+      ],
+      "starts_at": "2026-08-13T22:25:00-04:00",
+      "type_prior": {
+        "robbery": 0.48,
+        "assault": 0.29,
+        "abduction": 0.13,
+        "fraud": 0.1
+      },
+      "risk": 0.983,
+      "imminence": 0.8825,
+      "imminence_minutes": 45,
+      "participants": [
+        "P-017",
+        "P-024"
+      ],
+      "signal_count": 8,
+      "crime_types": {
+        "robbery": 0.4586,
+        "assault": 0.3033,
+        "abduction": 0.1364,
+        "fraud": 0.1018
+      }
+    },
+    {
+      "id": "EV-305",
+      "title": "Columbus Circle intercept",
+      "zone": "Midtown",
+      "location": "W 59th St / 8th Ave",
+      "coordinates": [
+        178,
+        318
+      ],
+      "starts_at": "2026-08-14T01:20:00-04:00",
+      "type_prior": {
+        "robbery": 0.33,
+        "assault": 0.43,
+        "abduction": 0.15,
+        "fraud": 0.09
+      },
+      "risk": 0.7997,
+      "imminence": 0.5427,
+      "imminence_minutes": 220,
+      "participants": [
+        "P-086"
+      ],
+      "signal_count": 7,
+      "crime_types": {
+        "robbery": 0.299,
+        "assault": 0.4836,
+        "abduction": 0.1359,
+        "fraud": 0.0815
+      }
+    }
+  ],
+  "zones": [
+    {
+      "id": "inwood",
+      "name": "Inwood",
+      "centroid": [
+        214,
+        66
+      ],
+      "polygon": [
+        [
+          184,
+          34
+        ],
+        [
+          252,
+          48
+        ],
+        [
+          254,
+          95
+        ],
+        [
+          178,
+          103
+        ]
+      ],
+      "background": 0.08,
+      "risk": 0.0708,
+      "trend": "quiet",
+      "contributors": []
+    },
+    {
+      "id": "harlem",
+      "name": "Harlem",
+      "centroid": [
+        211,
+        137
+      ],
+      "polygon": [
+        [
+          178,
+          103
+        ],
+        [
+          254,
+          95
+        ],
+        [
+          271,
+          166
+        ],
+        [
+          162,
+          174
+        ]
+      ],
+      "background": 0.11,
+      "risk": 0.1305,
+      "trend": "quiet",
+      "contributors": []
+    },
+    {
+      "id": "upper-west",
+      "name": "Upper West Side",
+      "centroid": [
+        181,
+        231
+      ],
+      "polygon": [
+        [
+          162,
+          174
+        ],
+        [
+          214,
+          170
+        ],
+        [
+          218,
+          293
+        ],
+        [
+          145,
+          303
+        ]
+      ],
+      "background": 0.07,
+      "risk": 0.273,
+      "trend": "stable",
+      "contributors": [
+        "EV-305"
+      ]
+    },
+    {
+      "id": "upper-east",
+      "name": "Upper East Side",
+      "centroid": [
+        246,
+        229
+      ],
+      "polygon": [
+        [
+          214,
+          170
+        ],
+        [
+          271,
+          166
+        ],
+        [
+          286,
+          282
+        ],
+        [
+          218,
+          293
+        ]
+      ],
+      "background": 0.06,
+      "risk": 0.2143,
+      "trend": "stable",
+      "contributors": [
+        "EV-305"
+      ]
+    },
+    {
+      "id": "midtown",
+      "name": "Midtown",
+      "centroid": [
+        215,
+        344
+      ],
+      "polygon": [
+        [
+          145,
+          303
+        ],
+        [
+          286,
+          282
+        ],
+        [
+          277,
+          399
+        ],
+        [
+          151,
+          411
+        ]
+      ],
+      "background": 0.13,
+      "risk": 0.5194,
+      "trend": "rising",
+      "contributors": [
+        "EV-042",
+        "EV-305"
+      ]
+    },
+    {
+      "id": "chelsea",
+      "name": "Chelsea",
+      "centroid": [
+        174,
+        451
+      ],
+      "polygon": [
+        [
+          151,
+          411
+        ],
+        [
+          215,
+          405
+        ],
+        [
+          214,
+          493
+        ],
+        [
+          137,
+          502
+        ]
+      ],
+      "background": 0.1,
+      "risk": 0.6892,
+      "trend": "rising",
+      "contributors": [
+        "EV-042",
+        "EV-113",
+        "EV-305"
+      ]
+    },
+    {
+      "id": "greenwich",
+      "name": "Greenwich Village",
+      "centroid": [
+        210,
+        522
+      ],
+      "polygon": [
+        [
+          214,
+          493
+        ],
+        [
+          268,
+          488
+        ],
+        [
+          274,
+          548
+        ],
+        [
+          160,
+          558
+        ],
+        [
+          137,
+          502
+        ]
+      ],
+      "background": 0.09,
+      "risk": 0.7083,
+      "trend": "rising",
+      "contributors": [
+        "EV-042",
+        "EV-113",
+        "EV-208"
+      ]
+    },
+    {
+      "id": "soho",
+      "name": "SoHo",
+      "centroid": [
+        200,
+        580
+      ],
+      "polygon": [
+        [
+          160,
+          558
+        ],
+        [
+          274,
+          548
+        ],
+        [
+          262,
+          606
+        ],
+        [
+          151,
+          615
+        ]
+      ],
+      "background": 0.12,
+      "risk": 0.7283,
+      "trend": "rising",
+      "contributors": [
+        "EV-042",
+        "EV-113",
+        "EV-208"
+      ]
+    },
+    {
+      "id": "lower-east",
+      "name": "Lower East Side",
+      "centroid": [
+        246,
+        625
+      ],
+      "polygon": [
+        [
+          210,
+          609
+        ],
+        [
+          262,
+          606
+        ],
+        [
+          273,
+          659
+        ],
+        [
+          218,
+          665
+        ]
+      ],
+      "background": 0.14,
+      "risk": 0.6579,
+      "trend": "rising",
+      "contributors": [
+        "EV-042",
+        "EV-113",
+        "EV-208"
+      ]
+    },
+    {
+      "id": "financial",
+      "name": "Financial District",
+      "centroid": [
+        195,
+        680
+      ],
+      "polygon": [
+        [
+          151,
+          615
+        ],
+        [
+          210,
+          609
+        ],
+        [
+          218,
+          665
+        ],
+        [
+          202,
+          724
+        ],
+        [
+          158,
+          694
+        ]
+      ],
+      "background": 0.09,
+      "risk": 0.6326,
+      "trend": "rising",
+      "contributors": [
+        "EV-113",
+        "EV-208"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "id": "CAM-894",
+      "timestamp": "2026-08-13T21:34:00-04:00",
+      "source": "camera",
+      "person_id": "P-031",
+      "event_id": "EV-113",
+      "summary": "Same dark vehicle appears in two nonadjacent locations"
+    },
+    {
+      "id": "CAM-881",
+      "timestamp": "2026-08-13T21:31:00-04:00",
+      "source": "camera",
+      "person_id": "P-017",
+      "event_id": "EV-042",
+      "summary": "Subject enters the projected event radius"
+    },
+    {
+      "id": "LOC-949",
+      "timestamp": "2026-08-13T21:29:00-04:00",
+      "source": "location",
+      "person_id": "P-086",
+      "event_id": "EV-305",
+      "summary": "Dispatch route converges on projected event point"
+    },
+    {
+      "id": "LOC-902",
+      "timestamp": "2026-08-13T21:26:00-04:00",
+      "source": "location",
+      "person_id": "P-024",
+      "event_id": "EV-042",
+      "summary": "Three short stops around the same block"
+    },
+    {
+      "id": "LOC-934",
+      "timestamp": "2026-08-13T21:24:00-04:00",
+      "source": "location",
+      "person_id": "P-063",
+      "event_id": "EV-208",
+      "summary": "Office device appears downtown outside normal hours"
+    },
+    {
+      "id": "LOC-919",
+      "timestamp": "2026-08-13T21:17:00-04:00",
+      "source": "location",
+      "person_id": "P-044",
+      "event_id": "EV-113",
+      "summary": "Vehicle idles near the service ramp"
+    },
+    {
+      "id": "DSP-010",
+      "timestamp": "2026-08-13T21:14:00-04:00",
+      "source": "dispatch",
+      "person_id": "P-086",
+      "event_id": "EV-305",
+      "summary": "Anonymous medical call redirects ambulance unit"
+    },
+    {
+      "id": "MSG-159",
+      "timestamp": "2026-08-13T21:11:00-04:00",
+      "source": "message",
+      "person_id": "P-052",
+      "event_id": "EV-208",
+      "summary": "Sender pressures subject to bring the only local copy"
+    },
+    {
+      "id": "MSG-182",
+      "timestamp": "2026-08-13T21:07:00-04:00",
+      "source": "message",
+      "person_id": "P-078",
+      "event_id": "EV-305",
+      "summary": "Asks coworker to cover the closing shift"
+    },
+    {
+      "id": "TRN-256",
+      "timestamp": "2026-08-13T21:02:00-04:00",
+      "source": "transit",
+      "person_id": "P-052",
+      "event_id": "EV-208",
+      "summary": "Heads downtown after being summoned by a supervisor alias"
+    },
+    {
+      "id": "MSG-196",
+      "timestamp": "2026-08-13T20:58:00-04:00",
+      "source": "message",
+      "person_id": "P-086",
+      "event_id": "EV-305",
+      "summary": "Unknown sender claims to know the unit route"
+    },
+    {
+      "id": "TRN-221",
+      "timestamp": "2026-08-13T20:55:00-04:00",
+      "source": "transit",
+      "person_id": "P-017",
+      "event_id": "EV-042",
+      "summary": "Usual train replaced by a late westbound bus"
+    },
+    {
+      "id": "TRN-240",
+      "timestamp": "2026-08-13T20:48:00-04:00",
+      "source": "transit",
+      "person_id": "P-031",
+      "event_id": "EV-113",
+      "summary": "Ride-share destination changed to Canal Street"
+    },
+    {
+      "id": "MSG-171",
+      "timestamp": "2026-08-13T20:46:00-04:00",
+      "source": "message",
+      "person_id": "P-063",
+      "event_id": "EV-208",
+      "summary": "Requests physical drive and confirms deadline"
+    },
+    {
+      "id": "TRN-271",
+      "timestamp": "2026-08-13T20:38:00-04:00",
+      "source": "transit",
+      "person_id": "P-078",
+      "event_id": "EV-305",
+      "summary": "Bus route passes event radius"
+    },
+    {
+      "id": "MSG-148",
+      "timestamp": "2026-08-13T20:21:00-04:00",
+      "source": "message",
+      "person_id": "P-044",
+      "event_id": "EV-113",
+      "summary": "Instructions reference lower loading entrance"
+    },
+    {
+      "id": "TRN-289",
+      "timestamp": "2026-08-13T20:14:00-04:00",
+      "source": "transit",
+      "person_id": "P-099",
+      "event_id": "EV-113",
+      "summary": "Normal commute remains in Upper Manhattan"
+    },
+    {
+      "id": "MSG-119",
+      "timestamp": "2026-08-13T20:07:00-04:00",
+      "source": "message",
+      "person_id": "P-024",
+      "event_id": "EV-042",
+      "summary": "Coordinates and exit timing exchanged"
+    }
+  ],
+  "metrics": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "brier": 0.0242,
+    "role_accuracy": 1.0,
+    "confusion": {
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "tn": 29
+    },
+    "evaluated_pairs": 36,
+    "note": "Metrics are measured only against the synthetic scenario ground truth."
+  }
+}

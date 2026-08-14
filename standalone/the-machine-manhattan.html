@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <!-- ================================================================
+       PART 1 / 页面基础设置
+       这个文件不引用任何外部字体、图片、脚本或样式表，因此可以离线打开。
+       ================================================================ -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>The Machine: Manhattan — Offline</title>
+
+  <style>
+    /* ================================================================
+       PART 2 / CSS 视觉样式
+       修改颜色：先看 :root；修改布局：搜索 .workspace；修改地图：搜索 .map。
+       ================================================================ */
+    :root {
+      --bg: #050806;
+      --panel: #0a0f0b;
+      --panel-2: #101611;
+      --line: #2c382d;
+      --line-strong: #526253;
+      --text: #cbd4c4;
+      --muted: #778374;
+      --green: #91a88a;
+      --green-bright: #c4d5bb;
+      --red: #d95049;
+      --amber: #d1ad68;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--bg); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 60% 20%, rgba(124, 151, 115, .08), transparent 34rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Consolas, "SFMono-Regular", "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      letter-spacing: .025em;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.018) 0,
+        rgba(255,255,255,.018) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+    }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible, [role="button"]:focus-visible, input:focus-visible {
+      outline: 1px solid var(--green-bright);
+      outline-offset: 2px;
+    }
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: #070a08; }
+    ::-webkit-scrollbar-thumb { background: #354236; }
+
+    .app {
+      min-height: 100vh;
+      background-image:
+        linear-gradient(rgba(130,150,122,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(130,150,122,.018) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ----- 顶部标题栏 ----- */
+    .topbar {
+      min-height: 76px;
+      padding: 0 22px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      border-bottom: 1px solid var(--line-strong);
+      background: rgba(6,9,7,.96);
+    }
+    .brand { display: flex; align-items: center; gap: 15px; }
+    .brand h1 { margin: 0; color: var(--green-bright); font-size: 20px; font-weight: 500; letter-spacing: .19em; }
+    .brand p { margin: 4px 0 0; color: var(--muted); font-size: 8px; letter-spacing: .15em; }
+    .mark { width: 36px; height: 36px; border: 1px solid var(--green); transform: rotate(45deg); position: relative; }
+    .mark::before, .mark::after { content: ""; position: absolute; background: var(--green); opacity: .65; }
+    .mark::before { left: 4px; right: 4px; top: 50%; height: 1px; }
+    .mark::after { top: 4px; bottom: 4px; left: 50%; width: 1px; }
+    .mark i { position: absolute; width: 4px; height: 4px; background: var(--green-bright); }
+    .mark i:nth-child(1) { top: 5px; left: 5px; }
+    .mark i:nth-child(2) { top: 5px; right: 5px; }
+    .mark i:nth-child(3) { right: 5px; bottom: 5px; }
+    .online { padding: 0 28px; align-self: stretch; display: flex; align-items: center; gap: 9px; border-inline: 1px solid var(--line); color: var(--green); font-size: 9px; letter-spacing: .12em; }
+    .online i { width: 6px; height: 6px; border-radius: 50%; background: var(--green-bright); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+    .clock { justify-self: end; text-align: right; }
+    .clock span, .clock em { display: block; color: var(--muted); font-size: 7px; font-style: normal; }
+    .clock strong { display: block; color: var(--green-bright); font-size: 21px; font-weight: 400; letter-spacing: .08em; }
+
+    /* ----- 模式与页面切换栏 ----- */
+    .modebar {
+      min-height: 43px;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: 285px 1fr 210px;
+      border-bottom: 1px solid var(--line);
+      background: #080b09;
+    }
+    .mode-buttons, .surface-buttons { display: flex; }
+    .mode-buttons { border-right: 1px solid var(--line); }
+    .surface-buttons { justify-content: center; }
+    .modebar button {
+      position: relative;
+      padding: 0 23px;
+      border: 0;
+      background: transparent;
+      color: #596558;
+      cursor: pointer;
+      font-size: 8px;
+      letter-spacing: .09em;
+    }
+    .mode-buttons button { flex: 1; padding: 0 8px; }
+    .modebar button:hover, .modebar button.active { color: var(--green-bright); background: rgba(130,153,123,.055); }
+    .modebar button.active::after { content: ""; position: absolute; height: 2px; left: 12px; right: 12px; bottom: 0; background: var(--green); }
+    .offline-badge { align-self: center; justify-self: end; padding: 5px 8px; border: 1px solid #745f36; color: var(--amber); font-size: 7px; letter-spacing: .1em; }
+
+    /* ----- 三栏主布局 ----- */
+    .workspace {
+      min-height: calc(100vh - 143px);
+      display: grid;
+      grid-template-columns: minmax(235px,.72fr) minmax(610px,1.9fr) minmax(285px,.86fr);
+    }
+    .queue, .main-panel, .dossier { min-width: 0; background: rgba(7,11,8,.92); }
+    .queue { max-height: calc(100vh - 143px); overflow: auto; border-right: 1px solid var(--line-strong); }
+    .dossier { max-height: calc(100vh - 143px); overflow: auto; border-left: 1px solid var(--line-strong); }
+    .main-panel { display: flex; flex-direction: column; background: radial-gradient(circle at 50% 45%, rgba(77,102,73,.11), transparent 35rem), #060907; }
+
+    /* ----- 左侧队列 ----- */
+    .queue-head { height: 72px; padding: 13px 15px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .queue-head div { display: flex; align-items: center; gap: 14px; }
+    .queue-head span { color: var(--muted); font-size: 8px; }
+    .queue-head strong { color: var(--red); font-size: 33px; font-weight: 300; }
+    .queue-head em { align-self: end; color: #485248; font-size: 6px; font-style: normal; }
+    .threshold { padding: 12px 15px; border-bottom: 1px solid var(--line); }
+    .threshold label, .threshold small { display: flex; justify-content: space-between; color: var(--muted); font-size: 7px; }
+    .threshold label b { color: var(--green-bright); font-weight: 400; }
+    .threshold input { width: 100%; height: 20px; appearance: none; background: transparent; cursor: pointer; }
+    .threshold input::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(90deg, #7d2927, var(--line-strong)); }
+    .threshold input::-webkit-slider-thumb { appearance: none; width: 8px; height: 14px; margin-top: -6px; border: 1px solid var(--green-bright); background: var(--bg); }
+    .threshold small { color: #465047; font-size: 6px; }
+    .subject-button {
+      width: 100%; min-height: 56px; padding: 0 12px;
+      display: grid; grid-template-columns: 26px 1fr auto; align-items: center;
+      border: 0; border-bottom: 1px solid #202820; background: transparent; text-align: left; cursor: pointer;
+    }
+    .subject-button:hover, .subject-button.active { background: linear-gradient(90deg, rgba(119,143,112,.13), transparent); }
+    .subject-button.active { box-shadow: inset 2px 0 var(--red); }
+    .subject-button.quiet { opacity: .48; }
+    .subject-button .number { color: #4d574c; font-size: 7px; }
+    .subject-button .identity, .subject-button .score { display: flex; flex-direction: column; gap: 4px; }
+    .subject-button .identity b { color: var(--text); font-size: 9px; font-weight: 400; }
+    .subject-button em { color: #596458; font-size: 6px; font-style: normal; }
+    .subject-button .score { align-items: end; }
+    .subject-button .score b { color: var(--red); font-size: 14px; font-weight: 400; }
+    .section { padding: 14px; border-bottom: 1px solid var(--line); }
+    .section-title { margin-bottom: 9px; padding-bottom: 7px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 7px; letter-spacing: .09em; }
+    .section-title em { color: #526052; font-style: normal; }
+    .event-button { width: 100%; padding: 9px 2px; display: grid; grid-template-columns: 45px 1fr auto; gap: 7px; align-items: center; border: 0; border-bottom: 1px dotted #263026; background: transparent; text-align: left; cursor: pointer; }
+    .event-button:hover { background: rgba(120,140,114,.06); }
+    .event-button > span { color: var(--amber); font-size: 7px; }
+    .event-button div { display: flex; flex-direction: column; gap: 3px; }
+    .event-button b { color: #9fa99b; font-size: 7px; font-weight: 400; }
+    .event-button em { color: #515b50; font-size: 6px; font-style: normal; }
+    .event-button strong { color: var(--green); font-size: 9px; font-weight: 400; }
+
+    /* ----- 中间主内容 ----- */
+    .panel-head { height: 72px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .kicker { color: var(--muted); font-size: 7px; letter-spacing: .12em; }
+    .panel-head h2 { margin: 5px 0 0; color: var(--green-bright); font-size: 16px; font-weight: 400; letter-spacing: .15em; }
+    .model-readout { color: #536052; font-size: 6px; text-align: right; line-height: 1.8; }
+    .model-readout b { display: block; color: var(--green); font-weight: 400; }
+    .surface { flex: 1; min-height: 610px; overflow: auto; }
+    .ticker { min-height: 44px; display: grid; grid-template-columns: 55px 1fr; border-top: 1px solid var(--line-strong); background: #070a08; }
+    .ticker > span { display: grid; place-items: center; border-right: 1px solid var(--line); color: var(--amber); font-size: 7px; }
+    .ticker-list { padding: 5px 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px 14px; align-content: center; }
+    .ticker p { margin: 0; overflow: hidden; color: #606b5e; font-size: 6px; white-space: nowrap; text-overflow: ellipsis; }
+    .ticker time { color: #879581; margin-right: 7px; }
+    .ticker b { color: var(--amber); margin-right: 6px; font-weight: 400; }
+
+    /* ----- 曼哈顿 SVG 地图 ----- */
+    .city-view { min-height: 610px; display: grid; grid-template-columns: minmax(430px,1fr) 200px; }
+    .map-wrap { position: relative; min-height: 610px; overflow: hidden; border-right: 1px solid var(--line); background: #070a08; }
+    .map { position: absolute; inset: 0; width: 100%; height: 100%; padding: 6px 3%; }
+    .map-grid { fill: none; stroke: #273027; stroke-width: .45; }
+    .water { fill: none; stroke: #202820; stroke-width: .8; stroke-dasharray: 4 6; }
+    .zone { cursor: pointer; }
+    .zone polygon { fill: var(--green); stroke: #60705d; stroke-width: .8; }
+    .zone:hover polygon, .zone.active polygon { stroke: var(--green-bright); stroke-width: 1.5; }
+    .zone-label { fill: #879582; font-size: 6px; text-anchor: middle; pointer-events: none; }
+    .zone-risk { fill: #b4c0ad; font-size: 5px; text-anchor: middle; pointer-events: none; }
+    .event-link { stroke: rgba(209,173,104,.45); stroke-width: .7; stroke-dasharray: 3 4; }
+    .event-point circle, .event-point path { fill: none; stroke: var(--amber); stroke-width: .8; }
+    .event-point circle:first-child { fill: var(--amber); }
+    .event-point text { fill: var(--amber); font-size: 6px; }
+    .person { cursor: pointer; }
+    .person circle { fill: var(--red); }
+    .person .frame { fill: rgba(217,80,73,.06); stroke: var(--red); stroke-width: 1.2; }
+    .person .selected-frame { fill: none; stroke: var(--green-bright); stroke-width: .65; stroke-dasharray: 2 3; }
+    .person.background circle { fill: #667363; }
+    .person text { fill: #dbe2d4; font-size: 6.5px; }
+    .person .person-score { fill: var(--red); font-size: 5.3px; }
+    .person.background text { fill: #667363; }
+    .scan { position: absolute; z-index: 2; left: 0; right: 0; height: 70px; pointer-events: none; background: linear-gradient(transparent, rgba(153,178,144,.05), transparent); animation: scan 7s linear infinite; }
+    .legend { position: absolute; z-index: 3; right: 10px; bottom: 8px; left: 10px; padding: 7px; display: flex; justify-content: center; gap: 20px; border-top: 1px solid #222b22; background: rgba(5,8,6,.84); color: #5a6559; font-size: 6px; }
+    .legend i { display: inline-block; width: 9px; height: 9px; margin-right: 5px; border: 1px solid var(--red); vertical-align: middle; }
+    .zone-panel { padding: 19px 13px; background: linear-gradient(180deg, rgba(17,23,17,.9), rgba(6,9,7,.85)); }
+    .zone-panel h3 { margin: 7px 0 14px; color: var(--green-bright); font-size: 13px; font-weight: 400; }
+    .big-risk { margin-bottom: 8px; color: var(--text); font-size: 32px; font-weight: 300; }
+    .risk-track { height: 3px; overflow: hidden; background: #202720; }
+    .risk-track span { display: block; height: 100%; background: var(--green); box-shadow: 0 0 6px rgba(145,168,138,.35); }
+    .risk-track span.danger { background: var(--red); }
+    .stats { margin: 18px 0 14px; }
+    .stats div { padding: 8px 0; display: flex; justify-content: space-between; border-bottom: 1px dotted #293129; }
+    .stats dt { color: #566155; font-size: 6px; }
+    .stats dd { margin: 0; color: #a7b2a2; font-size: 7px; }
+    .note { color: #596359; font-size: 6px; line-height: 1.6; }
+    .ranking button { width: 100%; padding: 8px 0; display: grid; grid-template-columns: 22px 1fr auto; border: 0; border-bottom: 1px solid #202720; background: transparent; text-align: left; cursor: pointer; }
+    .ranking button:hover { background: rgba(145,168,138,.05); }
+    .ranking span { color: #4b554a; font-size: 6px; }
+    .ranking b { color: #929d8e; font-size: 7px; font-weight: 400; }
+    .ranking em { color: var(--green); font-size: 7px; font-style: normal; }
+
+    /* ----- Evidence Graph ----- */
+    .network { min-height: 610px; padding: 23px; background-image: linear-gradient(rgba(110,133,104,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(110,133,104,.035) 1px,transparent 1px); background-size: 22px 22px; }
+    .view-title { display: flex; justify-content: space-between; align-items: start; }
+    .view-title h2 { margin: 7px 0 0; color: var(--green-bright); font-size: 17px; font-weight: 400; }
+    .view-title p { max-width: 280px; margin: 0; color: #667162; font-size: 7px; text-align: right; line-height: 1.5; }
+    .network-flow { min-height: 450px; margin-top: 28px; display: grid; grid-template-columns: minmax(180px,1.2fr) 32px minmax(140px,.8fr) 32px minmax(180px,1fr); align-items: center; gap: 7px; }
+    .column-label { margin-bottom: 8px; color: #596457; font-size: 6px; letter-spacing: .11em; }
+    .records { display: grid; gap: 7px; }
+    .node { position: relative; padding: 10px; border: 1px solid var(--line); background: rgba(12,17,13,.95); }
+    .node > span { color: var(--amber); font-size: 6px; }
+    .node h3 { margin: 7px 0 5px; color: #d0d7ca; font-size: 11px; font-weight: 400; }
+    .node p { margin: 4px 0; color: #8f9a8c; font-size: 7px; line-height: 1.4; }
+    .node small { color: #4c574c; font-size: 6px; }
+    .record-node b { float: right; color: #74816f; font-size: 7px; font-weight: 400; }
+    .entity-node { padding: 20px 11px; text-align: center; border-color: #61715e; }
+    .avatar { width: 56px; height: 56px; margin: 12px auto; display: grid; place-items: center; border: 1px solid var(--red); color: var(--red); font-size: 16px; }
+    .entity-node strong { color: var(--red); font-size: 9px; font-weight: 400; }
+    .event-node { border-color: #796641; }
+    .event-node strong { color: var(--amber); font-size: 9px; font-weight: 400; }
+    .arrow { color: #526150; font-size: 19px; text-align: center; }
+    .role-row { padding: 7px 0; display: flex; justify-content: space-between; border-bottom: 1px dotted #273027; color: #929d8f; font-size: 7px; }
+    .role-row em { color: var(--green); font-style: normal; }
+
+    /* ----- Model Core ----- */
+    .model { min-height: 610px; padding: 23px; }
+    .pipeline { margin: 25px 0 19px; display: grid; grid-template-columns: repeat(6,1fr); border: 1px solid var(--line); }
+    .pipeline div { position: relative; min-height: 55px; padding: 9px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--line); }
+    .pipeline div:last-child { border: 0; }
+    .pipeline span { color: #4f5a4d; font-size: 6px; }
+    .pipeline b { margin-top: 7px; color: var(--green); font-size: 7px; font-weight: 400; }
+    .formula-grid { display: grid; grid-template-columns: repeat(2,1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .formula { min-height: 132px; padding: 15px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .formula h3 { margin: 0; color: #9ca896; font-size: 8px; font-weight: 400; }
+    .formula code { margin: 16px 0 12px; display: block; color: var(--green-bright); font-family: "Cambria Math", Georgia, serif; font-size: 14px; }
+    .formula p { margin: 0; color: #596457; font-size: 7px; line-height: 1.5; }
+    .metrics { margin-top: 19px; padding: 12px; display: grid; grid-template-columns: 1fr 1.4fr; align-items: center; border: 1px solid #655638; }
+    .metrics p { color: #706850; font-size: 7px; line-height: 1.4; }
+    .metrics dl { display: grid; grid-template-columns: repeat(5,1fr); margin: 0; }
+    .metrics dl div { text-align: center; border-left: 1px solid #3b3525; }
+    .metrics dt { color: #6b6655; font-size: 6px; }
+    .metrics dd { margin: 6px 0 0; color: #c8b88e; font-size: 13px; }
+
+    /* ----- 右侧人物档案 ----- */
+    .dossier-head { min-height: 93px; padding: 14px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); background: linear-gradient(100deg, rgba(217,80,73,.07), transparent 60%); }
+    .dossier-head span { color: var(--muted); font-size: 6px; }
+    .dossier-head h2 { margin: 7px 0 4px; color: #d7ddcf; font-size: 16px; font-weight: 400; }
+    .dossier-head p { margin: 0; color: #5b665a; font-size: 6px; }
+    .stamp { align-self: start; padding: 4px 6px; border: 1px solid var(--red); color: var(--red); font-size: 6px; letter-spacing: .11em; }
+    .score-block { padding: 15px 13px; display: grid; grid-template-columns: 92px 1fr; gap: 13px; border-bottom: 1px solid var(--line); }
+    .score-ring { width: 84px; height: 84px; padding: 5px; display: grid; place-items: center; border-radius: 50%; background: conic-gradient(var(--red) var(--score), #202720 0); }
+    .score-ring div { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; background: var(--panel); }
+    .score-ring strong { color: #e0e4da; font-size: 21px; font-weight: 300; }
+    .score-ring span { color: #677161; font-size: 5px; }
+    .score-block dl { margin: 0; }
+    .score-block dl div { padding: 5px 0; display: flex; justify-content: space-between; border-bottom: 1px dotted #242c24; }
+    .score-block dt { color: #566155; font-size: 6px; }
+    .score-block dd { margin: 0; color: #a7b1a2; font-size: 6px; }
+    .redacted { position: relative; margin: 10px 0 6px; padding: 7px; overflow: hidden; text-align: center; color: #606a5d; font-size: 8px; }
+    .redacted::after { content: ""; position: absolute; inset: 5px 0; background: repeating-linear-gradient(90deg,#343c34 0 7px,#161c17 7px 9px); }
+    .withheld { margin: 0; color: #84302d; font-size: 6px; text-align: center; }
+    .bar-row { min-height: 23px; display: grid; grid-template-columns: 78px 1fr 29px; align-items: center; gap: 7px; }
+    .bar-row label { color: #8e998a; font-size: 6px; }
+    .bar-row b { color: #aeb8aa; font-size: 6px; font-weight: 400; text-align: right; }
+    .evidence { padding: 8px 0; border-bottom: 1px dotted #283128; }
+    .evidence div { display: flex; justify-content: space-between; color: var(--amber); font-size: 6px; }
+    .evidence p { margin: 5px 0; color: #919b8e; font-size: 7px; line-height: 1.4; }
+    .evidence small { color: #4c564b; font-size: 6px; }
+
+    .footer { min-height: 25px; padding: 6px 14px; display: flex; justify-content: space-between; align-items: center; color: #465045; font-size: 6px; background: #050706; }
+    .footer b { color: var(--amber); font-weight: 400; }
+
+    @keyframes pulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+    @keyframes scan { from { top:-80px; } to { top:100%; } }
+
+    /* ----- 小屏幕：三栏自动改为纵向 ----- */
+    @media (max-width: 1020px) {
+      .workspace { grid-template-columns: 220px minmax(560px,1fr); }
+      .dossier { grid-column: 1/-1; max-height: none; border-left: 0; border-top: 1px solid var(--line-strong); }
+      .queue { max-height: none; }
+    }
+    @media (max-width: 800px) {
+      .topbar { grid-template-columns: 1fr auto; padding: 0 13px; }
+      .online { display: none; }
+      .brand h1 { font-size: 15px; }
+      .clock span, .clock em { display: none; }
+      .modebar { display: block; padding: 0; }
+      .mode-buttons, .surface-buttons { height: 38px; border-bottom: 1px solid var(--line); }
+      .offline-badge { display: none; }
+      .workspace { display: block; }
+      .subject-list { display: grid; grid-template-columns: repeat(2,1fr); }
+      .main-panel { border-top: 1px solid var(--line-strong); }
+      .city-view { display: block; }
+      .map-wrap { min-height: 630px; border-right: 0; }
+      .zone-panel { display: none; }
+      .network-flow { display: block; }
+      .arrow { padding: 9px; transform: rotate(90deg); }
+      .pipeline { grid-template-columns: repeat(3,1fr); }
+      .formula-grid { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: 1fr; gap: 10px; }
+      .footer { align-items: start; gap: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ================================================================
+       PART 3 / HTML 固定骨架
+       JavaScript 会把人物列表、主画面和档案分别填入三个空容器。
+       ================================================================ -->
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div><h1>THE MACHINE</h1><p>MANHATTAN // OFFLINE SIMULATION</p></div>
+      </div>
+      <div class="online"><i></i> SYSTEM ONLINE · LOCAL FILE</div>
+      <div class="clock"><span>SIMULATION TIME</span><strong>21:40:00</strong><em>13 AUG 2026 / NYC</em></div>
+    </header>
+
+    <div class="modebar">
+      <div class="mode-buttons">
+        <button data-mode="machine">MACHINE VIEW</button>
+        <button data-mode="analyst">ANALYST VIEW</button>
+      </div>
+      <nav class="surface-buttons" aria-label="页面切换">
+        <button data-surface="city">01 / CITY GRID</button>
+        <button data-surface="network">02 / EVIDENCE GRAPH</button>
+        <button data-surface="model">03 / MODEL CORE</button>
+      </nav>
+      <div class="offline-badge">OFFLINE · SINGLE HTML</div>
+    </div>
+
+    <div class="workspace">
+      <aside id="queue" class="queue" aria-label="人物与事件列表"></aside>
+      <section class="main-panel">
+        <header id="panel-head" class="panel-head"></header>
+        <div id="surface" class="surface"></div>
+        <footer id="ticker" class="ticker"></footer>
+      </section>
+      <aside id="dossier" class="dossier" aria-label="人物档案"></aside>
+    </div>
+
+    <footer class="footer">
+      <span><b>FICTIONAL SYSTEM</b> · ALL IDENTITIES, RECORDS AND INCIDENTS ARE SYNTHETIC</span>
+      <span>NO SERVER · NO ACCOUNT · NO NETWORK REQUESTS</span>
+    </footer>
+  </div>
+
+  <script>
+    /* ================================================================
+       PART 4 / 内嵌数据
+       构建脚本会把 machine-output.json 放在下面这个位置。
+       最终生成的 HTML 中，这里会是一整个普通 JavaScript 对象。
+       ================================================================ */
+    const MACHINE_DATA = {"meta":{"title":"The Machine: Manhattan","model_version":"transparent-baseline-v0.1","scenario_time":"2026-08-13T21:40:00-04:00","threshold":0.62,"synthetic":true,"disclaimer":"All identities, records, incidents, and scores are fictional. Educational simulation only."},"people":[{"id":"P-063","name":"Julian Sayer","code":"SAYER, J.","occupation":"Financial analyst","home_zone":"Midtown","baseline_mobility":0.48,"event_id":"EV-208","event_title":"Ledger extraction","zone":"Financial District","location":"Nassau St / Cedar St","coordinates":[212,691],"involvement":0.9794,"status":"relevant","roles":{"perpetrator":0.7468,"victim":0.1045,"ambiguous":0.1486},"crime_types":{"robbery":0.0913,"assault":0.0352,"abduction":0.0273,"fraud":0.8462},"confidence":0.5825,"role_uncertainty":0.6712,"imminence_minutes":145,"features":{"intent":0.9073,"capability":0.4724,"proximity":0.6096,"coordination":0.8974,"vulnerability":0.4446,"threat":0.0,"financial":0.9291,"mobility":0.5225,"anomaly":0.8671},"explanations":[{"feature":"intent","label":"Intent signal","value":0.191,"record_ids":["NET-802","FIN-529","MSG-171"]},{"feature":"coordination","label":"Coordination pattern","value":0.14,"record_ids":["FIN-529","MSG-171"]},{"feature":"imminence","label":"Event imminence","value":0.1147,"record_ids":[]},{"feature":"proximity","label":"Spatiotemporal overlap","value":0.1141,"record_ids":["LOC-934"]},{"feature":"anomaly","label":"Baseline anomaly","value":0.0879,"record_ids":["NET-802","FIN-529","LOC-934"]}],"evidence":[{"id":"LOC-934","source":"location","timestamp":"2026-08-13T21:24:00-04:00","summary":"Office device appears downtown outside normal hours","detail":"Twenty-four week baseline has no comparable visit","reliability":0.76},{"id":"MSG-171","source":"message","timestamp":"2026-08-13T20:46:00-04:00","summary":"Requests physical drive and confirms deadline","detail":"Message: \"Midnight. Local copy first, then the account clears.\"","reliability":0.91},{"id":"FIN-529","source":"finance","timestamp":"2026-08-13T17:38:00-04:00","summary":"New shell account receives test deposits","detail":"Three transfers below internal review threshold","reliability":0.9},{"id":"NET-802","source":"network","timestamp":"2026-08-13T13:26:00-04:00","summary":"Encrypted archive staged for timed transfer","detail":"Outbound bundle contains synthetic ledger fragments","reliability":0.95}]},{"id":"P-044","name":"Noah Vale","code":"VALE, N.","occupation":"Building technician","home_zone":"Harlem","baseline_mobility":0.58,"event_id":"EV-113","event_title":"Canal service corridor","zone":"SoHo","location":"Canal St / Greene St","coordinates":[216,587],"involvement":0.9632,"status":"relevant","roles":{"perpetrator":0.8443,"victim":0.0441,"ambiguous":0.1117},"crime_types":{"robbery":0.1103,"assault":0.2143,"abduction":0.6107,"fraud":0.0647},"confidence":0.6268,"role_uncertainty":0.4782,"imminence_minutes":90,"features":{"intent":0.8812,"capability":0.7985,"proximity":0.916,"coordination":0.6512,"vulnerability":0.0,"threat":0.3038,"financial":0.0,"mobility":0.5322,"anomaly":0.8612},"explanations":[{"feature":"intent","label":"Intent signal","value":0.2046,"record_ids":["ACS-601","MSG-148","LOC-919"]},{"feature":"proximity","label":"Spatiotemporal overlap","value":0.1891,"record_ids":["ACS-601","MSG-148","LOC-919"]},{"feature":"capability","label":"Capability access","value":0.1579,"record_ids":["ACS-601","PUR-417"]},{"feature":"imminence","label":"Event imminence","value":0.1473,"record_ids":[]},{"feature":"coordination","label":"Coordination pattern","value":0.112,"record_ids":["MSG-148"]}],"evidence":[{"id":"LOC-919","source":"location","timestamp":"2026-08-13T21:17:00-04:00","summary":"Vehicle idles near the service ramp","detail":"Fourteen-minute dwell with engine running","reliability":0.79},{"id":"MSG-148","source":"message","timestamp":"2026-08-13T20:21:00-04:00","summary":"Instructions reference lower loading entrance","detail":"Message: \"Keep the corridor clear. Van takes the lower ramp.\"","reliability":0.87},{"id":"ACS-601","source":"access","timestamp":"2026-08-13T16:52:00-04:00","summary":"Service-corridor badge cloned outside shift","detail":"Two denied entries followed by a successful entry","reliability":0.92},{"id":"PUR-417","source":"purchase","timestamp":"2026-08-13T12:37:00-04:00","summary":"Work order includes cable ties and opaque sheeting","detail":"Items inconsistent with assigned maintenance call","reliability":0.78}]},{"id":"P-052","name":"Mika Rowe","code":"ROWE, M.","occupation":"Nonprofit bookkeeper","home_zone":"Greenwich Village","baseline_mobility":0.22,"event_id":"EV-208","event_title":"Ledger extraction","zone":"Financial District","location":"Nassau St / Cedar St","coordinates":[178,675],"involvement":0.9576,"status":"relevant","roles":{"perpetrator":0.1129,"victim":0.7228,"ambiguous":0.1643},"crime_types":{"robbery":0.0898,"assault":0.0449,"abduction":0.0186,"fraud":0.8467},"confidence":0.5915,"role_uncertainty":0.7078,"imminence_minutes":145,"features":{"intent":0.0,"capability":0.5717,"proximity":0.7179,"coordination":0.0,"vulnerability":0.9787,"threat":0.6185,"financial":0.9157,"mobility":0.4786,"anomaly":0.8169},"explanations":[{"feature":"vulnerability","label":"Target vulnerability","value":0.2158,"record_ids":["EML-710","ACS-622","TRN-256","MSG-159"]},{"feature":"proximity","label":"Spatiotemporal overlap","value":0.152,"record_ids":["TRN-256"]},{"feature":"imminence","label":"Event imminence","value":0.1297,"record_ids":[]},{"feature":"capability","label":"Capability access","value":0.116,"record_ids":["ACS-622"]},{"feature":"threat","label":"Threat language","value":0.0982,"record_ids":["MSG-159"]}],"evidence":[{"id":"MSG-159","source":"message","timestamp":"2026-08-13T21:11:00-04:00","summary":"Sender pressures subject to bring the only local copy","detail":"Message: \"Bring the drive. Do not upload it.\"","reliability":0.82},{"id":"TRN-256","source":"transit","timestamp":"2026-08-13T21:02:00-04:00","summary":"Heads downtown after being summoned by a supervisor alias","detail":"Tap-in aligns with Nassau Street arrival window","reliability":0.91},{"id":"ACS-622","source":"access","timestamp":"2026-08-13T19:44:00-04:00","summary":"Credentials rejected after an unrequested password reset","detail":"Synthetic audit log: five failed sign-ins","reliability":0.94},{"id":"EML-710","source":"email","timestamp":"2026-08-13T16:09:00-04:00","summary":"Reports a ledger discrepancy to a private address","detail":"Attachment hash matches the altered grant ledger","reliability":0.88}]},{"id":"P-024","name":"Darius Cole","code":"COLE, D.","occupation":"Independent courier","home_zone":"Lower East Side","baseline_mobility":0.71,"event_id":"EV-042","event_title":"23rd Street handoff","zone":"Chelsea","location":"W 23rd St / 10th Ave","coordinates":[185,468],"involvement":0.9566,"status":"relevant","roles":{"perpetrator":0.8043,"victim":0.0538,"ambiguous":0.1419},"crime_types":{"robbery":0.4796,"assault":0.2312,"abduction":0.1692,"fraud":0.12},"confidence":0.5893,"role_uncertainty":0.5547,"imminence_minutes":45,"features":{"intent":0.8427,"capability":0.5646,"proximity":0.8755,"coordination":0.8364,"vulnerability":0.0,"threat":0.0,"financial":0.3513,"mobility":0.5324,"anomaly":0.8298},"explanations":[{"feature":"intent","label":"Intent signal","value":0.2016,"record_ids":["MSG-119","LOC-902","FIN-507"]},{"feature":"proximity","label":"Spatiotemporal overlap","value":0.1862,"record_ids":["MSG-119","LOC-902"]},{"feature":"imminence","label":"Event imminence","value":0.172,"record_ids":[]},{"feature":"coordination","label":"Coordination pattern","value":0.1482,"record_ids":["PUR-401","MSG-119","FIN-507"]},{"feature":"capability","label":"Capability access","value":0.115,"record_ids":["PUR-401"]}],"evidence":[{"id":"LOC-902","source":"location","timestamp":"2026-08-13T21:26:00-04:00","summary":"Three short stops around the same block","detail":"Synthetic device pings form a surveillance loop","reliability":0.77},{"id":"MSG-119","source":"message","timestamp":"2026-08-13T20:07:00-04:00","summary":"Coordinates and exit timing exchanged","detail":"Message: \"West door. 22:25. Two minutes, then gone.\"","reliability":0.89},{"id":"PUR-401","source":"purchase","timestamp":"2026-08-13T15:42:00-04:00","summary":"Cash purchase of a prepaid handset","detail":"Corner electronics receipt; device activated 16:03","reliability":0.81},{"id":"FIN-507","source":"finance","timestamp":"2026-08-12T23:16:00-04:00","summary":"Courier account receives an unusual cash-equivalent transfer","detail":"$640 equivalent from a dormant sender","reliability":0.86}]},{"id":"P-017","name":"Lena Ortiz","code":"ORTIZ, L.","occupation":"Night pharmacist","home_zone":"Chelsea","baseline_mobility":0.34,"event_id":"EV-042","event_title":"23rd Street handoff","zone":"Chelsea","location":"W 23rd St / 10th Ave","coordinates":[151,451],"involvement":0.8635,"status":"relevant","roles":{"perpetrator":0.0452,"victim":0.7866,"ambiguous":0.1682},"crime_types":{"robbery":0.4039,"assault":0.4025,"abduction":0.1094,"fraud":0.0842},"confidence":0.6181,"role_uncertainty":0.5721,"imminence_minutes":45,"features":{"intent":0.0,"capability":0.0,"proximity":0.9624,"coordination":0.0,"vulnerability":0.8215,"threat":0.5561,"financial":0.0,"mobility":0.4991,"anomaly":0.757},"explanations":[{"feature":"proximity","label":"Spatiotemporal overlap","value":0.2628,"record_ids":["TRN-221","CAM-881","CAL-310"]},{"feature":"vulnerability","label":"Target vulnerability","value":0.2337,"record_ids":["MSG-104","CAM-881"]},{"feature":"imminence","label":"Event imminence","value":0.2209,"record_ids":[]},{"feature":"threat","label":"Threat language","value":0.1139,"record_ids":["MSG-104"]},{"feature":"anomaly","label":"Baseline anomaly","value":0.112,"record_ids":["MSG-104","TRN-221","CAL-310"]}],"evidence":[{"id":"CAM-881","source":"camera","timestamp":"2026-08-13T21:31:00-04:00","summary":"Subject enters the projected event radius","detail":"Synthetic camera hit at W 22nd Street","reliability":0.72},{"id":"TRN-221","source":"transit","timestamp":"2026-08-13T20:55:00-04:00","summary":"Usual train replaced by a late westbound bus","detail":"Route diverges 2.8 km from twelve-week baseline","reliability":0.96},{"id":"MSG-104","source":"message","timestamp":"2026-08-13T19:18:00-04:00","summary":"Unrecognized sender asks whether she closes alone","detail":"Message: \"Still closing by yourself tonight?\"","reliability":0.84},{"id":"CAL-310","source":"calendar","timestamp":"2026-08-13T17:04:00-04:00","summary":"Closing shift extended by forty minutes","detail":"Staffing schedule edit places subject near event window","reliability":0.91}]},{"id":"P-086","name":"Isaac Reed","code":"REED, I.","occupation":"Paramedic","home_zone":"Upper East Side","baseline_mobility":0.76,"event_id":"EV-305","event_title":"Columbus Circle intercept","zone":"Midtown","location":"W 59th St / 8th Ave","coordinates":[160,309],"involvement":0.86,"status":"relevant","roles":{"perpetrator":0.0362,"victim":0.8103,"ambiguous":0.1535},"crime_types":{"robbery":0.254,"assault":0.5613,"abduction":0.1154,"fraud":0.0693},"confidence":0.6486,"role_uncertainty":0.5264,"imminence_minutes":220,"features":{"intent":0.0,"capability":0.0,"proximity":0.9376,"coordination":0.0,"vulnerability":0.929,"threat":0.587,"financial":0.0,"mobility":0.6766,"anomaly":0.9462},"explanations":[{"feature":"vulnerability","label":"Target vulnerability","value":0.266,"record_ids":["DSP-010","MSG-196","CAL-344"]},{"feature":"proximity","label":"Spatiotemporal overlap","value":0.2578,"record_ids":["DSP-010","LOC-949"]},{"feature":"anomaly","label":"Baseline anomaly","value":0.1409,"record_ids":["DSP-010","MSG-196","LOC-949","CAL-344"]},{"feature":"imminence","label":"Event imminence","value":0.1368,"record_ids":[]},{"feature":"threat","label":"Threat language","value":0.121,"record_ids":["MSG-196"]}],"evidence":[{"id":"LOC-949","source":"location","timestamp":"2026-08-13T21:29:00-04:00","summary":"Dispatch route converges on projected event point","detail":"Synthetic AVL coordinate within 340 m","reliability":0.97},{"id":"DSP-010","source":"dispatch","timestamp":"2026-08-13T21:14:00-04:00","summary":"Anonymous medical call redirects ambulance unit","detail":"Caller disconnects before triage completes","reliability":0.89},{"id":"MSG-196","source":"message","timestamp":"2026-08-13T20:58:00-04:00","summary":"Unknown sender claims to know the unit route","detail":"Message: \"Unit 14 will reach the circle first.\"","reliability":0.79},{"id":"CAL-344","source":"calendar","timestamp":"2026-08-13T18:22:00-04:00","summary":"Shift swap places subject in Unit 14","detail":"Change approved by a newly created account","reliability":0.85}]},{"id":"P-031","name":"Evelyn Park","code":"PARK, E.","occupation":"Archive researcher","home_zone":"Upper West Side","baseline_mobility":0.29,"event_id":"EV-113","event_title":"Canal service corridor","zone":"SoHo","location":"Canal St / Greene St","coordinates":[179,574],"involvement":0.8588,"status":"relevant","roles":{"perpetrator":0.0471,"victim":0.8012,"ambiguous":0.1517},"crime_types":{"robbery":0.1294,"assault":0.3851,"abduction":0.4207,"fraud":0.0647},"confidence":0.5921,"role_uncertainty":0.553,"imminence_minutes":90,"features":{"intent":0.0,"capability":0.0,"proximity":0.8488,"coordination":0.0,"vulnerability":0.8596,"threat":0.761,"financial":0.0,"mobility":0.478,"anomaly":0.7409},"explanations":[{"feature":"vulnerability","label":"Target vulnerability","value":0.2467,"record_ids":["MSG-133","CAL-328","CAM-894"]},{"feature":"proximity","label":"Spatiotemporal overlap","value":0.2339,"record_ids":["TRN-240","CAL-328"]},{"feature":"imminence","label":"Event imminence","value":0.1967,"record_ids":[]},{"feature":"threat","label":"Threat language","value":0.1573,"record_ids":["MSG-133","CAM-894"]},{"feature":"anomaly","label":"Baseline anomaly","value":0.1106,"record_ids":["MSG-133","TRN-240","CAL-328"]}],"evidence":[{"id":"CAM-894","source":"camera","timestamp":"2026-08-13T21:34:00-04:00","summary":"Same dark vehicle appears in two nonadjacent locations","detail":"Synthetic plate token repeats behind subject","reliability":0.68},{"id":"TRN-240","source":"transit","timestamp":"2026-08-13T20:48:00-04:00","summary":"Ride-share destination changed to Canal Street","detail":"Destination entered after a cancelled subway trip","reliability":0.93},{"id":"MSG-133","source":"message","timestamp":"2026-08-13T18:03:00-04:00","summary":"Anonymous warning references a private archive visit","detail":"Message: \"The Canal files were never yours to read.\"","reliability":0.83},{"id":"CAL-328","source":"calendar","timestamp":"2026-08-13T14:11:00-04:00","summary":"Meeting added by an unknown external address","detail":"Invitation title: ARCHIVE RETURN / 23:00","reliability":0.74}]},{"id":"P-078","name":"Tasha Bell","code":"BELL, T.","occupation":"Restaurant manager","home_zone":"SoHo","baseline_mobility":0.55,"event_id":"EV-305","event_title":"Columbus Circle intercept","zone":"Midtown","location":"W 59th St / 8th Ave","coordinates":[198,330],"involvement":0.3777,"status":"background","roles":{"perpetrator":0.1821,"victim":0.3912,"ambiguous":0.4267},"crime_types":{"robbery":0.33,"assault":0.43,"abduction":0.15,"fraud":0.09},"confidence":0.4251,"role_uncertainty":0.9473,"imminence_minutes":220,"features":{"intent":0.0,"capability":0.0,"proximity":0.8067,"coordination":0.0,"vulnerability":0.0,"threat":0.0,"financial":0.0,"mobility":0.4151,"anomaly":0.4279},"explanations":[{"feature":"proximity","label":"Spatiotemporal overlap","value":0.4721,"record_ids":["RES-901","TRN-271"]},{"feature":"imminence","label":"Event imminence","value":0.2911,"record_ids":[]},{"feature":"anomaly","label":"Baseline anomaly","value":0.1356,"record_ids":["RES-901","MSG-182"]},{"feature":"mobility","label":"Mobility deviation","value":0.1012,"record_ids":["MSG-182"]},{"feature":"intent","label":"Intent signal","value":0.0,"record_ids":[]}],"evidence":[{"id":"MSG-182","source":"message","timestamp":"2026-08-13T21:07:00-04:00","summary":"Asks coworker to cover the closing shift","detail":"Message: \"Running late—can you lock up?\"","reliability":0.77},{"id":"TRN-271","source":"transit","timestamp":"2026-08-13T20:38:00-04:00","summary":"Bus route passes event radius","detail":"Route is common for this subject","reliability":0.92},{"id":"RES-901","source":"reservation","timestamp":"2026-08-13T18:54:00-04:00","summary":"Last-minute table cancellation near Columbus Circle","detail":"Manager handles a routine cancellation","reliability":0.73}]},{"id":"P-099","name":"Elias North","code":"NORTH, E.","occupation":"Graduate student","home_zone":"Inwood","baseline_mobility":0.41,"event_id":"EV-042","event_title":"23rd Street handoff","zone":"Chelsea","location":"W 23rd St / 10th Ave","coordinates":[166,458],"involvement":0.1709,"status":"background","roles":{"perpetrator":0.2584,"victim":0.3156,"ambiguous":0.426},"crime_types":{"robbery":0.48,"assault":0.29,"abduction":0.13,"fraud":0.1},"confidence":0.0055,"role_uncertainty":0.9805,"imminence_minutes":45,"features":{"intent":0.0,"capability":0.0,"proximity":0.0,"coordination":0.0,"vulnerability":0.0,"threat":0.0,"financial":0.0,"mobility":0.0,"anomaly":0.0},"explanations":[{"feature":"imminence","label":"Event imminence","value":1.0,"record_ids":[]},{"feature":"intent","label":"Intent signal","value":0.0,"record_ids":[]},{"feature":"capability","label":"Capability access","value":0.0,"record_ids":[]},{"feature":"proximity","label":"Spatiotemporal overlap","value":0.0,"record_ids":[]},{"feature":"coordination","label":"Coordination pattern","value":0.0,"record_ids":[]}],"evidence":[]}],"events":[{"id":"EV-208","title":"Ledger extraction","zone":"Financial District","location":"Nassau St / Cedar St","coordinates":[194,682],"starts_at":"2026-08-14T00:05:00-04:00","type_prior":{"robbery":0.11,"assault":0.08,"abduction":0.04,"fraud":0.77},"risk":0.9971,"imminence":0.6685,"imminence_minutes":145,"participants":["P-052","P-063"],"signal_count":9,"crime_types":{"robbery":0.0971,"assault":0.0534,"abduction":0.0287,"fraud":0.8208}},{"id":"EV-113","title":"Canal service corridor","zone":"SoHo","location":"Canal St / Greene St","coordinates":[196,579],"starts_at":"2026-08-13T23:10:00-04:00","type_prior":{"robbery":0.16,"assault":0.24,"abduction":0.52,"fraud":0.08},"risk":0.9843,"imminence":0.7788,"imminence_minutes":90,"participants":["P-031","P-044"],"signal_count":10,"crime_types":{"robbery":0.1349,"assault":0.2738,"abduction":0.5207,"fraud":0.0706}},{"id":"EV-042","title":"23rd Street handoff","zone":"Chelsea","location":"W 23rd St / 10th Ave","coordinates":[166,458],"starts_at":"2026-08-13T22:25:00-04:00","type_prior":{"robbery":0.48,"assault":0.29,"abduction":0.13,"fraud":0.1},"risk":0.983,"imminence":0.8825,"imminence_minutes":45,"participants":["P-017","P-024"],"signal_count":8,"crime_types":{"robbery":0.4586,"assault":0.3033,"abduction":0.1364,"fraud":0.1018}},{"id":"EV-305","title":"Columbus Circle intercept","zone":"Midtown","location":"W 59th St / 8th Ave","coordinates":[178,318],"starts_at":"2026-08-14T01:20:00-04:00","type_prior":{"robbery":0.33,"assault":0.43,"abduction":0.15,"fraud":0.09},"risk":0.7997,"imminence":0.5427,"imminence_minutes":220,"participants":["P-086"],"signal_count":7,"crime_types":{"robbery":0.299,"assault":0.4836,"abduction":0.1359,"fraud":0.0815}}],"zones":[{"id":"inwood","name":"Inwood","centroid":[214,66],"polygon":[[184,34],[252,48],[254,95],[178,103]],"background":0.08,"risk":0.0708,"trend":"quiet","contributors":[]},{"id":"harlem","name":"Harlem","centroid":[211,137],"polygon":[[178,103],[254,95],[271,166],[162,174]],"background":0.11,"risk":0.1305,"trend":"quiet","contributors":[]},{"id":"upper-west","name":"Upper West Side","centroid":[181,231],"polygon":[[162,174],[214,170],[218,293],[145,303]],"background":0.07,"risk":0.273,"trend":"stable","contributors":["EV-305"]},{"id":"upper-east","name":"Upper East Side","centroid":[246,229],"polygon":[[214,170],[271,166],[286,282],[218,293]],"background":0.06,"risk":0.2143,"trend":"stable","contributors":["EV-305"]},{"id":"midtown","name":"Midtown","centroid":[215,344],"polygon":[[145,303],[286,282],[277,399],[151,411]],"background":0.13,"risk":0.5194,"trend":"rising","contributors":["EV-042","EV-305"]},{"id":"chelsea","name":"Chelsea","centroid":[174,451],"polygon":[[151,411],[215,405],[214,493],[137,502]],"background":0.1,"risk":0.6892,"trend":"rising","contributors":["EV-042","EV-113","EV-305"]},{"id":"greenwich","name":"Greenwich Village","centroid":[210,522],"polygon":[[214,493],[268,488],[274,548],[160,558],[137,502]],"background":0.09,"risk":0.7083,"trend":"rising","contributors":["EV-042","EV-113","EV-208"]},{"id":"soho","name":"SoHo","centroid":[200,580],"polygon":[[160,558],[274,548],[262,606],[151,615]],"background":0.12,"risk":0.7283,"trend":"rising","contributors":["EV-042","EV-113","EV-208"]},{"id":"lower-east","name":"Lower East Side","centroid":[246,625],"polygon":[[210,609],[262,606],[273,659],[218,665]],"background":0.14,"risk":0.6579,"trend":"rising","contributors":["EV-042","EV-113","EV-208"]},{"id":"financial","name":"Financial District","centroid":[195,680],"polygon":[[151,615],[210,609],[218,665],[202,724],[158,694]],"background":0.09,"risk":0.6326,"trend":"rising","contributors":["EV-113","EV-208"]}],"timeline":[{"id":"CAM-894","timestamp":"2026-08-13T21:34:00-04:00","source":"camera","person_id":"P-031","event_id":"EV-113","summary":"Same dark vehicle appears in two nonadjacent locations"},{"id":"CAM-881","timestamp":"2026-08-13T21:31:00-04:00","source":"camera","person_id":"P-017","event_id":"EV-042","summary":"Subject enters the projected event radius"},{"id":"LOC-949","timestamp":"2026-08-13T21:29:00-04:00","source":"location","person_id":"P-086","event_id":"EV-305","summary":"Dispatch route converges on projected event point"},{"id":"LOC-902","timestamp":"2026-08-13T21:26:00-04:00","source":"location","person_id":"P-024","event_id":"EV-042","summary":"Three short stops around the same block"},{"id":"LOC-934","timestamp":"2026-08-13T21:24:00-04:00","source":"location","person_id":"P-063","event_id":"EV-208","summary":"Office device appears downtown outside normal hours"},{"id":"LOC-919","timestamp":"2026-08-13T21:17:00-04:00","source":"location","person_id":"P-044","event_id":"EV-113","summary":"Vehicle idles near the service ramp"},{"id":"DSP-010","timestamp":"2026-08-13T21:14:00-04:00","source":"dispatch","person_id":"P-086","event_id":"EV-305","summary":"Anonymous medical call redirects ambulance unit"},{"id":"MSG-159","timestamp":"2026-08-13T21:11:00-04:00","source":"message","person_id":"P-052","event_id":"EV-208","summary":"Sender pressures subject to bring the only local copy"},{"id":"MSG-182","timestamp":"2026-08-13T21:07:00-04:00","source":"message","person_id":"P-078","event_id":"EV-305","summary":"Asks coworker to cover the closing shift"},{"id":"TRN-256","timestamp":"2026-08-13T21:02:00-04:00","source":"transit","person_id":"P-052","event_id":"EV-208","summary":"Heads downtown after being summoned by a supervisor alias"},{"id":"MSG-196","timestamp":"2026-08-13T20:58:00-04:00","source":"message","person_id":"P-086","event_id":"EV-305","summary":"Unknown sender claims to know the unit route"},{"id":"TRN-221","timestamp":"2026-08-13T20:55:00-04:00","source":"transit","person_id":"P-017","event_id":"EV-042","summary":"Usual train replaced by a late westbound bus"},{"id":"TRN-240","timestamp":"2026-08-13T20:48:00-04:00","source":"transit","person_id":"P-031","event_id":"EV-113","summary":"Ride-share destination changed to Canal Street"},{"id":"MSG-171","timestamp":"2026-08-13T20:46:00-04:00","source":"message","person_id":"P-063","event_id":"EV-208","summary":"Requests physical drive and confirms deadline"},{"id":"TRN-271","timestamp":"2026-08-13T20:38:00-04:00","source":"transit","person_id":"P-078","event_id":"EV-305","summary":"Bus route passes event radius"},{"id":"MSG-148","timestamp":"2026-08-13T20:21:00-04:00","source":"message","person_id":"P-044","event_id":"EV-113","summary":"Instructions reference lower loading entrance"},{"id":"TRN-289","timestamp":"2026-08-13T20:14:00-04:00","source":"transit","person_id":"P-099","event_id":"EV-113","summary":"Normal commute remains in Upper Manhattan"},{"id":"MSG-119","timestamp":"2026-08-13T20:07:00-04:00","source":"message","person_id":"P-024","event_id":"EV-042","summary":"Coordinates and exit timing exchanged"}],"metrics":{"precision":1.0,"recall":1.0,"f1":1.0,"brier":0.0242,"role_accuracy":1.0,"confusion":{"tp":7,"fp":0,"fn":0,"tn":29},"evaluated_pairs":36,"note":"Metrics are measured only against the synthetic scenario ground truth."}};
+
+    /* ================================================================
+       PART 5 / 页面状态与渲染函数
+       state 记录“用户当前选中了什么”；renderAll 根据 state 重画页面。
+       ================================================================ */
+    const state = {
+      mode: "machine",
+      surface: "city",
+      threshold: MACHINE_DATA.meta.threshold,
+      personId: MACHINE_DATA.people[0].id,
+      zoneId: null
+    };
+
+    // 小工具：格式化百分数、时间和标题，并转义可能进入 HTML 的文字。
+    const pct = (value, digits = 0) => `${(value * 100).toFixed(digits)}%`;
+    const esc = (value) => String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+    const titleCase = (value) => value.replaceAll("_", " ").replace(/\b\w/g, x => x.toUpperCase());
+    const timeOnly = (iso) => new Date(iso).toLocaleTimeString("en-US", {
+      hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/New_York"
+    });
+    const topEntry = (object) => Object.entries(object).sort((a, b) => b[1] - a[1])[0];
+    const bar = (value, danger = false) => `<div class="risk-track"><span class="${danger ? "danger" : ""}" style="width:${Math.max(2, value * 100)}%"></span></div>`;
+
+    function person() {
+      return MACHINE_DATA.people.find(item => item.id === state.personId) || MACHINE_DATA.people[0];
+    }
+    function eventFor(selected = person()) {
+      return MACHINE_DATA.events.find(item => item.id === selected.event_id) || MACHINE_DATA.events[0];
+    }
+    function zone() {
+      return MACHINE_DATA.zones.find(item => item.id === state.zoneId) || MACHINE_DATA.zones[0];
+    }
+    function syncZoneToPerson() {
+      const matched = MACHINE_DATA.zones.find(item => item.name === person().zone);
+      if (matched) state.zoneId = matched.id;
+    }
+    syncZoneToPerson();
+
+    // 左栏：人物队列、阈值滑杆和事件列表。
+    function renderQueue() {
+      const relevant = MACHINE_DATA.people.filter(item => item.involvement >= state.threshold);
+      const peopleHtml = MACHINE_DATA.people.map((item, index) => {
+        const visible = item.involvement >= state.threshold;
+        if (!visible && state.mode === "machine") return "";
+        const role = topEntry(item.roles)[0];
+        return `
+          <button class="subject-button ${item.id === state.personId ? "active" : ""} ${visible ? "" : "quiet"}" data-person="${esc(item.id)}">
+            <span class="number">${String(index + 1).padStart(2, "0")}</span>
+            <span class="identity"><b>${esc(item.code)}</b><em>${esc(item.event_id)} · T−${item.imminence_minutes}</em></span>
+            <span class="score"><b>${pct(item.involvement)}</b><em>${state.mode === "analyst" ? role.toUpperCase() : "RELEVANT"}</em></span>
+          </button>`;
+      }).join("");
+
+      const eventsHtml = MACHINE_DATA.events.map(item => `
+        <button class="event-button" data-event="${esc(item.id)}">
+          <span>${esc(item.id)}</span>
+          <div><b>${esc(item.title)}</b><em>${esc(item.zone)} · ${item.signal_count} SIGNALS</em></div>
+          <strong>${pct(item.risk)}</strong>
+        </button>`).join("");
+
+      document.getElementById("queue").innerHTML = `
+        <div class="queue-head"><div><span>RELEVANT LIST</span><strong>${String(relevant.length).padStart(2, "0")}</strong></div><em>STATIC 21:40</em></div>
+        <div class="threshold">
+          <label for="threshold">FRAME THRESHOLD <b>${state.threshold.toFixed(2)}</b></label>
+          <input id="threshold" type="range" min="0.35" max="0.90" step="0.01" value="${state.threshold}">
+          <small><span>MORE SIGNALS</span><span>HIGH CERTAINTY</span></small>
+        </div>
+        <div class="subject-list">${peopleHtml}</div>
+        <div class="section"><div class="section-title"><span>EVENT CANDIDATES</span><em>${MACHINE_DATA.events.length}</em></div>${eventsHtml}</div>`;
+    }
+
+    // 中间顶部标题。
+    function renderPanelHead() {
+      const names = {
+        city: ["BOROUGH / MANHATTAN", "CITY GRID"],
+        network: ["SUBGRAPH / ACTIVE SUBJECT", "EVIDENCE GRAPH"],
+        model: ["ENGINE / TRANSPARENT BASELINE", "MODEL CORE"]
+      };
+      document.getElementById("panel-head").innerHTML = `
+        <div><span class="kicker">${names[state.surface][0]}</span><h2>${names[state.surface][1]}</h2></div>
+        <div class="model-readout">MODEL<b>${esc(MACHINE_DATA.meta.model_version)}</b>STATIC OFFLINE FRAME</div>`;
+    }
+
+    // City Grid：数据中的 polygon 和 coordinates 直接变成 SVG。
+    function renderMap() {
+      const selected = person();
+      const activeZone = zone();
+      const zonesSvg = MACHINE_DATA.zones.map(item => `
+        <g class="zone ${item.id === state.zoneId ? "active" : ""}" data-zone="${esc(item.id)}" role="button" tabindex="0">
+          <polygon points="${item.polygon.map(point => point.join(",")).join(" ")}" style="fill-opacity:${0.12 + item.risk * 0.42}"></polygon>
+          <text x="${item.centroid[0]}" y="${item.centroid[1]}" class="zone-label">${esc(item.name.toUpperCase())}</text>
+          ${state.mode === "analyst" ? `<text x="${item.centroid[0]}" y="${item.centroid[1] + 13}" class="zone-risk">RISK ${pct(item.risk)}</text>` : ""}
+        </g>`).join("");
+
+      const linksSvg = MACHINE_DATA.people.filter(item => item.involvement >= state.threshold).map(item => {
+        const linked = MACHINE_DATA.events.find(candidate => candidate.id === item.event_id);
+        return linked ? `<line class="event-link" x1="${item.coordinates[0]}" y1="${item.coordinates[1]}" x2="${linked.coordinates[0]}" y2="${linked.coordinates[1]}"></line>` : "";
+      }).join("");
+
+      const eventsSvg = MACHINE_DATA.events.map(item => `
+        <g class="event-point" transform="translate(${item.coordinates[0]} ${item.coordinates[1]})">
+          <circle r="5"></circle><circle r="11"></circle><path d="M-14 0H14M0-14V14"></path><text x="15" y="-9">${esc(item.id)}</text>
+        </g>`).join("");
+
+      const peopleSvg = MACHINE_DATA.people.map(item => {
+        const relevant = item.involvement >= state.threshold;
+        if (!relevant && state.mode === "machine") return "";
+        return `
+          <g class="person ${relevant ? "" : "background"}" data-person="${esc(item.id)}" transform="translate(${item.coordinates[0]} ${item.coordinates[1]})" role="button" tabindex="0">
+            <circle r="3.5"></circle>
+            ${relevant ? `<rect class="frame" x="-13" y="-18" width="26" height="36"></rect>` : ""}
+            ${item.id === selected.id ? `<rect class="selected-frame" x="-18" y="-23" width="36" height="46"></rect>` : ""}
+            <text x="17" y="-7">${esc(item.code)}</text>
+            <text x="17" y="6" class="person-score">${state.mode === "analyst" ? `INV ${pct(item.involvement)}` : "RELEVANT"}</text>
+          </g>`;
+      }).join("");
+
+      const ranking = MACHINE_DATA.zones.slice().sort((a,b) => b.risk - a.risk).slice(0,5).map((item,index) => `
+        <button data-zone="${esc(item.id)}"><span>0${index + 1}</span><b>${esc(item.name)}</b><em>${pct(item.risk)}</em></button>`).join("");
+
+      return `
+        <div class="city-view">
+          <div class="map-wrap"><div class="scan"></div>
+            <svg class="map" viewBox="0 0 420 760" role="img" aria-label="虚构曼哈顿风险地图">
+              <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="map-grid"></path></pattern></defs>
+              <rect width="420" height="760" fill="url(#grid)"></rect>
+              <path class="water" d="M92 20C122 142 106 273 84 389C64 502 97 647 132 741"></path>
+              <path class="water" d="M314 14C327 153 339 285 328 404C319 518 298 643 249 745"></path>
+              ${zonesSvg}${linksSvg}${eventsSvg}${peopleSvg}
+            </svg>
+            <div class="legend"><span><i></i>RELEVANT SUBJECT</span><span>＋ CANDIDATE EVENT</span><span>▰ SCENARIO RISK</span></div>
+          </div>
+          <aside class="zone-panel">
+            <div class="kicker">AREA AGGREGATE</div><h3>${esc(activeZone.name)}</h3>
+            <div class="big-risk">${pct(activeZone.risk)}</div>${bar(activeZone.risk, activeZone.risk > .55)}
+            <dl class="stats"><div><dt>STATE</dt><dd>${esc(activeZone.trend.toUpperCase())}</dd></div><div><dt>EVENT LINKS</dt><dd>${activeZone.contributors.length}</dd></div><div><dt>MODEL</dt><dd>KDE / 92U</dd></div></dl>
+            <p class="note">Synthetic scenario-risk index—not a real Manhattan crime rate.</p>
+            <div class="ranking">${ranking}</div>
+          </aside>
+        </div>`;
+    }
+
+    // Evidence Graph：把人物的证据、人物节点和事件节点排成计算流程。
+    function renderNetwork() {
+      const selected = person();
+      const linked = eventFor(selected);
+      const records = selected.evidence.map(item => `
+        <article class="node record-node"><span>${esc(item.source.toUpperCase())}</span><b>${esc(item.id)}</b><p>${esc(item.summary)}</p><small>q=${item.reliability.toFixed(2)}</small></article>`).join("");
+      const roles = Object.entries(selected.roles).map(([role,value]) => `<div class="role-row"><span>${esc(titleCase(role))}</span><em>${pct(value)}</em></div>`).join("");
+      const initials = selected.name.split(" ").map(part => part[0]).join("");
+      return `
+        <div class="network">
+          <div class="view-title"><div><span class="kicker">TEMPORAL HETEROGENEOUS GRAPH</span><h2>${esc(selected.code)} / ${esc(linked.id)}</h2></div><p>${selected.evidence.length} records · one person · one candidate event<br>Edges show computation, not causation.</p></div>
+          <div class="network-flow">
+            <section><div class="column-label">RAW RECORDS</div><div class="records">${records}</div></section>
+            <div class="arrow">→</div>
+            <section><div class="column-label">ENTITY</div><article class="node entity-node"><span>${esc(selected.id)}</span><div class="avatar">${esc(initials)}</div><h3>${esc(selected.code)}</h3><p>${esc(selected.occupation)}</p><strong>${pct(selected.involvement)} INVOLVED</strong></article></section>
+            <div class="arrow">→</div>
+            <section><div class="column-label">INFERENCE</div><article class="node event-node"><span>${esc(linked.id)}</span><h3>${esc(linked.title)}</h3><p>${esc(linked.location)}</p><strong>T−${linked.imminence_minutes} MIN</strong></article><article class="node" style="margin-top:9px"><span>ROLE POSTERIOR</span>${roles}</article></section>
+          </div>
+        </div>`;
+    }
+
+    // Model Core：这些公式与 Python baseline 一一对应。
+    function renderModel() {
+      const formulae = [
+        ["01 / Temporal reliability", "wₒ(t) = qₒ · exp(−ln2 · Δt / hₛ)", "Fresh and reliable observations receive more weight."],
+        ["02 / Evidence fusion", "zₖ = 1 − ∏ₒ(1 − wₒfₒₖ)", "Noisy-OR combines clues while keeping every feature bounded."],
+        ["03 / Graph propagation", "gᵢₑ = 1 − ∏ⱼ(1 − 0.58aᵢⱼmⱼₑ)", "One bounded hop transfers support through explicit links."],
+        ["04 / Involvement", "P(Iᵢₑ=1)=σ(−2.55+βᵀz+0.8g+1.1τ)", "The red frame means event involvement, not guilt."],
+        ["05 / Role posterior", "P(role=c|I=1)=exp(s꜀)/Σᵣexp(sᵣ)", "Victim, perpetrator and ambiguous compete in a softmax."],
+        ["06 / Spatial risk", "R(a,t)=1−exp[−η(bₐ+ΣₑpₑτₑKₕ(dₐₑ))]", "A Gaussian kernel spreads fictional event risk to nearby zones."]
+      ];
+      const cards = formulae.map(item => `<article class="formula"><h3>${item[0]}</h3><code>${item[1]}</code><p>${item[2]}</p></article>`).join("");
+      const m = MACHINE_DATA.metrics;
+      return `
+        <div class="model">
+          <div class="view-title"><div><span class="kicker">AUDITABLE BASELINE / v0.1</span><h2>From records to a red frame</h2></div><p>Every score is embedded in this HTML and reproducible from the Python engine.</p></div>
+          <div class="pipeline">${["RECORDS","FEATURES","GRAPH","INVOLVEMENT","ROLE + TYPE","MAP + UI"].map((item,index) => `<div><span>0${index+1}</span><b>${item}</b></div>`).join("")}</div>
+          <div class="formula-grid">${cards}</div>
+          <section class="metrics"><div><span class="kicker" style="color:var(--amber)">SYNTHETIC SANITY CHECK</span><p>Verifies pipeline wiring only; this is not a real-world benchmark.</p></div><dl><div><dt>PRECISION</dt><dd>${pct(m.precision)}</dd></div><div><dt>RECALL</dt><dd>${pct(m.recall)}</dd></div><div><dt>F1</dt><dd>${pct(m.f1)}</dd></div><div><dt>BRIER ↓</dt><dd>${m.brier.toFixed(3)}</dd></div><div><dt>PAIRS</dt><dd>${m.evaluated_pairs}</dd></div></dl></section>
+        </div>`;
+    }
+
+    // 右栏：所选人物的分数、角色、犯罪类型、贡献与证据。
+    function renderDossier() {
+      const selected = person();
+      const dominantCrime = topEntry(selected.crime_types)[0];
+      const relevant = selected.involvement >= state.threshold;
+      const roleContent = state.mode === "machine"
+        ? `<div class="section"><div class="kicker">ROLE CLASSIFICATION</div><div class="redacted">VICTIM / PERPETRATOR</div><p class="withheld">WITHHELD IN MACHINE VIEW</p></div>`
+        : `<div class="section"><div class="section-title"><span>ROLE POSTERIOR</span><em>H=${selected.role_uncertainty.toFixed(2)}</em></div>${Object.entries(selected.roles).map(([name,value]) => `<div class="bar-row"><label>${esc(titleCase(name))}</label>${bar(value,name === "perpetrator")}<b>${pct(value)}</b></div>`).join("")}</div>`;
+      const crimes = Object.entries(selected.crime_types).sort((a,b) => b[1]-a[1]).map(([name,value]) => `<div class="bar-row"><label>${esc(titleCase(name))}</label>${bar(value)}<b>${pct(value)}</b></div>`).join("");
+      const explanations = selected.explanations.map(item => `<div class="bar-row" title="${esc(item.record_ids.join(", "))}"><label>${esc(item.label)}</label>${bar(item.value * 3.7)}<b>+${(item.value * 100).toFixed(1)}</b></div>`).join("");
+      const evidence = selected.evidence.slice(0,3).map(item => `<article class="evidence"><div><span>${esc(item.id)}</span><time>${timeOnly(item.timestamp)}</time></div><p>${esc(item.summary)}</p><small>${esc(item.source.toUpperCase())} · q=${item.reliability.toFixed(2)}</small></article>`).join("");
+      document.getElementById("dossier").innerHTML = `
+        <header class="dossier-head"><div><span>SUBJECT FILE / ${esc(selected.id)}</span><h2>${esc(selected.code)}</h2><p>${esc(selected.occupation)} · ${esc(selected.zone)}</p></div><div class="stamp">${relevant ? "RELEVANT" : "BELOW"}</div></header>
+        <section class="score-block"><div class="score-ring" style="--score:${selected.involvement * 360}deg"><div><strong>${pct(selected.involvement)}</strong><span>INVOLVEMENT</span></div></div><dl><div><dt>EVENT</dt><dd>${esc(selected.event_id)}</dd></div><div><dt>WINDOW</dt><dd>T−${selected.imminence_minutes} MIN</dd></div><div><dt>CONFIDENCE</dt><dd>${pct(selected.confidence)}</dd></div><div><dt>TYPE</dt><dd>${esc(dominantCrime.toUpperCase())}</dd></div></dl></section>
+        ${roleContent}
+        <section class="section"><div class="section-title"><span>CRIME TYPE MIX</span><em>SOFTMAX</em></div>${crimes}</section>
+        <section class="section"><div class="section-title"><span>SCORE CONTRIBUTION</span><em>TOP 5</em></div>${explanations}</section>
+        <section class="section"><div class="section-title"><span>LATEST EVIDENCE</span><em>${selected.evidence.length} ITEMS</em></div>${evidence}</section>`;
+    }
+
+    function renderTicker() {
+      document.getElementById("ticker").innerHTML = `<span>INGEST</span><div class="ticker-list">${MACHINE_DATA.timeline.slice(0,4).map(item => `<p><time>${timeOnly(item.timestamp)}</time><b>${esc(item.id)}</b>${esc(item.summary)}</p>`).join("")}</div>`;
+    }
+
+    // 总开关：任何状态变化后，调用一次就能让页面保持一致。
+    function renderAll() {
+      document.querySelectorAll("[data-mode]").forEach(button => button.classList.toggle("active", button.dataset.mode === state.mode));
+      document.querySelectorAll("[data-surface]").forEach(button => button.classList.toggle("active", button.dataset.surface === state.surface));
+      renderQueue();
+      renderPanelHead();
+      document.getElementById("surface").innerHTML = state.surface === "city" ? renderMap() : state.surface === "network" ? renderNetwork() : renderModel();
+      renderTicker();
+      renderDossier();
+    }
+
+    /* ================================================================
+       PART 6 / 用户交互事件
+       只监听一次整个 document，再根据 data-* 属性判断用户点了什么。
+       这叫 event delegation（事件委托），比给每个按钮单独绑定更简单。
+       ================================================================ */
+    document.addEventListener("click", (event) => {
+      const modeButton = event.target.closest("[data-mode]");
+      const surfaceButton = event.target.closest("[data-surface]");
+      const personButton = event.target.closest("[data-person]");
+      const zoneButton = event.target.closest("[data-zone]");
+      const eventButton = event.target.closest("[data-event]");
+
+      if (modeButton) state.mode = modeButton.dataset.mode;
+      else if (surfaceButton) state.surface = surfaceButton.dataset.surface;
+      else if (personButton) { state.personId = personButton.dataset.person; syncZoneToPerson(); }
+      else if (zoneButton) state.zoneId = zoneButton.dataset.zone;
+      else if (eventButton) {
+        const first = MACHINE_DATA.people.find(item => item.event_id === eventButton.dataset.event && item.involvement >= state.threshold);
+        if (first) { state.personId = first.id; syncZoneToPerson(); }
+      } else return;
+
+      renderAll();
+    });
+
+    document.addEventListener("input", (event) => {
+      if (event.target.id !== "threshold") return;
+      state.threshold = Number(event.target.value);
+      renderAll();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if ((event.key === "Enter" || event.key === " ") && event.target.matches('[role="button"]')) {
+        event.preventDefault();
+        event.target.click();
+      }
+    });
+
+    // 第一次打开文件时，画出完整页面。
+    renderAll();
+  </script>
+</body>
+</html>

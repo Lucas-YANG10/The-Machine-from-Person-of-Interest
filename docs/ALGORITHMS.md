@@ -191,7 +191,7 @@ Each candidate event begins with a fictional prior $\pi_{ec}$. Evidence modifies
 $$
 \ell_{iec}=\log\pi_{ec}+\boldsymbol\gamma_c^\top\mathbf z_{ie},
 \qquad
-P(C_e=c\mid i)=\operatorname{softmax}(\boldsymbol\ell_{ie})_c.
+P(C_e=c\mid i)=\mathrm{softmax}(\boldsymbol\ell_{ie})_c.
 $$
 
 For example, `financial` and `capability` add support to fraud, while `threat` adds support to assault. Event-level type mix is an involvement-weighted average across people:
@@ -247,7 +247,7 @@ This is intentionally kept distinct from $p_{ie}$: the model can assign high inv
 The synthetic label file is evaluated over all $|\mathcal P||\mathcal E|$ person-event pairs. The pipeline reports precision, recall, F1, role accuracy, confusion counts, and the Brier score
 
 $$
-\operatorname{Brier}=\frac1N\sum_{i,e}(p_{ie}-y_{ie})^2.
+\mathrm{Brier}=\frac1N\sum_{i,e}(p_{ie}-y_{ie})^2.
 $$
 
 The scenario was authored so the baseline cleanly separates its cases. Therefore perfect precision/recall only proves that the generator, feature logic, scorer, output contract, and UI are joined correctly. It is not a research result.
@@ -259,13 +259,13 @@ For a single person-event pair, the complete composition is:
 $$
 \boxed{
 \mathcal O_{ie}
-\xrightarrow{\text{tag map}+w_o}
+\xrightarrow{\text{tag map}+w_o \qquad}
 \mathbf z_{ie}
-\xrightarrow{G_{t_0}}
+\xrightarrow{G_{t_0} \qquad}
 g_{ie}
-\xrightarrow{\sigma}
+\xrightarrow{\sigma \qquad}
 p_{ie}
-\xrightarrow{\text{conditional softmax}}
+\xrightarrow{\text{conditional softmax} \qquad}
 (\mathbf r_{ie},\mathbf c_{ie})
 }
 $$
@@ -274,8 +274,9 @@ Across pairs, a second aggregation produces event and map outputs:
 
 $$
 \{p_{ie},\mathbf c_{ie}\}_i
-\rightarrow p_e,P(C_e)
-\xrightarrow{K_h,\tau_e}
+\xrightarrow{\text{aggregate} \qquad}
+p_e,P(C_e)
+\xrightarrow{K_h,\tau_e \qquad}
 R(a,t_0).
 $$
 

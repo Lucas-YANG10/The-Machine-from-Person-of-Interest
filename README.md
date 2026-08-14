@@ -164,4 +164,4 @@ This is an independent fan-inspired educational project. It is not affiliated wi
 
 ## License
 
-Apache License 2.0 — see [LICENSE](LICENSE).
+GNU AGPL v3.0 — see [LICENSE](LICENSE).
